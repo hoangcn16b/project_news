@@ -116,6 +116,7 @@ $(document).ready(function () {
         let selectValue = $(this).val();
         let url = $(this).data("url");
         url = url.replace("value_new", selectValue);
+        console.log(url);
         $.ajax({
             type: "GET",
             url: url,

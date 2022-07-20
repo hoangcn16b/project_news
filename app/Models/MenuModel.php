@@ -23,7 +23,7 @@ class MenuModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('id', 'name', 'status', 'link', 'type', 'type_open', 'in_table');
+            $query = $this->select('id', 'name', 'status', 'link', 'type', 'type_open', 'in_table','ordering');
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -46,7 +46,7 @@ class MenuModel extends AdminModel
         }
 
         if ($options['task'] == 'news-list-items') {
-            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'in_table', 'slug')
+            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'in_table', 'slug', 'ordering')
                 ->where('status', '=', 'active')
                 ->orderBy('ordering', 'asc')
                 ->limit(8);
@@ -145,6 +145,12 @@ class MenuModel extends AdminModel
             $params['modified']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
+
+        if ($options['task'] == 'change-display-menu') {
+            $displayMenu = $params['currentDisplayMenu'];
+            self::where('id', $params['id'])->update(['type' => $displayMenu]);
+        }
+        
     }
 
     public function deleteItem($params = null, $options = null)

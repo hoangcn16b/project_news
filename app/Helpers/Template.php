@@ -1,6 +1,6 @@
 <?php 
 namespace App\Helpers;
-use Config;
+use Illuminate\Support\Facades\Config;
 
 class Template {
     public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch) { // $currentFilterStatus active inactive all

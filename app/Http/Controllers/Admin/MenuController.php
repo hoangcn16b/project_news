@@ -103,6 +103,17 @@ class MenuController extends Controller
         ]);
     }
 
+    public function display_menu(Request $request)
+    {
+        $params["currentDisplayMenu"]   = $request->display_menu;
+        $params["id"]               = $request->id;
+        
+        $this->model->saveItem($params, ['task' => 'change-display-menu']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     public function delete(Request $request)
     {
         $params["id"]             = $request->id;
