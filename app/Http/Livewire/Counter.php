@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
+use Illuminate\Support\Facades\DB;
 
 class Counter extends Component
 {
@@ -18,10 +18,13 @@ class Counter extends Component
         $this->rowId = $rowId;
         $this->isHome = $isHome;
     }
+
     public function changeIsHome()
     {
         $this->isHome = ($this->isHome == 'yes') ? 'no' : 'yes';
-
+        DB::table('category')
+            ->where('id', $this->rowId)
+            ->update(['is_home' => $this->isHome]);
     }
 
     public function render()

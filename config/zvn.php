@@ -77,6 +77,7 @@ return [
             'article'   => ['all', 'name', 'content'],
             'rss'       => ['all', 'name', 'link'],
             'user'      => ['all', 'username', 'email', 'fullname'],
+            'menu'      => ['all', 'name'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -85,6 +86,7 @@ return [
             'article'   => ['edit', 'delete'],
             'rss'   => ['edit', 'delete'],
             'user'      => ['edit'],
+            'menu'      => ['edit', 'delete'],
         ]
     ]
     
