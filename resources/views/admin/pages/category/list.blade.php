@@ -1,8 +1,10 @@
 @php
     use App\Helpers\Template as Template;
     use App\Helpers\Hightlight as Hightlight;
+    
 @endphp
 <div class="x_content">
+    
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
             <thead>
@@ -21,11 +23,12 @@
                 @if (count($items) > 0)
                     @foreach ($items as $key => $val)
                         @php
+                        
                             $index           = $key + 1;
                             $class           = ($index % 2 == 0) ? "even" : "odd";
                             $id              = $val['id'];
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
-                            $status          = Template::showItemStatus($controllerName, $id, $val['status']);
+                            // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
                             $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
@@ -36,9 +39,10 @@
                         <tr class="{{ $class }} pointer">
                             <td >{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
-                            <td>{!! $status !!}</td>
+                            {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}
-                            <td><livewire:counter :isHome="$val['is_home']" :rowId="$id"/> </td>
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:changehome :isHome="$val['is_home']" :rowId="$id"/> </td>
                             <td>{!! $display !!}</td>
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>

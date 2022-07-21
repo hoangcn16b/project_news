@@ -105,7 +105,7 @@ class MenuModel extends AdminModel
         $result = null;
 
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'link', 'status')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'link', 'status', 'type', 'ordering')->where('id', $params['id'])->first();
         }
 
         if ($options['task'] == 'news-get-item') {
@@ -149,6 +149,10 @@ class MenuModel extends AdminModel
         if ($options['task'] == 'change-display-menu') {
             $displayMenu = $params['currentDisplayMenu'];
             self::where('id', $params['id'])->update(['type' => $displayMenu]);
+        }
+        if ($options['task'] == 'change-ordering') {
+            $ordering = $params['currentOrdering'];
+            self::where('id', $params['id'])->update(['ordering' => $ordering]);
         }
         
     }

@@ -114,6 +114,17 @@ class MenuController extends Controller
         ]);
     }
 
+    public function ordering(Request $request)
+    {
+        $params["currentOrdering"]   = $request->ordering;
+        $params["id"]               = $request->id;
+        
+        $this->model->saveItem($params, ['task' => 'change-ordering']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     public function delete(Request $request)
     {
         $params["id"]             = $request->id;

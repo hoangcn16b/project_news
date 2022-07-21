@@ -29,7 +29,7 @@
                             $content         = Hightlight::show($val['content'], $params['search'], 'content');
                             $thumb           = Template::showItemThumb($controllerName, $val['thumb'], $val['name']);
                             $categoryName    = $val['category_name'];
-                            $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
+                            // $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
                             $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
                             // $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             // $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
@@ -47,9 +47,10 @@
                             </td>
                             <td >{!! $categoryName !!}</td>
                             <td>{!! $type   !!}</td>
-                            <td>{!! $status !!}</td>
+                            {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td> --}}
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
                             <td class="last">{!! $listBtnAction !!}</td>
                         </tr>
                     @endforeach

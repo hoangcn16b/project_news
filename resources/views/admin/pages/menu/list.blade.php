@@ -12,9 +12,6 @@
                     <th class="column-title">Link</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Loại hiển thị</th>
-                    {{-- <th class="column-title">Kiểu hiện thị</th>
-                    <th class="column-title">Tạo mới</th>
-                    <th class="column-title">Chỉnh sửa</th> --}}
                     <th class="column-title">Sắp xếp</th>
                     <th class="column-title">Hành động</th>
                 </tr>
@@ -28,26 +25,25 @@
                             $id              = $val['id'];
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
                             $link = $val['link'];
-                            $status          = Template::showItemStatus($controllerName, $id, $val['status']);
-                            // $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
-                            $display         = Template::showItemSelect($controllerName, $id, $val['type'], 'display_menu');
-                            // $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
-                            // $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
+                            // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
+                            // $display         = Template::showItemSelect($controllerName, $id, $val['type'], 'display_menu');
+                            // $ordering         = Template::showItemSelectOrdering($controllerName, $id, $val['ordering'], 'ordering');
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
+                            $inConfigDisplay = 'display_menu';
+                            $inConfigOrdering = 'ordering';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
                             <td >{{ $index }}</td>
                             <td width="15%">{!! $name !!}</td>
                             <td>{!! $link !!}</td>
-                            <td>{!! $status !!}</td>
-                            <td width="15%">{!! $display !!}</td>
-                            {{-- <td>{!! $isHome  !!}</td>
-                            <td><livewire:counter :isHome="$val['is_home']" :rowId="$id"/> </td>
-                            <td>{!! $display !!}</td>
-                            <td>{!! $createdHistory !!}</td> 
-                            <td>{!! $modifiedHistory !!}</td> --}}
-                            <td>{!! $val['ordering'] !!}</td>
+                            {{-- <td>{!! $status !!}</td> --}}
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:select :isType="$val['type']" :rowId="$id" :inTable="$controllerName" :inConfig="$inConfigDisplay"/> </td>
+                            <td><livewire:ordering :isOrdering="$val['ordering']" :rowId="$id" :inTable="$controllerName" :inConfig="$inConfigOrdering"/> </td>
+                            {{-- <td width="15%">{!! $display !!}</td> --}}
+                            {{-- <td><livewire:counter :isHome="$val['is_home']" :rowId="$id"/> </td> --}}
+                            {{-- <td>{!! $ordering !!}</td> --}}
                             <td class="last">{!! $listBtnAction !!}</td>
                         </tr>
                     @endforeach

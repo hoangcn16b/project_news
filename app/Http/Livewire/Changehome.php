@@ -5,14 +5,11 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
-class Counter extends Component
+class Changehome extends Component
 {
     public $rowId;
     public $isHome;
-    // public function increment()
-    // {
-    //     $this->count++;
-    // }
+
     public function mount($rowId, $isHome)
     {
         $this->rowId = $rowId;
@@ -27,8 +24,16 @@ class Counter extends Component
             ->update(['is_home' => $this->isHome]);
     }
 
+    // public function changeStatus()
+    // {
+    //     $this->isStatus = ($this->isStatus == 'active') ? 'inactive' : 'active';
+    //     DB::table('category')
+    //         ->where('id', $this->rowId)
+    //         ->update(['status' => $this->isStatus]);
+    // }
+
     public function render()
     {
-        return view('livewire.counter');
+        return view('livewire.changehome');
     }
 }

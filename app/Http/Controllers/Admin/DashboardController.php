@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    private $pathViewController = 'admin.dashboard.';  // slider
+    private $pathViewController = 'admin.pages.dashboard.';  // slider
     private $controllerName     = 'dashboard';
 
     public function __construct()

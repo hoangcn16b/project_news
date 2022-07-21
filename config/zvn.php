@@ -70,6 +70,14 @@ return [
         'display_menu'       => [
             'link'               => ['name' => 'Liên kết đến'],
             'sub_list_menu'      => ['name' => 'Danh sách con'],
+        ],
+        'total_ordering'               => 5,
+        'ordering'               => [
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            5 => 5
         ]
 
     ],

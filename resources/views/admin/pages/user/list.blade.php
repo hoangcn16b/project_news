@@ -31,7 +31,7 @@
                             $email           = Hightlight::show($val['email'], $params['search'], 'email');
                             $level           = Template::showItemSelect($controllerName, $id, $val['level'], 'level');
                             $avatar          = Template::showItemThumb($controllerName, $val['avatar'], $val['name']);
-                            $status          = Template::showItemStatus($controllerName, $id, $val['status']); ;
+                            // $status          = Template::showItemStatus($controllerName, $id, $val['status']); ;
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
@@ -44,7 +44,8 @@
                             <td width="10%">{!! $fullname!!}</td>
                             <td width="20%">{!! $level !!}</td>
                             <td width="5%">{!! $avatar !!}</td>
-                            <td>{!! $status !!}</td>
+                            {{-- <td>{!! $status !!}</td> --}}
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>
                             <td class="last">{!! $listBtnAction !!}</td>

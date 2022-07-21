@@ -26,7 +26,7 @@ class MenuRequest extends FormRequest
     {
         $id = $this->id;
 
-        $condName  = "bail|required|between:5,100|unique:$this->table,name";
+        $condName  = "bail|required|between:3,100|unique:$this->table,name";
 
         if(!empty($id)){ // edit
             $condName  .= ",$id";

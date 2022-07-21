@@ -6,8 +6,9 @@ use App\Helpers\Template;
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
 
-$statusValue = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
-
+$statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
+$orderingValue = config('zvn.template.ordering');
+$typeValue = [ 'link' =>config('zvn.template.display_menu.link.name'), 'sub_list_menu' =>config('zvn.template.display_menu.sub_list_menu.name')];
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $elements = [
     [
@@ -19,8 +20,16 @@ $elements = [
         'element' => Form::text('link', @$item['link'], $formInputAttr),
     ],
     [
+        'label' => Form::label('type', 'Type Display', $formLabelAttr),
+        'element' => Form::select('type', $typeValue, @$item['type'], $formInputAttr),
+    ],
+    [
         'label' => Form::label('status', 'Status', $formLabelAttr),
         'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('ordering', 'Ordering', $formLabelAttr),
+        'element' => Form::select('ordering', $orderingValue, @$item['ordering'], $formInputAttr),
     ],
     [
         'element' => $inputHiddenID . Form::submit('Save', ['class' => 'btn btn-success']),

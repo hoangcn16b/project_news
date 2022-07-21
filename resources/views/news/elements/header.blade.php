@@ -36,7 +36,7 @@ if (count($itemsMenu) > 0) {
                 $ulList .= sprintf('<li class="parent %s"><a href="%s">%s</a></li>', $classActiveSubList, $linkSubList, $value->name);
             }
             $ulList .= '</ul>';
-            $xhtmlMenu .= sprintf('<li class="parent" %s><a>%s</a>%s</li>', $classActive, $item['name'], $ulList);
+            $xhtmlMenu .= sprintf('<li class="parent" %s><a>%s</a>%s</li>', $classActiveSubList, $item['name'], $ulList);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
         }
     }
