@@ -30,10 +30,11 @@
                             $thumb           = Template::showItemThumb($controllerName, $val['thumb'], $val['name']);
                             $categoryName    = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
-                            $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
+                            // $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
                             // $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             // $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
+                            $type = 'type';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -42,14 +43,11 @@
                                 <p><strong>Name:</strong> {!! $name !!}</p>
                                 <p><strong>Content:</strong> {!! $content !!}</p>
                             </td>
-                            <td width="14%">
-                                <p>{!! $thumb !!}</p>
-                            </td>
+                            <td width="14%"><p>{!! $thumb !!}</p></td>
                             <td >{!! $categoryName !!}</td>
-                            <td>{!! $type   !!}</td>
+                            {{-- <td>{!! $type   !!}</td> --}}
                             {{-- <td>{!! $status !!}</td> --}}
-                            {{-- <td>{!! $createdHistory !!}</td>
-                            <td>{!! $modifiedHistory !!}</td> --}}
+                            <td><livewire:select :isType="$val['type']" :rowId="$id" :inTable="$controllerName" :inConfig="$type"/> </td>
                             <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
                             <td class="last">{!! $listBtnAction !!}</td>
                         </tr>

@@ -10,6 +10,7 @@
                     <th class="column-title">#</th>
                     <th class="column-title">Name</th>
                     <th class="column-title">Link</th>
+                    <th class="column-title">Dữ liệu của bảng<br>(dành cho loại hiển thị danh sách)</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Loại hiển thị</th>
                     <th class="column-title">Sắp xếp</th>
@@ -37,7 +38,7 @@
                             <td >{{ $index }}</td>
                             <td width="15%">{!! $name !!}</td>
                             <td>{!! $link !!}</td>
-                            {{-- <td>{!! $status !!}</td> --}}
+                            <td>{!! $val['in_table'] !!}</td>
                             <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
                             <td><livewire:select :isType="$val['type']" :rowId="$id" :inTable="$controllerName" :inConfig="$inConfigDisplay"/> </td>
                             <td><livewire:ordering :isOrdering="$val['ordering']" :rowId="$id" :inTable="$controllerName" :inConfig="$inConfigOrdering"/> </td>

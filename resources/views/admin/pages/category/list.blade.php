@@ -30,10 +30,11 @@
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
-                            $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
+                            // $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
+                            $display = 'display';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -43,7 +44,8 @@
                             {{-- <td>{!! $isHome  !!}</td> --}}
                             <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
                             <td><livewire:changehome :isHome="$val['is_home']" :rowId="$id"/> </td>
-                            <td>{!! $display !!}</td>
+                            <td><livewire:select :isType="$val['display']" :rowId="$id" :inTable="$controllerName" :inConfig="$display"/> </td>
+                            {{-- <td>{!! $display !!}</td> --}}
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>
                             <td class="last">{!! $listBtnAction !!}</td>

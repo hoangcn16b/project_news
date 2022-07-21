@@ -20,6 +20,10 @@ $elements = [
         'element' => Form::text('link', @$item['link'], $formInputAttr),
     ],
     [
+        'label' => Form::label('in_table', 'Dữ liệu thuộc về(danh mục? e.x: category)', $formLabelAttr),
+        'element' => Form::text('in_table', @$item['in_table'], $formInputAttr),
+    ],
+    [
         'label' => Form::label('type', 'Type Display', $formLabelAttr),
         'element' => Form::select('type', $typeValue, @$item['type'], $formInputAttr),
     ],

@@ -33,7 +33,8 @@ class MenuRequest extends FormRequest
         }
         return [
             'name'        => $condName,
-            'link'        => 'bail|required|min:5|url',
+            'in_table'    => 'bail|between:0,100|',
+            'link'        => 'bail|between:0,255|url',
             'status'      => 'bail|in:active,inactive',
         ];
     }
