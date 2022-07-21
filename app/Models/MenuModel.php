@@ -105,7 +105,7 @@ class MenuModel extends AdminModel
         $result = null;
 
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'link', 'status', 'type', 'ordering')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'link', 'status', 'type','in_table', 'ordering')->where('id', $params['id'])->first();
         }
 
         if ($options['task'] == 'news-get-item') {
