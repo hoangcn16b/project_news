@@ -8,24 +8,26 @@ use Illuminate\Support\Facades\DB;
 class Ordering extends Component
 {
     public $rowId;
-    public $isOrdering;
+    public $ordering;
     public $inTable;
-    public $inConfig;
+    public $thisColumn;
 
-    public function mount($rowId, $isOrdering, $inTable, $inConfig)
+    public function mount($thisColumn, $rowId, $ordering, $inTable)
     {
         $this->rowId = $rowId;
-        $this->isOrdering = $isOrdering;
+        $this->ordering = $ordering;
         $this->inTable = $inTable;
-        $this->inConfig = $inConfig;
+        $this->thisColumn = $thisColumn;
     }
 
-    public function select()
+    public function ordering($value)
     {
-        // $this->isType = ($this->isType == 'active') ? 'inactive' : 'active';
-        // DB::table($this->inTable)
-        //     ->where('id', $this->rowId)
-        //     ->update(['type' => $this->isType]);
+        $this->ordering = $value;
+        if ($value > 0 && $value <= 20) {
+            DB::table($this->inTable)
+                ->where('id', $this->rowId)
+                ->update([$this->thisColumn => $value]);
+        }
     }
 
     public function render()

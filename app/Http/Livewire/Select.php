@@ -2,34 +2,43 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Config;
+use App\Helpers\Template as Template;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 class Select extends Component
 {
     public $rowId;
-    public $isType;
+    public $thisType;
     public $inTable;
     public $inConfig;
+    public $fieldName;
+    public $thisColumn;
 
-    public function mount($rowId, $isType, $inTable, $inConfig)
+    public function mount($thisColumn, $rowId, $thisType, $fieldName, $inTable)
     {
         $this->rowId = $rowId;
-        $this->isType = $isType;
+        $this->thisType = $thisType;
         $this->inTable = $inTable;
-        $this->inConfig = $inConfig;
+        $this->fieldName = $fieldName;
+        $this->thisColumn = $thisColumn;
     }
 
-    public function select()
+    public function updatedThisType($value)
     {
-        // $this->isType = ($this->isType == 'active') ? 'inactive' : 'active';
-        // DB::table($this->inTable)
-        //     ->where('id', $this->rowId)
-        //     ->update(['type' => $this->isType]);
+        $this->thisType = $value;
+        DB::table($this->inTable)
+            ->where('id', $this->rowId)
+            ->update([$this->thisColumn => $value]);
     }
 
     public function render()
     {
         return view('livewire.selectBox');
+        $this->dispatchBrowserEvent(
+            'alert',
+            ['type' => 'success',  'message' => 'User Created Successfully!']
+        );
     }
 }

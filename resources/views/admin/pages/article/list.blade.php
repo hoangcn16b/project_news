@@ -13,8 +13,6 @@
                     <th class="column-title">Category</th>
                     <th class="column-title">Kiểu bài viết</th>
                     <th class="column-title">Trạng thái</th>
-                    {{-- <th class="column-title">Tạo mới</th>
-                    <th class="column-title">Chỉnh sửa</th> --}}
                     <th class="column-title">Hành động</th>
                 </tr>
             </thead>
@@ -31,10 +29,10 @@
                             $categoryName    = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
                             // $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
-                            // $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
-                            // $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
-                            $type = 'type';
+                            // $type = 'type';
+                            $fieldName = 'type';
+                            $thisColumn = 'type'; 
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -45,10 +43,8 @@
                             </td>
                             <td width="14%"><p>{!! $thumb !!}</p></td>
                             <td >{!! $categoryName !!}</td>
-                            {{-- <td>{!! $type   !!}</td> --}}
-                            {{-- <td>{!! $status !!}</td> --}}
-                            <td><livewire:select :isType="$val['type']" :rowId="$id" :inTable="$controllerName" :inConfig="$type"/> </td>
-                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:select :thisColumn="$thisColumn" :thisType="$val['type']" :rowId="$id" :fieldName="$fieldName" :inTable="$inTable"/> </td>
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable"/> </td>
                             <td class="last">{!! $listBtnAction !!}</td>
                         </tr>
                     @endforeach

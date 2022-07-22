@@ -34,7 +34,8 @@
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
-                            $display = 'display';
+                            $fieldName = 'display';
+                            $thisColumn = 'display';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -42,9 +43,9 @@
                             <td width="25%">{!! $name !!}</td>
                             {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}
-                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable"/> </td>
                             <td><livewire:changehome :isHome="$val['is_home']" :rowId="$id"/> </td>
-                            <td><livewire:select :isType="$val['display']" :rowId="$id" :inTable="$controllerName" :inConfig="$display"/> </td>
+                            <td><livewire:select :thisColumn="$thisColumn" :thisType="$val['display']" :rowId="$id" :fieldName="$fieldName" :inTable="$inTable"/> </td>
                             {{-- <td>{!! $display !!}</td> --}}
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>

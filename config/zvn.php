@@ -78,6 +78,12 @@ return [
             3 => 3,
             4 => 4,
             5 => 5
+        ],
+        'in_table'          =>[
+            ''                   => ['name' => 'Mặc định(chưa có bảng)'],
+            'category'           => ['name' => 'Bảng Category'],
+            'article'            => ['name' => 'Bảng Article'],
+            'rss'                => ['name' => 'Bảng Rss'],
         ]
 
     ],

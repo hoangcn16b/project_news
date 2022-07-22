@@ -9,15 +9,16 @@ use App\Http\Requests\RssRequest as MainRequest;
 
 class RssController extends Controller
 {
-    private $pathViewController = 'admin.pages.rss.';
-    private $controllerName     = 'rss';
-    private $params             = [];
-    private $model;
+    public $pathViewController = 'admin.pages.rss.';
+    public $controllerName     = 'rss';
+    public $inTable     = 'rss';
+    public $model;
 
     public function __construct()
     {
         $this->model = new MainModel();
         $this->params["pagination"]["totalItemsPerPage"] = 5;
+        view()->share('inTable', $this->inTable);
         view()->share('controllerName', $this->controllerName);
     }
 

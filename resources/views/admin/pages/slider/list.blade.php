@@ -41,7 +41,7 @@
                                 <p>{!! $thumb !!}</p>
                             </td>
                             {{-- <td>{!! $status !!}</td> --}}
-                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable"/> </td>
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>
                             <td class="last">{!! $listBtnAction !!}</td>

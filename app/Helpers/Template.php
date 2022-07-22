@@ -140,7 +140,7 @@ class Template
         $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
         $totalOrdering = Config::get('zvn.template.total_ordering');
         $tmplDisplay = Config::get('zvn.template.' . $fieldName);
-        
+
         $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
         $i = 1;
         while ($i <= $totalOrdering) {
@@ -150,6 +150,24 @@ class Template
             $i++;
         }
         $xhtml .= '</select>';
+        return $xhtml;
+    }
+
+    public static function selectByLiveWire($model, $values)
+    {
+        // $values = Config::get('zvn.template.' . $values);
+        $values = config('zvn.template.' . $values);
+        $xhtml = sprintf('<select style ="text-align:center" wire:model="%s" name="%s" class="form-control">', $model, $model);
+        foreach ($values as $key => $option) {
+            $xhtml .= sprintf('<option style ="text-align:center" value="%s">%s</option>', $key, $option['name']);
+        }
+        $xhtml .= '</select>';
+        return $xhtml;
+    }
+
+    public static function orderingByLiveWire($name = 'ordering', $ordering)
+    {
+        $xhtml = sprintf('<input style ="text-align:center" wire:change="ordering($event.target.value)" name="%s" class="form-control" type="text" value="%s">', $name, $ordering);
         return $xhtml;
     }
 

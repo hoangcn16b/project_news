@@ -35,6 +35,8 @@
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
                             $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
+                            $thisColumn = 'level';
+                            $fieldName = 'level';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -42,10 +44,12 @@
                             <td width="10%">{!! $username !!}</td>
                             <td width="10%">{!! $email!!}</td>
                             <td width="10%">{!! $fullname!!}</td>
-                            <td width="20%">{!! $level !!}</td>
+                            {{-- <td width="20%">{!! $level !!}</td> --}}
+                            <td width="20%"><livewire:select :thisColumn="$thisColumn" :thisType="$val['level']" :rowId="$id" :fieldName="$fieldName" :inTable="$inTable"/> </td>
+
                             <td width="5%">{!! $avatar !!}</td>
                             {{-- <td>{!! $status !!}</td> --}}
-                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$controllerName"/> </td>
+                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable"/> </td>
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>
                             <td class="last">{!! $listBtnAction !!}</td>

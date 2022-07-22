@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 use App\Models\MenuModel as MainModel;
 use App\Http\Requests\MenuRequest as MainRequest;
 
-class MenuController extends Controller
+class MenuController extends AdminController
 {
-    private $pathViewController = 'admin.pages.menu.';
-    private $controllerName     = 'menu';
-    private $params             = [];
-    private $model;
+    public $pathViewController = 'admin.pages.menu.';
+    public $controllerName     = 'menu';
+    public $inTable     = 'menu';
+    public $model;
 
     public function __construct()
     {
         $this->model = new MainModel();
         $this->params["pagination"]["totalItemsPerPage"] = 10;
+        view()->share('inTable', $this->inTable);
         view()->share('controllerName', $this->controllerName);
     }
 
@@ -37,19 +38,6 @@ class MenuController extends Controller
         ]);
     }
 
-    public function form(Request $request)
-    {
-        $item = null;
-        if ($request->id !== null) {
-            $params["id"] = $request->id;
-            $item = $this->model->getItem($params, ['task' => 'get-item']);
-        }
-
-        return view($this->pathViewController .  'form', [
-            'item'        => $item
-        ]);
-    }
-
     public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {
@@ -65,19 +53,6 @@ class MenuController extends Controller
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
-    }
-
-    public function status(Request $request)
-    {
-        $params["currentStatus"]  = $request->status;
-        $params["id"]             = $request->id;
-        $this->model->saveItem($params, ['task' => 'change-status']);
-        $status = $request->status == 'active' ? 'inactive' : 'active';
-        $link = route($this->controllerName . '/status', ['status' => $status, 'id' => $request->id]);
-        return response()->json([
-            'statusObj' => config('zvn.template.status')[$status],
-            'link' => $link,
-        ]);
     }
 
     public function isHome(Request $request)
@@ -123,12 +98,5 @@ class MenuController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
-    }
-
-    public function delete(Request $request)
-    {
-        $params["id"]             = $request->id;
-        $this->model->deleteItem($params, ['task' => 'delete-item']);
-        return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
     }
 }
