@@ -150,23 +150,23 @@ class Template
         return $xhtml;
     }
 
-    public static function showItemSelectOrdering($controllerName, $id, $displayValue, $fieldName)
-    {
-        $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
-        $totalOrdering = Config::get('zvn.template.total_ordering');
-        $tmplDisplay = Config::get('zvn.template.' . $fieldName);
+    // public static function showItemSelectOrdering($controllerName, $id, $displayValue, $fieldName)
+    // {
+    //     $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
+    //     $totalOrdering = Config::get('zvn.template.total_ordering');
+    //     $tmplDisplay = Config::get('zvn.template.' . $fieldName);
 
-        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
-        $i = 1;
-        while ($i <= $totalOrdering) {
-            $xhtmlSelected = '';
-            if ($i == $displayValue) $xhtmlSelected = 'selected="selected"';
-            $xhtml .= sprintf('<option value="%s" %s>%s</option>', $tmplDisplay[$i], $xhtmlSelected, $tmplDisplay[$i]);
-            $i++;
-        }
-        $xhtml .= '</select>';
-        return $xhtml;
-    }
+    //     $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
+    //     $i = 1;
+    //     while ($i <= $totalOrdering) {
+    //         $xhtmlSelected = '';
+    //         if ($i == $displayValue) $xhtmlSelected = 'selected="selected"';
+    //         $xhtml .= sprintf('<option value="%s" %s>%s</option>', $tmplDisplay[$i], $xhtmlSelected, $tmplDisplay[$i]);
+    //         $i++;
+    //     }
+    //     $xhtml .= '</select>';
+    //     return $xhtml;
+    // }
 
     public static function selectByLiveWire($model, $values)
     {

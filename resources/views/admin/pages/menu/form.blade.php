@@ -8,7 +8,14 @@ $formLabelAttr = config('zvn.template.form_label');
 
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 $orderingValue = config('zvn.template.ordering');
-$typeValue = [ 'link' =>config('zvn.template.display_menu.link.name'), 'sub_list_menu' =>config('zvn.template.display_menu.sub_list_menu.name')];
+$typeValue = ['link' => config('zvn.template.display_menu.link.name'), 'sub_list_menu' => config('zvn.template.display_menu.sub_list_menu.name')];
+
+$arrDisplay = config('zvn.template.in_table');
+$displayValue = [];
+foreach ($arrDisplay as $key => $option) {
+    $displayValue[$key] = $option['name'];
+}
+
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $elements = [
     [
@@ -19,13 +26,14 @@ $elements = [
         'label' => Form::label('link', 'Link', $formLabelAttr),
         'element' => Form::text('link', @$item['link'], $formInputAttr),
     ],
-    [
-        'label' => Form::label('in_table', 'Dữ liệu thuộc về(danh mục? e.x: category)', $formLabelAttr),
-        'element' => Form::text('in_table', @$item['in_table'], $formInputAttr),
-    ],
+
     [
         'label' => Form::label('type', 'Type Display', $formLabelAttr),
         'element' => Form::select('type', $typeValue, @$item['type'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('in_table', '(Dành cho "Type display" là Danh sách con)', $formLabelAttr),
+        'element' => Form::select('in_table', $displayValue, @$item['in_table'], $formInputAttr),
     ],
     [
         'label' => Form::label('status', 'Status', $formLabelAttr),
@@ -33,7 +41,7 @@ $elements = [
     ],
     [
         'label' => Form::label('ordering', 'Ordering', $formLabelAttr),
-        'element' => Form::select('ordering', $orderingValue, @$item['ordering'], $formInputAttr),
+        'element' => Form::number('ordering', @$item['ordering'] ?? '10', $formInputAttr),
     ],
     [
         'element' => $inputHiddenID . Form::submit('Save', ['class' => 'btn btn-success']),

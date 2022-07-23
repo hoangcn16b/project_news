@@ -31,6 +31,10 @@ class Selectdb extends Component
             ->where('id', $this->rowId)
             ->update([$this->thisCol => $value]);
         toastr()->success('Thay đổi thành công!');
+        // $this->dispatchBrowserEvent(
+        //     'alert',
+        //     ['type' => 'success',  'message' => 'Changed Successfully!']
+        // );
     }
 
     public function render()

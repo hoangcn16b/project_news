@@ -32,10 +32,11 @@ class MenuRequest extends FormRequest
             $condName  .= ",$id";
         }
         return [
-            'name'        => $condName,
-            'in_table'    => 'bail|between:0,100|',
-            'link'        => 'bail|between:0,255|url',
-            'status'      => 'bail|in:active,inactive',
+            'name'          => $condName,
+            'in_table'      => 'bail|between:0,100|',
+            'link'          => 'bail|between:0,255|url',
+            'status'        => 'bail|in:active,inactive',
+            'ordering'      => 'bail|between:0,100|integer',
         ];
     }
 
