@@ -7,35 +7,34 @@ use App\Helpers\Template as Template;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
-class Select extends Component
+class Selectdb extends Component
 {
     public $rowId;
-    public $thisType;
+    public $thisVal;
     public $inTable;
     public $inConfig;
+    public $thisCol;
     public $fieldName;
-    public $thisColumn;
-
-    public function mount($thisColumn, $rowId, $thisType, $fieldName, $inTable)
+    public function mount($thisCol, $rowId, $thisVal, $fieldName, $inTable)
     {
         $this->rowId = $rowId;
-        $this->thisType = $thisType;
+        $this->thisVal = $thisVal;
         $this->inTable = $inTable;
         $this->fieldName = $fieldName;
-        $this->thisColumn = $thisColumn;
+        $this->thisCol = $thisCol;
     }
 
-    public function updatedThisType($value)
+    public function updatedThisVal($value)
     {
-        $this->thisType = $value;
+        $this->thisVal = $value;
         DB::table($this->inTable)
             ->where('id', $this->rowId)
-            ->update([$this->thisColumn => $value]);
+            ->update([$this->thisCol => $value]);
         toastr()->success('Thay đổi thành công!');
     }
 
     public function render()
     {
-        return view('livewire.selectBox');
+        return view('livewire.selectBoxFromDB');
     }
 }

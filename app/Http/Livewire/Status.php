@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\Notification;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-
 class Status extends Component
 {
     public $rowId;
@@ -25,19 +24,11 @@ class Status extends Component
         DB::table($this->inTable)
             ->where('id', $this->rowId)
             ->update(['status' => $this->isStatus]);
-        // $this->alertSuccess();
-        $this->dispatchBrowserEvent(
-            'alert',
-            ['type' => 'success',  'message' => 'Changed Successfully!']
-        );
-    }
-
-    public function alertSuccess()
-    {
-        $this->dispatchBrowserEvent(
-            'alert',
-            ['type' => 'success',  'message' => 'User Changed Successfully!']
-        );
+        toastr()->success('Thay đổi thành công!');
+        // $this->dispatchBrowserEvent(
+        //     'alert',
+        //     ['type' => 'success',  'message' => 'Changed Successfully!']
+        // );
     }
 
     public function render()

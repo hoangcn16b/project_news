@@ -22,6 +22,7 @@ class Changehome extends Component
         DB::table('category')
             ->where('id', $this->rowId)
             ->update(['is_home' => $this->isHome]);
+        toastr()->success('Thay đổi thành công!');
     }
 
     // public function changeStatus()

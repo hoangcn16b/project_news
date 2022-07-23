@@ -23,7 +23,7 @@ class ArticleModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name')
+            $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name', 'c.id as category_id' )
                 ->leftJoin('category as c', 'a.category_id', '=', 'c.id');
 
 
@@ -94,8 +94,13 @@ class ArticleModel extends AdminModel
                 ->take(4);
             $result = $query->get()->toArray();
         }
-
-
+        if ($options['task'] == 'get-category') {
+            $query = DB::table('category')->select('id', 'name');
+            $query = $query->get()->toArray();
+            foreach ($query as $key => $value) {
+                $result[$value->id] = $value->name;
+            }
+        }
 
         return $result;
     }
@@ -184,6 +189,12 @@ class ArticleModel extends AdminModel
             $params['modified']      = date('Y-m-d');
 
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
+        }
+
+        if ($options['task'] == 'change-category') {
+            $params['created_by'] = "hailan";
+            $params['created']    = date('Y-m-d');
+            self::where('id', $params['id'])->update(['category_id' => $params['currentCategory']]);
         }
     }
 

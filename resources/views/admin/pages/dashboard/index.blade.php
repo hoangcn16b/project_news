@@ -1,5 +1,3 @@
-
-
 @extends('admin.main')
 @section('content')
     <div class="page-header zvn-page-header clearfix">
@@ -19,9 +17,11 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <h4>Dashboard</h4>
+                    <div class="top_tiles">
+                        @include('admin.pages.dashboard.list')
+                    </div>
                 </div>
+
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

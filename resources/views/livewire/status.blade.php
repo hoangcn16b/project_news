@@ -4,7 +4,7 @@
 </div> --}}
 <div>
     <button wire:click="changeStatus" type="button"
-        class="btn btn-round 
+        class="btn btn-round toast-notify
     @if ($isStatus == 'active') btn-success
     @else btn-warning  
     @endif

@@ -12,7 +12,8 @@
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.2",
-        "livewire/livewire": "^2.10"
+        "livewire/livewire": "^2.10",
+        "yoeunes/toastr": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

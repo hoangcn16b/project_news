@@ -116,7 +116,7 @@ $(document).ready(function () {
         let selectValue = $(this).val();
         let url = $(this).data("url");
         url = url.replace("value_new", selectValue);
-        console.log(url);
+        // console.log(url);
         $.ajax({
             type: "GET",
             url: url,
@@ -129,4 +129,43 @@ $(document).ready(function () {
             },
         });
     });
+
+    window.addEventListener('alert', event => {
+
+        $('.toast-notify').click(function () {
+            var ele = $(this);
+            $.ajax({
+                type: "GET",
+                success: function (response) {
+                    ele.notify("Cập nhật thành công", {
+                        position: "top center",
+                        className: "success",
+                    });
+                },
+            });
+        });
+
+        // toastr[event.detail.type](event.detail.message,
+        //     event.detail.title ?? ''),
+
+        //     toastr.options = {
+        //         "closeButton": true,
+        //         "debug": false,
+        //         "newestOnTop": true,
+        //         "progressBar": true,
+        //         "positionClass": "toast-top-center",
+        //         "preventDuplicates": false,
+        //         "onclick": null,
+        //         "showDuration": "300",
+        //         "hideDuration": "1000",
+        //         "timeOut": "5000",
+        //         "extendedTimeOut": "1000",
+        //         "showEasing": "swing",
+        //         "hideEasing": "linear",
+        //         "showMethod": "fadeIn",
+        //         "hideMethod": "fadeOut"
+        //     };
+
+    });
+
 });

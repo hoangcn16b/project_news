@@ -22,11 +22,19 @@ class Ordering extends Component
 
     public function ordering($value)
     {
+        $check = false;
         $this->ordering = $value;
-        if ($value > 0 && $value <= 20) {
+        if (($value > 0 && $value <= 20) && (!is_integer($value))) {
             DB::table($this->inTable)
                 ->where('id', $this->rowId)
                 ->update([$this->thisColumn => $value]);
+            $check = true;
+        }
+
+        if ($check) {
+            toastr()->success('Thay đổi thành công!');
+        } else {
+            toastr()->error('Thay đổi thất bại, giá trị phải là số nguyên, thuộc 1-20!');
         }
     }
 

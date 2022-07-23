@@ -135,6 +135,21 @@ class Template
         return $xhtml;
     }
 
+    public static function showSelectFromModel($controllerName, $arrValue, $id, $displayValue, $fieldName)
+    {
+        $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
+        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
+
+        foreach ($arrValue as $key => $value) {
+            $xhtmlSelected = '';
+            if ($key == $displayValue) $xhtmlSelected = 'selected="selected"';
+            $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value);
+        }
+        $xhtml .= '</select>';
+
+        return $xhtml;
+    }
+
     public static function showItemSelectOrdering($controllerName, $id, $displayValue, $fieldName)
     {
         $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
@@ -165,9 +180,20 @@ class Template
         return $xhtml;
     }
 
+    public static function selectDBByLiveWire($model, $values)
+    {
+
+        $xhtml = sprintf('<select style ="text-align:center" wire:model="%s" name="%s" class="form-control">', $model, $model);
+        foreach ($values as $key => $option) {
+            $xhtml .= sprintf('<option style ="text-align:center" value="%s">%s</option>', $key, $option);
+        }
+        $xhtml .= '</select>';
+        return $xhtml;
+    }
+
     public static function orderingByLiveWire($name = 'ordering', $ordering)
     {
-        $xhtml = sprintf('<input style ="text-align:center" wire:change="ordering($event.target.value)" name="%s" class="form-control" type="text" value="%s">', $name, $ordering);
+        $xhtml = sprintf('<input style ="text-align:center" wire:change="ordering($event.target.value)" name="%s" class="form-control" type="number" min ="1" max="20" value="%s">', $name, $ordering);
         return $xhtml;
     }
 

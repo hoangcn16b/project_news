@@ -31,11 +31,12 @@ class ArticleController extends AdminController
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-
+        $getCategory = $this->model->listItems($this->params, ['task'  => 'get-category']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,
-            'itemsStatusCount' =>  $itemsStatusCount
+            'itemsStatusCount' =>  $itemsStatusCount,
+            'getCategory'   => $getCategory
         ]);
     }
 
@@ -56,6 +57,16 @@ class ArticleController extends AdminController
         }
     }
 
+    public function category(Request $request)
+    {
+        $params["currentCategory"]    = $request->category;
+        $params["id"]             = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-category']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     public function type(Request $request)
     {
         $params["currentType"]    = $request->type;
@@ -65,5 +76,4 @@ class ArticleController extends AdminController
             'status' => 'success'
         ]);
     }
-
 }

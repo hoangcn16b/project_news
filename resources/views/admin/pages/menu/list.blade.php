@@ -63,7 +63,7 @@ use App\Helpers\Hightlight as Hightlight;
                                     N/A
                                 @endif
                             </td>
-                            <td style=" width:5%;">
+                            <td style=" width:8%;">
                                 <livewire:ordering :thisColumn="$thisColumnOrdering" :ordering="$val['ordering']" :rowId="$id"
                                     :inTable="$inTable" />
                             </td>
