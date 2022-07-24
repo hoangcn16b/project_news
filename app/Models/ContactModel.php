@@ -19,6 +19,7 @@ class ContactModel extends AdminModel
     public function saveItem($params = null, $options = null)
     {
         if ($options['task'] == 'add-new-contact') {
+            // $params['created']    = date('Y-m-d H:i:s');
             self::insert($this->prepareParams($params));
         }
         // if ($options['task'] == 'change-status') {

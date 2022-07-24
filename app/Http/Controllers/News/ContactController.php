@@ -5,7 +5,7 @@ namespace App\Http\Controllers\News;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\News\ContactRequest as MainRequest;
-
+use Illuminate\Support\Facades\Mail;
 use App\Models\ContactModel;
 use App\Helpers\Feed;
 
@@ -18,23 +18,29 @@ class ContactController extends Controller
 
     public function __construct()
     {
-        $this->model = new ContactModel();
+
         view()->share('controllerName', $this->controllerName);
+        view()->share('title', 'Liên hệ');
     }
 
     public function index(Request $request)
     {
-        view()->share('title', 'Liên hệ');
         return view($this->pathViewController .  'index', []);
     }
 
     public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {
-            $params = $request->all();
+            $this->model = new ContactModel();
+            $this->params = $request->all();
+            $this->params['created']    = date('Y-m-d H:i:s');
             $notify = "Cảm ơn bạn đã gửi thông tin liên hệ. Chúng tôi sẽ liên hệ bạn trong thời gian sớm nhất.";
-            $this->model->saveItem($params, ['task'=> 'add-new-contact']);
-            return redirect()->route($this->controllerName . '/index')->with("zvn_notify", $notify);
+            $this->model->saveItem($this->params, ['task' => 'add-new-contact']);
+            
+            Mail::send('emails.contact_email', ['infoContact' => $this->params], function ($message) {
+                $message->to($this->params['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
+            });
+            return redirect()->route($this->controllerName . '/index', ['items' => $this->params])->with("zvn_notify", $notify);
         }
     }
 }
