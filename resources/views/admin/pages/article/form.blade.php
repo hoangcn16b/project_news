@@ -14,7 +14,6 @@ $formCkeditor = config('zvn.template.form_ckeditor');
 $statusValue = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 // $itemsCategory = config('zvn.template.article_post');
 
-
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
@@ -51,7 +50,7 @@ $elements = [
 @section('content')
     @include ('admin.templates.page_header', ['pageIndex' => false])
     @include ('admin.templates.error')
-
+    
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -71,4 +70,5 @@ $elements = [
             </div>
         </div>
     </div>
+    
 @endsection

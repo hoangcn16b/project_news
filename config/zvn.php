@@ -21,7 +21,8 @@ return [
         ],
 
         'form_ckeditor' => [
-            'class' => 'form-control col-md-6 col-xs-12 ckeditor'
+            'class' => 'form-control col-md-6 col-xs-12 ckeditor',
+            'id' => 'my-editor-with-lfm'
         ],
         'status'       => [
             'all'      => ['name' => 'Tất cả', 'class' => 'btn-success'],

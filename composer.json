@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.10",
+        "unisharp/laravel-filemanager": "^2.5",
         "yoeunes/toastr": "^2.0"
     },
     "require-dev": {
