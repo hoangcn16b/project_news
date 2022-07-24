@@ -113,11 +113,11 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/',                             ['as' => $controllerName,                  'uses' => $controller . 'index']);
         
-        Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderController@requestAction')
-            ->name('ckfinder_connector');
+        // Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderController@requestAction')
+        //     ->name('ckfinder_connector');
 
-        Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
-            ->name('ckfinder_browser');
+        // Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
+        //     ->name('ckfinder_browser');
     });
 });
 

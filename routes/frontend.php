@@ -64,4 +64,14 @@ Route::group(['prefix' => $prefixNews, 'namespace' => 'News'], function () {
         Route::get('/get-gold',                             [ 'as' => "$controllerName/get-gold",                  'uses' => $controller . 'getGold' ]);
         Route::get('/get-coin',                             [ 'as' => "$controllerName/get-coin",                  'uses' => $controller . 'getCoin' ]);
     });
+
+    // ====================== CONTACT ========================
+    $prefix         = '';
+    $controllerName = 'contact';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/lien-he',  [ 'as' => $controllerName . '/index', 'uses' => $controller . 'index' ]);
+        Route::post('save',     ['as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+                
+    });
 });
