@@ -1,7 +1,7 @@
 @php
     use App\Helpers\Template as Template;
     use App\Helpers\Hightlight as Hightlight;
-    
+
 @endphp
 <div class="x_content">
     

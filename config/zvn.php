@@ -71,8 +71,13 @@ return [
         'display_menu'       => [
             'link'               => ['name' => 'Liên kết đến'],
             'sub_list_menu'      => ['name' => 'Danh sách con'],
+
         ],
-        'in_table'          =>[
+        'status_contact'       => [
+            'inactive'               => ['name' => 'Đang chờ'],
+            'active'             => ['name' => 'Đã xử lý'],
+        ],
+        'in_table'          => [
             ''                   => ['name' => 'Mặc định(chưa có bảng)'],
             'category'           => ['name' => 'Bảng Category'],
             'article'            => ['name' => 'Bảng Article'],
@@ -89,6 +94,7 @@ return [
             'rss'       => ['all', 'name', 'link'],
             'user'      => ['all', 'username', 'email', 'fullname'],
             'menu'      => ['all', 'name'],
+            'contact'      => ['all', 'name', 'email'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -98,6 +104,7 @@ return [
             'rss'   => ['edit', 'delete'],
             'user'      => ['edit'],
             'menu'      => ['edit', 'delete'],
+            'contact'      => ['delete'],
         ]
     ]
 
