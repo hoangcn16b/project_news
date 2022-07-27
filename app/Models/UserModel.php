@@ -5,14 +5,14 @@ namespace App\Models;
 use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use DB; 
+use Illuminate\Support\Facades\DB;
 class UserModel extends AdminModel
 {
     public function __construct() {
         $this->table               = 'user';
         $this->folderUpload        = 'user' ; 
         $this->fieldSearchAccepted = ['id', 'username', 'email', 'fullname']; 
-        $this->crudNotAccepted     = ['_token','avatar_current', 'password_confirmation', 'task'];
+        $this->crudNotAccepted     = ['_token','avatar_current', 'password_confirmation', 'task_add', 'task_edit_info', 'task_change_password', 'task_change_level'];
     }
 
     public function listItems($params = null, $options = null) {

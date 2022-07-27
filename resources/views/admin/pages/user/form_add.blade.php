@@ -11,7 +11,7 @@
 
     $inputHiddenID    = Form::hidden('id', @$item['id']);
     $inputHiddenAvatar = Form::hidden('avatar_current', @$item['avatar']);
-    $inputHiddenTask  = Form::hidden('task', 'add');
+    $inputHiddenTask  = Form::hidden('task_add', 'add');
 
     $elements = [
         [
@@ -58,7 +58,7 @@
                     'accept-charset' => 'UTF-8',
                     'enctype'        => 'multipart/form-data',
                     'class'          => 'form-horizontal form-label-left',
-                    'id'             => 'main-form' ])  }}
+                    'id'             => 'main-form-add' ])  }}
                     {!! FormTemplate::show($elements)  !!}
                 {{ Form::close() }}
             </div>

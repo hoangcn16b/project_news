@@ -10,7 +10,7 @@
 
     $inputHiddenID    = Form::hidden('id', @$item['id']);
     $inputHiddenAvatar = Form::hidden('avatar_current', @$item['avatar']);
-    $inputHiddenTask  = Form::hidden('task', 'edit-info');
+    $inputHiddenTask  = Form::hidden('task_edit_info', 'edit-info');
     $elements = [
         [
             'label'   => Form::label('username', 'UserName', $formLabelAttr),
@@ -47,7 +47,7 @@
                 'accept-charset' => 'UTF-8',
                 'enctype'        => 'multipart/form-data',
                 'class'          => 'form-horizontal form-label-left',
-                'id'             => 'main-form' ])  }}
+                'id'             => 'main-form-info' ])  }}
                 {!! FormTemplate::show($elements)  !!}
             {{ Form::close() }}
         </div>

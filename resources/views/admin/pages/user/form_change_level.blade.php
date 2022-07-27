@@ -9,7 +9,7 @@ $formLabelAttr = config('zvn.template.form_label_edit');
 $levelValue       = ['default' => 'Select value', 'admin' => config('zvn.template.level.admin.name'), 'member' => config('zvn.template.level.member.name')];
 
 $inputHiddenID    = Form::hidden('id', @$item['id']);
-$inputHiddenTask  = Form::hidden('task', 'change-level');
+$inputHiddenTask  = Form::hidden('task_change_level', 'change-level');
 
 $elements = [
     [
@@ -34,7 +34,7 @@ $elements = [
             'accept-charset' => 'UTF-8',
             'enctype'        => 'multipart/form-data',
             'class'          => 'form-horizontal form-label-left',
-            'id'             => 'main-form' ])  }}
+            'id'             => 'main-form-change-level' ])  }}
             {!! FormTemplate::show($elements)  !!}
         {{ Form::close() }}
     </div>
