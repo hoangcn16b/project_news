@@ -132,6 +132,21 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         // Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
         //     ->name('ckfinder_browser');
     });
+
+    // ============================== CHANGE MY PASSWORD ==============================
+    $prefix         = 'password';
+    $controllerName = 'password';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                             ['as' => $controllerName,                  'uses' => $controller . 'index']);
+        Route::post('save',                         ['as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+        
+        // Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderController@requestAction')
+        //     ->name('ckfinder_connector');
+
+        // Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
+        //     ->name('ckfinder_browser');
+    });
 });
 
 Route::group(['prefix' => 'laravel-filemanager'], function () {

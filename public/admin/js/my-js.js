@@ -132,18 +132,18 @@ $(document).ready(function () {
 
     window.addEventListener('alert', event => {
 
-        $('.toast-notify').click(function () {
-            var ele = $(this);
-            $.ajax({
-                type: "GET",
-                success: function (response) {
-                    ele.notify("Cập nhật thành công", {
-                        position: "top center",
-                        className: "success",
-                    });
-                },
-            });
-        });
+        // $('.toast-notify').click(function () {
+        //     var ele = $(this);
+        //     $.ajax({
+        //         type: "GET",
+        //         success: function (response) {
+        //             ele.notify("Cập nhật thành công", {
+        //                 position: "top center",
+        //                 className: "success",
+        //             });
+        //         },
+        //     });
+        // });
 
         // toastr[event.detail.type](event.detail.message,
         //     event.detail.title ?? ''),

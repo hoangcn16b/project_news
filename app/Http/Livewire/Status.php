@@ -24,11 +24,11 @@ class Status extends Component
         DB::table($this->inTable)
             ->where('id', $this->rowId)
             ->update(['status' => $this->isStatus]);
-        toastr()->success('Thay đổi thành công!');
-        // $this->dispatchBrowserEvent(
-        //     'alert',
-        //     ['type' => 'success',  'message' => 'Changed Successfully!']
-        // );
+        // toastr()->success('Thay đổi thành công!');
+        $this->dispatchBrowserEvent(
+            'alert',
+            ['type' => 'success',  'message' => 'Changed Successfully!']
+        );
     }
 
     public function render()

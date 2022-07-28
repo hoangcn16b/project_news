@@ -59,6 +59,7 @@ class ContactController extends Controller
         $this->model->deleteItem($params, ['task' => 'delete-item']);
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
     }
+
     // public function save(MainRequest $request)
     // {
     //     if ($request->method() == 'POST') {

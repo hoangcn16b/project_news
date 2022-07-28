@@ -24,6 +24,7 @@
             <li><a href="{{ route('contact') }}"><i class="fa fa-comment"></i> Contact</a></li>
             <li><a href="{{ route('menu') }}"><i class="fa fa-bars"></i> Menu</a></li>
             <li><a href="{{ route('images') }}"><i class="fa fa-image"></i> Images</a></li>
+            <li><a href="{{ route('password') }}"><i class="fa fa-key"></i> Change Password</a></li>
         </ul>
     </div>
 </div>
