@@ -47,7 +47,7 @@ return [
 
     'folder_categories'        => [
         'file'  => [
-            'folder_name'  => 'files',
+            'folder_name'  => 'images',
             'startup_view' => 'list',
             'max_size'     => 50000, // size in KB
             'thumb' => true,
@@ -63,7 +63,7 @@ return [
             ],
         ],
         'image' => [
-            'folder_name'  => 'photos',
+            'folder_name'  => 'images',
             'startup_view' => 'grid',
             'max_size'     => 50000, // size in KB
             'thumb' => true,
@@ -94,7 +94,8 @@ return [
     |--------------------------------------------------------------------------
      */
 
-    'disk'                     => 'public',
+    // 'disk'                     => 'public',
+    'disk'                     => 'lfm_disk',
 
     'rename_file'              => false,
 

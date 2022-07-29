@@ -29,11 +29,16 @@ return [
     */
 
     'disks' => [
+        'lfm_disk' => [
+            'driver' => 'local',
+            'root' => public_path('/'),
+            'url' => ''
+        ],
         'zvn_storage_image' => [
             'driver' => 'local',
             'root' => public_path('images'),
         ],
-        
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -42,7 +47,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 

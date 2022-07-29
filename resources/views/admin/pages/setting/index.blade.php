@@ -12,8 +12,8 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
-                @include('admin.templates.x_title', ['title' => ' Thay đổi mật khẩu cá nhân'])
-                @include('admin.pages.password.form-password')
+                @include('admin.templates.x_title', ['title' => ' Thay đổi cấu hình website'])
+                @include('admin.pages.setting.form-setting')
             </div>
         </div>
     </div>
