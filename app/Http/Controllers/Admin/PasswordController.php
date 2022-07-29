@@ -51,12 +51,12 @@ class PasswordController extends Controller
 
             if ($params['id'] !== null) {
                 // $task   = "edit-item";
-                $task = '';
-                $notify = "Cập nhật phần tử thành công!";
+                $task = 'change-my-password';
+                $notify = "Thay đổi mật khẩu thành công, hãy đăng nhập lại!";
             }
             $this->model->saveItem($params, ['task' => $task]);
-            return redirect()->route('password')->with("zvn_notify", $notify);
+            if ($request->session()->has('userInfo')) $request->session()->pull('userInfo');
+            return redirect()->route('auth/login')->with("news_notify", $notify);
         }
     }
-
 }

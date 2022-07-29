@@ -132,6 +132,11 @@ $(document).ready(function () {
 
     window.addEventListener('alert', event => {
 
+        let ele = $(event.target);
+        ele.notify(event.detail.message, {
+            position: "top center",
+            className: event.detail.type,
+        });
         // $('.toast-notify').click(function () {
         //     var ele = $(this);
         //     $.ajax({
@@ -145,26 +150,7 @@ $(document).ready(function () {
         //     });
         // });
 
-        // toastr[event.detail.type](event.detail.message,
-        //     event.detail.title ?? ''),
 
-        //     toastr.options = {
-        //         "closeButton": true,
-        //         "debug": false,
-        //         "newestOnTop": true,
-        //         "progressBar": true,
-        //         "positionClass": "toast-top-center",
-        //         "preventDuplicates": false,
-        //         "onclick": null,
-        //         "showDuration": "300",
-        //         "hideDuration": "1000",
-        //         "timeOut": "5000",
-        //         "extendedTimeOut": "1000",
-        //         "showEasing": "swing",
-        //         "hideEasing": "linear",
-        //         "showMethod": "fadeIn",
-        //         "hideMethod": "fadeOut"
-        //     };
 
     });
 

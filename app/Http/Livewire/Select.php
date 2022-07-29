@@ -27,11 +27,22 @@ class Select extends Component
 
     public function updatedThisType($value)
     {
-        $this->thisType = $value;
-        DB::table($this->inTable)
-            ->where('id', $this->rowId)
-            ->update([$this->thisColumn => $value]);
-        toastr()->success('Thay đổi thành công!');
+        try {
+            $this->thisType = $value;
+            DB::table($this->inTable)
+                ->where('id', $this->rowId)
+                ->update([$this->thisColumn => $value]);
+            // toastr()->success('Thay đổi thành công!');
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'success',  'message' => 'Thay đổi thành công!']
+            );
+        } catch (\Throwable $th) {
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'error',  'message' => 'Thay đổi thất bại!']
+            );
+        }
     }
 
     public function render()

@@ -26,15 +26,22 @@ class Selectdb extends Component
 
     public function updatedThisVal($value)
     {
-        $this->thisVal = $value;
-        DB::table($this->inTable)
-            ->where('id', $this->rowId)
-            ->update([$this->thisCol => $value]);
-        toastr()->success('Thay đổi thành công!');
-        // $this->dispatchBrowserEvent(
-        //     'alert',
-        //     ['type' => 'success',  'message' => 'Changed Successfully!']
-        // );
+        try {
+            $this->thisVal = $value;
+            DB::table($this->inTable)
+                ->where('id', $this->rowId)
+                ->update([$this->thisCol => $value]);
+            // toastr()->success('Thay đổi thành công!');
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'success',  'message' => 'Thay đổi thành công!']
+            );
+        } catch (\Throwable $th) {
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'error',  'message' => 'Thay đổi thất bại!']
+            );
+        }
     }
 
     public function render()

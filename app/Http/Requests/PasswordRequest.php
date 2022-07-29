@@ -33,30 +33,41 @@ class PasswordRequest extends FormRequest
         $userModel = new UserModel();
 
         $checkRealPass = $userModel->checkPassword($id, $oldPass);
-        // if (($oldPass !== $newPass) && $oldPass !== '') {
+        if ((($oldPass != null))) {
 
-        if (!$checkRealPass) {
-            // die('123');
-            // dd();
-            return [
-                'password' => 'required'
-            ];
+            if (empty($checkRealPass)) {
+                return [
+                    'password' => function ($attribute, $value, $fail) {
+                        if (empty($checkRealPass)) {
+                            return $fail('Mật khẩu cũ không chính xác');
+                        }
+                    }
+                ];
+            } else {
+                $condNewPass      = "bail|required|different:password|between:5,20|string";
+                $condConfirmPass   = "bail|required|between:5,20|string";
+
+                return [
+                    // 'password' => 'bail|required',
+                    'new_password' => $condNewPass,
+                    'new_confirm_password' => "same:new_password",
+                ];
+            }
         } else {
-            $condNewPass      = "bail|required|between:5,20|string";
-            $condConfirmPass   = "bail|required|between:5,20|string";
             return [
-                // 'password' => 'bail|required',
-                'new_password' => $condNewPass . '|different:password',
-                'new_confirm_password' => "same:new_password",
+                'password' => function ($attribute, $value, $fail) {
+                    if (empty($checkRealPass)) {
+                        return $fail('Nhập đầy đủ thông tin');
+                    }
+                }
             ];
         }
-        // }
     }
 
     public function messages()
     {
         return [
-            'password.required' => 'Mật khẩu cũ không chính xác',
+            // 'password.required' => 'Mật khẩu cũ không chính xác',
             'new_password.different'      => 'Mật khẩu mới và mật khẩu cũ phải khác nhau',
         ];
     }

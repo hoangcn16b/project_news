@@ -18,11 +18,22 @@ class Changehome extends Component
 
     public function changeIsHome()
     {
-        $this->isHome = ($this->isHome == 'yes') ? 'no' : 'yes';
-        DB::table('category')
-            ->where('id', $this->rowId)
-            ->update(['is_home' => $this->isHome]);
-        toastr()->success('Thay đổi thành công!');
+        try {
+            $this->isHome = ($this->isHome == 'yes') ? 'no' : 'yes';
+            DB::table('category')
+                ->where('id', $this->rowId)
+                ->update(['is_home' => $this->isHome]);
+            // toastr()->success('Thay đổi thành công!');
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'success',  'message' => 'Thay đổi thành công!']
+            );
+        } catch (\Throwable $th) {
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'error',  'message' => 'Thay đổi thất bại!']
+            );
+        }
     }
 
     // public function changeStatus()

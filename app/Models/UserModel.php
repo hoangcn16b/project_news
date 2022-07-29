@@ -14,7 +14,7 @@ class UserModel extends AdminModel
         $this->table               = 'user';
         $this->folderUpload        = 'user';
         $this->fieldSearchAccepted = ['id', 'username', 'email', 'fullname'];
-        $this->crudNotAccepted     = ['_token', 'avatar_current', 'password_confirmation', 'task_add', 'task_edit_info', 'task_change_password', 'task_change_level' , 'new_password','new_confirm_password', ];
+        $this->crudNotAccepted     = ['_token', 'avatar_current', 'password_confirmation', 'task_add', 'task_edit_info', 'task_change_password', 'task_change_level', 'new_password', 'new_confirm_password',];
     }
 
     public function listItems($params = null, $options = null)
@@ -141,6 +141,10 @@ class UserModel extends AdminModel
             $password       = md5($params['password']);
             self::where('id', $params['id'])->update(['password' => $password]);
         }
+        if ($options['task'] == 'change-my-password') {
+            $password       = md5($params['new_password']);
+            self::where('id', $params['id'])->update(['password' => $password]);
+        }
     }
 
     public function deleteItem($params = null, $options = null)
@@ -157,7 +161,6 @@ class UserModel extends AdminModel
         $result = self::select('id', 'username')
             ->where('id', $id)
             ->where('password', md5($password))->first();
-
         if ($result) $result = $result->toArray();
         return $result;
     }

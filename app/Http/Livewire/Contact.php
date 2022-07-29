@@ -22,11 +22,23 @@ class Contact extends Component
 
     public function changeContact()
     {
-        $this->isStatus = ($this->isStatus == 'active') ? 'inactive' : 'active';
-        DB::table($this->inTable)
-            ->where('id', $this->rowId)
-            ->update(['status' => $this->isStatus]);
-        toastr()->success('Thay đổi thành công!');
+        try {
+            $this->isStatus = ($this->isStatus == 'active') ? 'inactive' : 'active';
+            DB::table($this->inTable)
+                ->where('id', $this->rowId)
+                ->update(['status' => $this->isStatus]);
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'success',  'message' => 'Thay đổi thành công!']
+            );
+        } catch (\Throwable $th) {
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'error',  'message' => 'Thay đổi thất bại!']
+            );
+        }
+
+        // toastr()->success('Thay đổi thành công!');
         // $this->dispatchBrowserEvent(
         //     'alert',
         //     ['type' => 'success',  'message' => 'Changed Successfully!']
