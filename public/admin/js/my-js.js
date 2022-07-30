@@ -154,7 +154,7 @@ $(document).ready(function () {
 
     });
 
-    let tab = 0;
+    let tab = 2;
     const tabs = document.getElementsByClassName('nav-item');
     const tabsContent = document.getElementsByClassName('tab-pane');
 
@@ -170,8 +170,38 @@ $(document).ready(function () {
             tab = i;
         });
     }
-    
+
     var input = document.querySelector('input[name=hotline]');
+    var inputBcc = document.querySelector('input[name=bcc]');
+    var inputFacebook = document.querySelector('input[name=facebook]');
+    var inputYoutube = document.querySelector('input[name=youtube]');
     new Tagify(input)
-    
+    new Tagify(inputBcc)
+    // new Tagify(inputFacebook)
+    // new Tagify(inputYoutube)
+
+    var input = document.querySelector('input[name="facebook"]'),
+        // init Tagify script on the above inputs
+        tagify = new Tagify(input, {
+            whitelist: ["https://www.facebook.com/profile.php?id=100006215655785"],
+            maxTags: 10,
+            dropdown: {
+                maxItems: 20,           // <- mixumum allowed rendered suggestions
+                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                enabled: 0,             // <- show suggestions on focus
+                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+            }
+        })
+    var input = document.querySelector('input[name="youtube"]'),
+        // init Tagify script on the above inputs
+        tagify = new Tagify(input, {
+            whitelist: ["https://www.youtube.com"],
+            maxTags: 10,
+            dropdown: {
+                maxItems: 20,           // <- mixumum allowed rendered suggestions
+                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                enabled: 0,             // <- show suggestions on focus
+                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+            }
+        })
 });

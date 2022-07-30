@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SettingModel as MainModel;
-// use App\Http\Requests\SettingRequest as MainRequest;
+use App\Http\Requests\SettingRequest as MainRequest;
 
 class SettingController extends Controller
 {
@@ -26,23 +26,30 @@ class SettingController extends Controller
 
     public function index(Request $request)
     {
-
-        $item              = $this->model->listItems($this->params, ['task'  => 'admin-setting-general']);
-
+        $items = $this->model->listItems($this->params, ['task'  => 'all']);
+        $itemGeneralSetting = $this->model->listItems($this->params, ['task'  => 'admin-setting-general']);
+        $itemEmailAccount = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-account']);
+        $itemEmailBcc = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-bcc']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
-            'item'         => $item,
+            'items' => $items,
+            'itemGeneralSetting'          => $itemGeneralSetting,
+            'itemEmailAccount'          => $itemEmailAccount,
+            'itemEmailBcc'          => $itemEmailBcc,
         ]);
     }
 
-    public function save(Request $request)
+    public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {
             $params = $request->all();
-
-            $task   = "change-general-setting";
-            $notify = "Cập nhật dữu liệu thành công!";
+            $task = '';
+            if (@$params['task_general_setting'] == 'general-setting') $task = 'general-setting';
+            if (@$params['task_email_setting'] == 'email-setting') $task = 'email-setting';
+            if (@$params['task_email_bcc'] == 'email-bcc') $task = 'email-bcc';
+            // dd($params);
             $this->model->saveItem($params, ['task' => $task]);
+            $notify = "Cập nhật dữu liệu thành công!";
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
     }

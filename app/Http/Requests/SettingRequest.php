@@ -24,6 +24,7 @@ class SettingRequest extends FormRequest
      */
     public function rules()
     {
+        // if ($this->task_change_level == 'change-level') $task = 'change-level';
         return [];
     }
 

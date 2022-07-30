@@ -14,7 +14,7 @@ class SettingModel extends AdminModel
         $this->table               = 'setting';
         $this->folderUpload        = 'setting';
         $this->fieldSearchAccepted = ['id', 'username', 'email', 'fullname'];
-        $this->crudNotAccepted     = ['_token', 'avatar_current', 'task_general_setting'];
+        $this->crudNotAccepted     = ['_token', 'avatar_current', 'task_general_setting', 'task_email_setting', 'task_email_bcc'];
     }
 
     public function listItems($params = null, $options = null)
@@ -27,6 +27,25 @@ class SettingModel extends AdminModel
             // $result['hotline'] = json_decode($result['hotline'], true)[0]['value'];
         }
 
+        if ($options['task'] == "admin-setting-email-account") {
+            $result = $this->select('value')->where('key_value', 'setting-email')->first();
+            $result = $result->attributes['value'];
+            $result = json_decode($result, true);
+        }
+
+        if ($options['task'] == "admin-setting-email-bcc") {
+            $result = $this->select('value')->where('key_value', 'setting-bcc')->first();
+            $result = $result->attributes['value'];
+            $result = json_decode($result, true);
+            // dd($result);
+        }
+        if ($options['task'] == "all") {
+            $resultAll = $this->select('value')->get();
+            $resultAll = $resultAll;
+            // dd($resultAll);
+        }
+
+
         return $result;
     }
 
@@ -34,6 +53,8 @@ class SettingModel extends AdminModel
 
     public function saveItem($params = null, $options = null)
     {
+        unset($params['_token']);
+
         if ($options['task'] == 'change-status') {
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
             self::where('id', $params['id'])->update(['status' => $status]);
@@ -48,7 +69,6 @@ class SettingModel extends AdminModel
         }
 
         if ($options['task'] == 'change-general-setting') {
-    
             if (!empty($params['logo'])) {
                 $this->deleteLogo($params['avatar_current'] ?? '');
                 $params['logo'] = $this->uploadLogo($params['logo']);
@@ -56,12 +76,26 @@ class SettingModel extends AdminModel
             } else {
                 $params['logo'] = $params['avatar_current'];
             }
-            unset($params['_token']);
             unset($params['avatar_current']);
             unset($params['task_general_setting']);
             $result = null;
             $result['value'] = json_encode($params);
             self::where('key_value', 'setting-general')->update($this->prepareParams($result));
+        }
+
+        if ($options['task'] == 'email-setting') {
+            unset($params['task_email_setting']);
+            $result = null;
+            $result['value'] = json_encode($params);
+            self::where('key_value', 'setting-email')->update($this->prepareParams($result));
+        }
+
+        if ($options['task'] == 'email-bcc') {
+            unset($params['task_email_bcc']);
+            $result = null;
+            $result['value'] = json_encode($params);
+            // dd($result);
+            self::where('key_value', 'setting-bcc')->update($this->prepareParams($result));
         }
     }
 }
