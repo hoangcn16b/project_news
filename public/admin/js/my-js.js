@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     let $btnSearch = $("button#btn-search");
     let $btnClearSearch = $("button#btn-clear-search");
 
@@ -150,8 +152,26 @@ $(document).ready(function () {
         //     });
         // });
 
-
-
     });
 
+    let tab = 0;
+    const tabs = document.getElementsByClassName('nav-item');
+    const tabsContent = document.getElementsByClassName('tab-pane');
+
+    for (let i = 0; i < tabs.length; i++) {
+        if (i === tab) {
+            tabs[i].classList.add('active');
+            tabsContent[i].classList.add('active', 'in');
+        } else {
+            tabs[i].classList.remove('active');
+            tabsContent[i].classList.remove('active', 'in');
+        }
+        tabs[i].addEventListener('click', () => {
+            tab = i;
+        });
+    }
+    
+    var input = document.querySelector('input[name=hotline]');
+    new Tagify(input)
+    
 });

@@ -48,7 +48,7 @@ class UserController extends AdminController
 
             if ($params['id'] !== null) {
                 $task   = "edit-item";
-                $notify = "Cập nhật phần tử thành công!";
+                $notify = "Cập nhật phần tử user thành công!";
             }
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
@@ -82,5 +82,4 @@ class UserController extends AdminController
             'status' => 'success'
         ]);
     }
-
 }

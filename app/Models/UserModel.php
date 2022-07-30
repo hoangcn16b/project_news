@@ -118,6 +118,7 @@ class UserModel extends AdminModel
         }
 
         if ($options['task'] == 'edit-item') {
+            // dd($params);
             if (!empty($params['avatar'])) {
                 $this->deleteThumb($params['avatar_current']);
                 $params['avatar'] = $this->uploadThumb($params['avatar']);
