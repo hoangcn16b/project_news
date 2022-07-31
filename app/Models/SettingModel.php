@@ -20,40 +20,58 @@ class SettingModel extends AdminModel
     public function listItems($params = null, $options = null)
     {
         $result = null;
+        $query = DB::select("SELECT
+        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-general') AS `setting_general`,
+        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-email') AS `setting_email`,
+        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
+        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-social') AS `setting_social`,
+        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-video') AS `setting_video`");
+        $query = $query[0];
+        foreach ($query as $key => $value) {
+            $result[$key] = json_decode($value, true);
+        }
+        // dd($result['setting_general']);
         if ($options['task'] == "admin-setting-general") {
-            $result = $this->select('value')->where('key_value', 'setting-general')->first();
-            $result = $result->attributes['value'];
-            $result = json_decode($result, true);
-            // $result['hotline'] = json_decode($result['hotline'], true)[0]['value'];
+            $result = $result['setting_general'];
         }
-
         if ($options['task'] == "admin-setting-email-account") {
-            $result = $this->select('value')->where('key_value', 'setting-email')->first();
-            $result = $result->attributes['value'];
-            $result = json_decode($result, true);
+            $result = $result['setting_email'];
         }
-
         if ($options['task'] == "admin-setting-email-bcc") {
-            $result = $this->select('value')->where('key_value', 'setting-bcc')->first();
-            $result = $result->attributes['value'];
-            $result = json_decode($result, true);
-            // dd($result);
+            $result = $result['setting_bcc'];
         }
-
         if ($options['task'] == "admin-setting-social") {
-            $result = DB::select("SELECT `value` FROM `setting` WHERE `key_value` IN ('setting-social','setting-video')");
-            // $result = $result[0]->value;
-            // $result = $result[1]->value;
-            $result['facebook'] = json_decode($result[0]->value, true);
-            $result['youtube'] = json_decode($result[1]->value, true);
-            // dd($result);
+            $result['facebook'] = $result['setting_social'];
+            $result['youtube'] = $result['setting_video'];
         }
+        // if ($options['task'] == "admin-setting-general") {
+        //     $result = $this->select('value')->where('key_value', 'setting-general')->first();
+        //     $result = $result->attributes['value'];
+        //     $result = json_decode($result, true);
+        // }
 
-        if ($options['task'] == "all") {
-            $resultAll = $this->select('value')->get();
-            $resultAll = $resultAll;
-            // dd($resultAll);
-        }
+        // if ($options['task'] == "admin-setting-email-account") {
+        //     $result = $this->select('value')->where('key_value', 'setting-email')->first();
+        //     $result = $result->attributes['value'];
+        //     $result = json_decode($result, true);
+        // }
+
+        // if ($options['task'] == "admin-setting-email-bcc") {
+        //     $result = $this->select('value')->where('key_value', 'setting-bcc')->first();
+        //     $result = $result->attributes['value'];
+        //     $result = json_decode($result, true);
+        // }
+
+        // if ($options['task'] == "admin-setting-social") {
+        //     // $result = $this->select('value')->where('key_value', 'setting-social')->first();
+        //     // $result = $result->attributes['value'];
+        //     // $result = json_decode($result, true);
+        //     $query = DB::select("SELECT `value` FROM `setting` WHERE `key_value` IN ('setting-social','setting-video')");
+        //     // $result = $result[0];
+        //     // $result = $result[1];
+        //     $result['facebook'] = json_decode($query[0]->value, true);
+        //     $result['youtube'] = json_decode($query[1]->value, true);
+        // }
         return $result;
     }
 
@@ -74,7 +92,7 @@ class SettingModel extends AdminModel
             self::insert($this->prepareParams($params));
         }
 
-        if ($options['task'] == 'change-general-setting') {
+        if ($options['task'] == 'general-setting') {
             if (!empty($params['logo'])) {
                 $this->deleteLogo($params['avatar_current'] ?? '');
                 $params['logo'] = $this->uploadLogo($params['logo']);

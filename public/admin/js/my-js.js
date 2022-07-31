@@ -154,7 +154,7 @@ $(document).ready(function () {
 
     });
 
-    let tab = 2;
+    let tab = 0;
     const tabs = document.getElementsByClassName('nav-item');
     const tabsContent = document.getElementsByClassName('tab-pane');
 

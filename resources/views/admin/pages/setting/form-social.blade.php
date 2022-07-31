@@ -7,7 +7,7 @@ $formLabelAttr = config('zvn.template.form_label');
 $configTagsInput = ['class' => 'some_class_name', 'width'=>'100'];
 $inputTaskEmailAccount = Form::hidden('task_social_setting', 'social-setting');
 $inputTaskEmailBcc = Form::hidden('task_social', 'social');
-
+// $itemEmailSocial = [];
 $elementsSocial = [
     [
         'label' => Form::label('facebook', 'Facebook', $formLabelAttr),
