@@ -4,6 +4,7 @@ use App\Helpers\Template;
 
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
+$configTagsInput = ['class' => 'some_class_name', 'width'=>'100'];
 
 $inputTaskEmailAccount = Form::hidden('task_email_setting', 'email-setting');
 $inputTaskEmailBcc = Form::hidden('task_email_bcc', 'email-bcc');
@@ -26,7 +27,7 @@ $elementsEmailAccount = [
 $elementsEmailBcc = [
     [
         'label' => Form::label('bcc', 'Email', $formLabelAttr),
-        'element' => Form::text('bcc', @$itemEmailBcc['bcc'], $formInputAttr),
+        'element' => Form::text('bcc', @$itemEmailBcc['bcc'], $configTagsInput),
     ],
     
     [

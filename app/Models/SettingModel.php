@@ -14,7 +14,7 @@ class SettingModel extends AdminModel
         $this->table               = 'setting';
         $this->folderUpload        = 'setting';
         $this->fieldSearchAccepted = ['id', 'username', 'email', 'fullname'];
-        $this->crudNotAccepted     = ['_token', 'avatar_current', 'task_general_setting', 'task_email_setting', 'task_email_bcc'];
+        $this->crudNotAccepted     = ['_token', 'avatar_current', 'task_general_setting', 'task_email_setting', 'task_email_bcc', 'task_social_setting'];
     }
 
     public function listItems($params = null, $options = null)
@@ -39,17 +39,23 @@ class SettingModel extends AdminModel
             $result = json_decode($result, true);
             // dd($result);
         }
+
+        if ($options['task'] == "admin-setting-social") {
+            $result = DB::select("SELECT `value` FROM `setting` WHERE `key_value` IN ('setting-social','setting-video')");
+            // $result = $result[0]->value;
+            // $result = $result[1]->value;
+            $result['facebook'] = json_decode($result[0]->value, true);
+            $result['youtube'] = json_decode($result[1]->value, true);
+            // dd($result);
+        }
+
         if ($options['task'] == "all") {
             $resultAll = $this->select('value')->get();
             $resultAll = $resultAll;
             // dd($resultAll);
         }
-
-
         return $result;
     }
-
-
 
     public function saveItem($params = null, $options = null)
     {
@@ -96,6 +102,17 @@ class SettingModel extends AdminModel
             $result['value'] = json_encode($params);
             // dd($result);
             self::where('key_value', 'setting-bcc')->update($this->prepareParams($result));
+        }
+
+        if ($options['task'] == 'social-setting') {
+            unset($params['task_social_setting']);
+            $result = null;
+            // dd($params);
+            $result['facebook']['value'] = json_encode($params['facebook']);
+            $result['youtube']['value'] = json_encode($params['youtube']);
+            // dd($result);
+            self::where('key_value', 'setting-social')->update($this->prepareParams($result['facebook']));
+            self::where('key_value', 'setting-video')->update($this->prepareParams($result['youtube']));
         }
     }
 }

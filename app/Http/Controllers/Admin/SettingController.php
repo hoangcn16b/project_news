@@ -30,12 +30,14 @@ class SettingController extends Controller
         $itemGeneralSetting = $this->model->listItems($this->params, ['task'  => 'admin-setting-general']);
         $itemEmailAccount = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-account']);
         $itemEmailBcc = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-bcc']);
+        $itemEmailSocial = $this->model->listItems($this->params, ['task'  => 'admin-setting-social']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items' => $items,
             'itemGeneralSetting'          => $itemGeneralSetting,
             'itemEmailAccount'          => $itemEmailAccount,
             'itemEmailBcc'          => $itemEmailBcc,
+            'itemEmailSocial'          => $itemEmailSocial,
         ]);
     }
 
@@ -47,6 +49,7 @@ class SettingController extends Controller
             if (@$params['task_general_setting'] == 'general-setting') $task = 'general-setting';
             if (@$params['task_email_setting'] == 'email-setting') $task = 'email-setting';
             if (@$params['task_email_bcc'] == 'email-bcc') $task = 'email-bcc';
+            if (@$params['task_social_setting'] == 'social-setting') $task = 'social-setting';
             // dd($params);
             $this->model->saveItem($params, ['task' => $task]);
             $notify = "Cập nhật dữu liệu thành công!";

@@ -4,18 +4,18 @@ use App\Helpers\Template;
 
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
-
+$configTagsInput = ['class' => 'some_class_name', 'width'=>'100'];
 $inputTaskEmailAccount = Form::hidden('task_social_setting', 'social-setting');
 $inputTaskEmailBcc = Form::hidden('task_social', 'social');
 
 $elementsSocial = [
     [
         'label' => Form::label('facebook', 'Facebook', $formLabelAttr),
-        'element' => Form::text('facebook', @$itemEmailAccount['facebook'], ['class' => 'some_class_name', 'width'=>'100']),
+        'element' => Form::text('facebook', @$itemEmailSocial['facebook'], $configTagsInput),
     ],
     [
         'label' => Form::label('youtube', 'Youtube', $formLabelAttr),
-        'element' => Form::text('youtube', @$itemEmailAccount['youtube'], $formInputAttr),
+        'element' => Form::text('youtube', @$itemEmailSocial['youtube'], $configTagsInput),
     ],
     [
         'element' => $inputTaskEmailAccount . Form::submit('Save', ['class' => 'btn btn-success']),
