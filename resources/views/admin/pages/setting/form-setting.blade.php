@@ -5,7 +5,7 @@ use App\Helpers\Template;
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');
-$configTagsInput = ['class' => 'some_class_name', 'width'=>'100'];
+$configTagsInput = ['class' => 'some_class_name my-tagify', 'width'=>'100'];
 
 // $inputHiddenID = Form::hidden('id', @$itemGeneralSetting['id']);
 $inputHiddenAvatar = Form::hidden('avatar_current', @$itemGeneralSetting['logo']);

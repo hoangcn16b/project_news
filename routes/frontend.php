@@ -72,6 +72,7 @@ Route::group(['prefix' => $prefixNews, 'namespace' => 'News'], function () {
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/lien-he',  [ 'as' => $controllerName . '/index', 'uses' => $controller . 'index' ]);
         Route::post('save',     ['as' => $controllerName . '/save',        'uses' => $controller . 'save']);
-                
+        Route::get('send-mail',     ['as' => $controllerName . '/send-mail',        'uses' => $controller . 'sendMail']);
+
     });
 });

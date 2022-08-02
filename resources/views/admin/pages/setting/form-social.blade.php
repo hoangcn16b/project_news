@@ -4,7 +4,7 @@ use App\Helpers\Template;
 
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
-$configTagsInput = ['class' => 'some_class_name', 'width'=>'100'];
+$configTagsInput = ['class' => 'some_class_name my-tagify', 'width'=>'100'];
 $inputTaskEmailAccount = Form::hidden('task_social_setting', 'social-setting');
 $inputTaskEmailBcc = Form::hidden('task_social', 'social');
 // $itemEmailSocial = [];

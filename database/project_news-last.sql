@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 31, 2021 at 03:35 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.7
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th8 01, 2022 lúc 08:14 AM
+-- Phiên bản máy phục vụ: 10.4.24-MariaDB
+-- Phiên bản PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `proj_news`
+-- Cơ sở dữ liệu: `project_news`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `article`
+-- Cấu trúc bảng cho bảng `article`
 --
 
 CREATE TABLE `article` (
@@ -43,7 +43,7 @@ CREATE TABLE `article` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `article`
+-- Đang đổ dữ liệu cho bảng `article`
 --
 
 INSERT INTO `article` (`id`, `category_id`, `name`, `content`, `status`, `thumb`, `created`, `created_by`, `modified`, `modified_by`, `publish_at`, `type`) VALUES
@@ -71,7 +71,7 @@ INSERT INTO `article` (`id`, `category_id`, `name`, `content`, `status`, `thumb`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Cấu trúc bảng cho bảng `category`
 --
 
 CREATE TABLE `category` (
@@ -87,7 +87,7 @@ CREATE TABLE `category` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `category`
+-- Đang đổ dữ liệu cho bảng `category`
 --
 
 INSERT INTO `category` (`id`, `name`, `status`, `created`, `created_by`, `modified`, `modified_by`, `is_home`, `display`) VALUES
@@ -103,7 +103,61 @@ INSERT INTO `category` (`id`, `name`, `status`, `created`, `created_by`, `modifi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rss`
+-- Cấu trúc bảng cho bảng `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(25) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `ip` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `contact`
+--
+
+INSERT INTO `contact` (`id`, `name`, `phone`, `status`, `email`, `content`, `created`, `ip`) VALUES
+(1, 'hoàng', NULL, 'inactive', 'hoangalt0198@gmail.com', 'nội dung', '2022-07-27 00:32:27', ''),
+(2, 'hoangalt0098', '0358623322', 'inactive', 'hoangalt0098@gmail.com', 'đfsdfsd', '2022-07-26 18:22:43', '127.0.0.1');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `menu`
+--
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT 'link',
+  `in_table` varchar(255) DEFAULT NULL,
+  `type_open` varchar(255) DEFAULT '_self',
+  `ordering` int(20) DEFAULT 10,
+  `status` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `menu`
+--
+
+INSERT INTO `menu` (`id`, `name`, `slug`, `type`, `link`, `in_table`, `type_open`, `ordering`, `status`, `created`, `created_by`) VALUES
+(1, 'Trang chủ', NULL, 'link', 'http://lar-exam.xyz/news69', NULL, '_self', 1, 'active', NULL, NULL),
+(2, 'Danh mục', NULL, 'sub_list_menu', 'http://lar-exam.xyz/news69', 'category', '_self', 2, 'active', '2022-07-26 00:00:00', 'hailan'),
+(3, 'Liên hệ', NULL, 'link', 'http://lar-exam.xyz/news69/lien-he', NULL, '_self', 16, 'inactive', '2022-07-26 00:00:00', 'hailan');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `rss`
 --
 
 CREATE TABLE `rss` (
@@ -120,18 +174,41 @@ CREATE TABLE `rss` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `rss`
+-- Đang đổ dữ liệu cho bảng `rss`
 --
 
 INSERT INTO `rss` (`id`, `name`, `status`, `link`, `ordering`, `source`, `created`, `created_by`, `modified`, `modified_by`) VALUES
-(1, 'Thế Giới VNExpress', 'active', 'https://vnexpress.net/rss/the-gioi.rss', 1, 'vnexpress', '2021-07-11 00:00:00', 'hailan', '2021-07-12 00:00:00', 'hailan'),
+(1, 'Thế Giới VNExpress', 'active', 'https://vnexpress.net/rss/the-gioi.rss', 2, 'vnexpress', '2021-07-11 00:00:00', 'hailan', '2021-07-12 00:00:00', 'hailan'),
 (2, 'Thế Giới TuoiTre', 'inactive', 'https://tuoitre.vn/rss/the-gioi.rss', 2, 'tuoitre', '2021-07-11 00:00:00', 'hailan', NULL, NULL),
 (4, 'Thời sự VNEx', 'inactive', 'https://vnexpress.net/rss/thoi-su.rss', 4, 'vnexpress', '2021-07-12 00:00:00', 'hailan', '2021-07-12 00:00:00', 'hailan');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `slider`
+-- Cấu trúc bảng cho bảng `setting`
+--
+
+CREATE TABLE `setting` (
+  `id` int(11) NOT NULL,
+  `key_value` text DEFAULT NULL,
+  `value` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `setting`
+--
+
+INSERT INTO `setting` (`id`, `key_value`, `value`) VALUES
+(1, 'setting-general', '{\"hotline\":\"[{\\\"value\\\":\\\"0987654321\\\"},{\\\"value\\\":\\\"12345678\\\"},{\\\"value\\\":\\\"432432432\\\"}]\",\"timezone\":\"24\\/24\",\"copyright\":\"Zendvn.com\",\"address\":\"Qu\\u1eadn 3, TPHCM\",\"introduction\":\"<p>3232131<\\/p>\",\"logo\":\"logozend.png\"}'),
+(2, 'setting-email', '{\"email\":\"hoangalt0098@gmail.com\",\"password\":\"123456\"}'),
+(3, 'setting-bcc', '{\"bcc\":\"[{\\\"value\\\":\\\"hoangalt0098@gmail.com\\\"},{\\\"value\\\":\\\"hoangcn16b@gmail.com\\\"},{\\\"value\\\":\\\"342342343\\\"}]\"}'),
+(4, 'setting-social', '\"[{\\\"value\\\":\\\"https:\\/\\/www.facebook.com\\/profile.php?id=100006215655785\\\"},{\\\"value\\\":\\\"423423432\\\"}]\"'),
+(5, 'setting-video', '\"[{\\\"value\\\":\\\"https:\\/\\/www.youtube.com\\\"},{\\\"value\\\":\\\"423432\\\"},{\\\"value\\\":\\\"4324324\\\"}]\"');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `slider`
 --
 
 CREATE TABLE `slider` (
@@ -148,7 +225,7 @@ CREATE TABLE `slider` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `slider`
+-- Đang đổ dữ liệu cho bảng `slider`
 --
 
 INSERT INTO `slider` (`id`, `name`, `description`, `link`, `thumb`, `created`, `created_by`, `modified`, `modified_by`, `status`) VALUES
@@ -159,7 +236,7 @@ INSERT INTO `slider` (`id`, `name`, `description`, `link`, `thumb`, `created`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Cấu trúc bảng cho bảng `user`
 --
 
 CREATE TABLE `user` (
@@ -178,79 +255,115 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `user`
+-- Đang đổ dữ liệu cho bảng `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `fullname`, `password`, `avatar`, `level`, `created`, `created_by`, `modified`, `modified_by`, `status`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin123456', 'e10adc3949ba59abbe56e057f20f883e', '1ctW8mj8vq.png', 'admin', '2014-12-10 08:55:35', 'admin', '2019-05-04 14:47:14', 'hailan', 'active'),
+(1, 'admin', 'admin@gmail.com', 'admin123456', '827ccb0eea8a706c4c34a16891f84e7b', '1ctW8mj8vq.png', 'admin', '2014-12-10 08:55:35', 'admin', '2022-07-28 00:00:00', 'hailan', 'active'),
 (2, 'hailan', 'hailan@gmail.com', 'hailan', '7c6f3ef49405d8a330aaa19ca0d0f6af', '1eSGmvZ3gM.jpeg', 'member', '2014-12-13 07:20:03', 'admin', '2019-05-04 08:47:04', 'hailan', 'active'),
 (3, 'user123', 'test@gmail.com', 'user123', 'e10adc3949ba59abbe56e057f20f883e', 'Hb1QSn1CL8.png', 'member', '2019-05-04 00:00:00', 'admin', '2019-05-04 08:47:07', 'hailan', 'inactive'),
-(4, 'user456', 'user456@gmail.com', 'user456', 'e10adc3949ba59abbe56e057f20f883e', 'J1uknUz0T6.png', 'member', '2019-05-04 00:00:00', 'admin', '2019-05-04 08:47:10', 'hailan', 'inactive');
+(4, 'user456', 'user456@gmail.com', 'user456', 'e10adc3949ba59abbe56e057f20f883e', 'J1uknUz0T6.png', 'member', '2019-05-04 00:00:00', 'admin', '2022-07-30 00:00:00', 'hailan', 'inactive');
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `article`
+-- Chỉ mục cho bảng `article`
 --
 ALTER TABLE `article`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
--- Indexes for table `category`
+-- Chỉ mục cho bảng `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
--- Indexes for table `rss`
+-- Chỉ mục cho bảng `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `rss`
 --
 ALTER TABLE `rss`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `slider`
+-- Chỉ mục cho bảng `setting`
+--
+ALTER TABLE `setting`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `slider`
 --
 ALTER TABLE `slider`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
--- Indexes for table `user`
+-- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `article`
+-- AUTO_INCREMENT cho bảng `article`
 --
 ALTER TABLE `article`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `rss`
+-- AUTO_INCREMENT cho bảng `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT cho bảng `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `rss`
 --
 ALTER TABLE `rss`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `slider`
+-- AUTO_INCREMENT cho bảng `setting`
+--
+ALTER TABLE `setting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `slider`
 --
 ALTER TABLE `slider`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;

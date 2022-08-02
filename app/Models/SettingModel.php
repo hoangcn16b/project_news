@@ -26,6 +26,7 @@ class SettingModel extends AdminModel
         (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
         (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-social') AS `setting_social`,
         (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-video') AS `setting_video`");
+        // dd($query);
         $query = $query[0];
         foreach ($query as $key => $value) {
             $result[$key] = json_decode($value, true);
@@ -44,6 +45,7 @@ class SettingModel extends AdminModel
             $result['facebook'] = $result['setting_social'];
             $result['youtube'] = $result['setting_video'];
         }
+        //-pluck
         // if ($options['task'] == "admin-setting-general") {
         //     $result = $this->select('value')->where('key_value', 'setting-general')->first();
         //     $result = $result->attributes['value'];
@@ -78,19 +80,6 @@ class SettingModel extends AdminModel
     public function saveItem($params = null, $options = null)
     {
         unset($params['_token']);
-
-        if ($options['task'] == 'change-status') {
-            $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
-            self::where('id', $params['id'])->update(['status' => $status]);
-        }
-
-        if ($options['task'] == 'add-item') {
-            $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
-            $params['avatar']      = $this->uploadThumb($params['avatar']);
-            $params['password']    = md5($params['password']);
-            self::insert($this->prepareParams($params));
-        }
 
         if ($options['task'] == 'general-setting') {
             if (!empty($params['logo'])) {

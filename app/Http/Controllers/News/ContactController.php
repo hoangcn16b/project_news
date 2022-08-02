@@ -8,7 +8,8 @@ use App\Http\Requests\News\ContactRequest as MainRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Models\ContactModel;
 use App\Helpers\Feed;
-
+use App\Mail\TestMail;
+use App\Http\Controllers\SendMailController;
 class ContactController extends Controller
 {
     private $pathViewController = 'news.pages.contact.';  // slider
@@ -36,10 +37,13 @@ class ContactController extends Controller
             $this->params['created']    = date('Y-m-d H:i:s');
             $notify = "Cảm ơn bạn đã gửi thông tin liên hệ. Chúng tôi sẽ liên hệ bạn trong thời gian sớm nhất.";
             $this->model->saveItem($this->params, ['task' => 'home-add-new-contact']);
-            
-            Mail::send('emails.contact_email', ['infoContact' => $this->params], function ($message) {
-                $message->to($this->params['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
-            });
+            $mailSend = new SendMailController();
+            $this->params['subject'] = 'Thông báo từ Website News69!';
+            $this->params['view'] = 'emails.contact_email';
+            $mailSend->sendMail($this->params);
+            // Mail::send('emails.contact_email', ['infoContact' => $this->params], function ($message) {
+            //     $message->to($this->params['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
+            // });
             return redirect()->route($this->controllerName . '/index', ['items' => $this->params])->with("zvn_notify", $notify);
         }
     }

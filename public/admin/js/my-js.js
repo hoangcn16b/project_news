@@ -154,55 +154,59 @@ $(document).ready(function () {
 
     });
 
-    let tab = 0;
-    const tabs = document.getElementsByClassName('nav-item');
-    const tabsContent = document.getElementsByClassName('tab-pane');
+    // let tab = 0;
+    // const tabs = document.getElementsByClassName('nav-item');
+    // const tabsContent = document.getElementsByClassName('tab-pane');
 
-    for (let i = 0; i < tabs.length; i++) {
-        if (i === tab) {
-            tabs[i].classList.add('active');
-            tabsContent[i].classList.add('active', 'in');
-        } else {
-            tabs[i].classList.remove('active');
-            tabsContent[i].classList.remove('active', 'in');
-        }
-        tabs[i].addEventListener('click', () => {
-            tab = i;
-        });
-    }
+    // for (let i = 0; i < tabs.length; i++) {
+    //     if (i === tab) {
+    //         tabs[i].classList.add('active');
+    //         tabsContent[i].classList.add('active', 'in');
+    //     } else {
+    //         tabs[i].classList.remove('active');
+    //         tabsContent[i].classList.remove('active', 'in');
+    //     }
+    //     tabs[i].addEventListener('click', () => {
+    //         tab = i;
+    //     });
+    // }
 
-    var input = document.querySelector('input[name=hotline]');
-    var inputBcc = document.querySelector('input[name=bcc]');
-    var inputFacebook = document.querySelector('input[name=facebook]');
-    var inputYoutube = document.querySelector('input[name=youtube]');
-    new Tagify(input)
-    new Tagify(inputBcc)
+    let myTagify = document.querySelectorAll('.my-tagify');
+    myTagify.forEach(ele => {
+        new Tagify(ele);
+    });
+    // var input = document.querySelector('input[name=hotline]');
+    // var inputBcc = document.querySelector('input[name=bcc]');
+    // var inputFacebook = document.querySelector('input[name=facebook]');
+    // var inputYoutube = document.querySelector('input[name=youtube]');
+    // new Tagify(input)
+    // new Tagify(inputBcc)
     // new Tagify(inputFacebook)
     // new Tagify(inputYoutube)
 
-    var input = document.querySelector('input[name="facebook"]'),
-        // init Tagify script on the above inputs
-        tagify = new Tagify(input, {
-            whitelist: ["https://www.facebook.com/profile.php?id=100006215655785"],
-            maxTags: 10,
-            dropdown: {
-                maxItems: 20,           // <- mixumum allowed rendered suggestions
-                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-                enabled: 0,             // <- show suggestions on focus
-                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-            }
-        })
-    var input = document.querySelector('input[name="youtube"]'),
-        // init Tagify script on the above inputs
-        tagify = new Tagify(input, {
-            whitelist: ["https://www.youtube.com"],
-            maxTags: 10,
-            dropdown: {
-                maxItems: 20,           // <- mixumum allowed rendered suggestions
-                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-                enabled: 0,             // <- show suggestions on focus
-                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-            }
-        })
+    // var input = document.querySelector('input[name="facebook"]'),
+    //     // init Tagify script on the above inputs
+    //     tagify = new Tagify(input, {
+    //         whitelist: ["https://www.facebook.com/profile.php?id=100006215655785"],
+    //         maxTags: 10,
+    //         dropdown: {
+    //             maxItems: 20,           // <- mixumum allowed rendered suggestions
+    //             classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+    //             enabled: 0,             // <- show suggestions on focus
+    //             closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+    //         }
+    //     })
+    // var input = document.querySelector('input[name="youtube"]'),
+    //     // init Tagify script on the above inputs
+    //     tagify = new Tagify(input, {
+    //         whitelist: ["https://www.youtube.com"],
+    //         maxTags: 10,
+    //         dropdown: {
+    //             maxItems: 20,           // <- mixumum allowed rendered suggestions
+    //             classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+    //             enabled: 0,             // <- show suggestions on focus
+    //             closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+    //         }
+    //     })
 
 });

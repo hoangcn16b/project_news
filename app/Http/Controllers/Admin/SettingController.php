@@ -52,7 +52,7 @@ class SettingController extends Controller
             if (@$params['task_social_setting'] == 'social-setting') $task = 'social-setting';
             // dd($params);
             $this->model->saveItem($params, ['task' => $task]);
-            $notify = "Cập nhật dữu liệu thành công!";
+            $notify = "Cập nhật thành công!";
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
     }
