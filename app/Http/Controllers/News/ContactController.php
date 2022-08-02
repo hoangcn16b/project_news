@@ -44,7 +44,7 @@ class ContactController extends Controller
             // Mail::send('emails.contact_email', ['infoContact' => $this->params], function ($message) {
             //     $message->to($this->params['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
             // });
-            return redirect()->route($this->controllerName . '/index', ['items' => $this->params])->with("zvn_notify", $notify);
+            return redirect()->route($this->controllerName . '/index')->with("zvn_notify", $notify);
         }
     }
 }
