@@ -13,7 +13,7 @@
                 $categoryName = $item['category_name'];
                 $linkCategory = URL::linkCategory($item['category_id'], $item['category_name']);;
                 $linkArticle  = URL::linkArticle($item['id'], $item['name']);
-                $created      = Template::showDatetimeFrontend($item['created']);
+                $created      = Template::showDatetimeFrontend($item['created_at']);
             @endphp
 
             <!-- Latest Post -->

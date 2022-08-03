@@ -13,7 +13,7 @@ class ContactController extends Controller
     private $params             = [];
     public $pathViewController = 'admin.pages.contact.';
     public $controllerName     = 'contact';
-    public $inTable     = 'contact';
+    public $inTable     = 'contacts';
     public $model;
 
     public function __construct()

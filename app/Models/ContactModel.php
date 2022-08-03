@@ -11,7 +11,7 @@ class ContactModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'contact';
+        $this->table               = 'contacts';
         $this->folderUpload        = 'contact';
         $this->crudNotAccepted     = ['_token'];
     }
@@ -22,7 +22,7 @@ class ContactModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('id', 'name', 'email', 'status', 'phone', 'content', 'created', 'ip');
+            $query = $this->select('id', 'name', 'email', 'status', 'phone', 'content', 'created_at', 'ip');
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);

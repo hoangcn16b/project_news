@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use DB; 
+use Illuminate\Support\Facades\DB;
 class SliderModel extends AdminModel
 {
     public function __construct() {
-        $this->table               = 'slider';
+        $this->table               = 'sliders';
         $this->folderUpload        = 'slider' ; 
         $this->fieldSearchAccepted = ['id', 'name', 'description', 'link']; 
         $this->crudNotAccepted     = ['_token','thumb_current'];
@@ -20,7 +20,7 @@ class SliderModel extends AdminModel
         $result = null;
 
         if($options['task'] == "admin-list-items") {
-            $query = $this->select('id', 'name', 'description', 'status', 'link', 'thumb','created', 'created_by', 'modified', 'modified_by');
+            $query = $this->select('id', 'name', 'description', 'status', 'link', 'thumb','created_at', 'created_by', 'updated_at', 'updated_by');
                
             if ($params['filter']['status'] !== "all")  {
                 $query->where('status', '=', $params['filter']['status'] );
@@ -107,7 +107,7 @@ class SliderModel extends AdminModel
 
         if($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d');
             $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));        
         }
@@ -117,8 +117,8 @@ class SliderModel extends AdminModel
                 $this->deleteThumb($params['thumb_current']);
                 $params['thumb'] = $this->uploadThumb($params['thumb']);
             }
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
+            $params['updated_by']   = "hailan";
+            $params['updated_at']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
     }

@@ -11,7 +11,7 @@ class MenuModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'menu';
+        $this->table               = 'menus';
         $this->folderUpload        = 'menu';
         $this->fieldSearchAccepted = ['id', 'name'];
         $this->crudNotAccepted     = ['_token'];
@@ -46,7 +46,7 @@ class MenuModel extends AdminModel
         }
 
         if ($options['task'] == 'news-list-items') {
-            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'in_table', 'slug', 'ordering')
+            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'in_table', 'ordering')
                 ->where('status', '=', 'active')
                 ->orderBy('ordering', 'asc')
                 ->limit(8);
@@ -136,13 +136,13 @@ class MenuModel extends AdminModel
 
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d');
             self::insert($this->prepareParams($params));
         }
 
         if ($options['task'] == 'edit-item') {
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
+            $params['updated_by']   = "hailan";
+            $params['updated_at']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
 

@@ -12,7 +12,7 @@ class ArticleController extends AdminController
 {
     public $pathViewController = 'admin.pages.article.';  // slider
     public $controllerName     = 'article';
-    public $inTable     = 'article';
+    public $inTable     = 'articles';
     public $model;
 
     public function __construct()

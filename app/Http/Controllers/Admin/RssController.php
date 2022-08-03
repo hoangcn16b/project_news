@@ -11,7 +11,7 @@ class RssController extends Controller
 {
     public $pathViewController = 'admin.pages.rss.';
     public $controllerName     = 'rss';
-    public $inTable     = 'rss';
+    public $inTable     = 'rsses';
     public $model;
 
     public function __construct()

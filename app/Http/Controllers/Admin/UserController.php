@@ -11,7 +11,7 @@ class UserController extends AdminController
 {
     public $pathViewController = 'admin.pages.user.';
     public $controllerName     = 'user';
-    public $inTable     = 'user';
+    public $inTable     = 'users';
     public $model;
 
     public function __construct()

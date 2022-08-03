@@ -10,9 +10,9 @@ use DB;
 class AdminModel extends Model
 {
 
-    public $timestamps = false;
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modified';
+    // public $timestamps = false;
+    // const CREATED_AT = 'created';
+    // const UPDATED_AT = 'modified';
 
     protected $table            = '';
     protected $folderUpload     = '';

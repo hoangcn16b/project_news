@@ -11,7 +11,7 @@ class SliderController extends AdminController
 {
     public $pathViewController = 'admin.pages.slider.';  // slider
     public $controllerName     = 'slider';
-    public $inTable     = 'slider';
+    public $inTable     = 'sliders';
     public $model;
 
     public function __construct()

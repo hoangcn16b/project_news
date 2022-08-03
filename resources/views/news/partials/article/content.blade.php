@@ -11,7 +11,7 @@
     }
 
     $linkArticle  = URL::linkArticle($item['id'], $item['name']);
-    $created      = Template::showDatetimeFrontend($item['created']);
+    $created      = Template::showDatetimeFrontend($item['created_at']);
 
     if($lenghtContent === "full") {
         $content      = $item['content'];

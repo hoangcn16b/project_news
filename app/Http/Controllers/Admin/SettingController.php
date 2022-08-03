@@ -13,7 +13,7 @@ class SettingController extends Controller
     private $params             = [];
     public $pathViewController = 'admin.pages.setting.';
     public $controllerName     = 'setting';
-    public $inTable     = 'setting';
+    public $inTable     = 'settings';
     public $model;
 
     public function __construct()

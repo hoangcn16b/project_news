@@ -11,7 +11,7 @@ class SettingModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'setting';
+        $this->table               = 'settings';
         $this->folderUpload        = 'setting';
         $this->fieldSearchAccepted = ['id', 'username', 'email', 'fullname'];
         $this->crudNotAccepted     = ['_token', 'avatar_current', 'task_general_setting', 'task_email_setting', 'task_email_bcc', 'task_social_setting'];
@@ -21,11 +21,11 @@ class SettingModel extends AdminModel
     {
         $result = null;
         $query = DB::select("SELECT
-        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-general') AS `setting_general`,
-        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-email') AS `setting_email`,
-        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
-        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-social') AS `setting_social`,
-        (SELECT `value` FROM `setting` WHERE `key_value` = 'setting-video') AS `setting_video`");
+        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-general') AS `setting_general`,
+        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-email') AS `setting_email`,
+        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
+        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-social') AS `setting_social`,
+        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-video') AS `setting_video`");
         // dd($query);
         $query = $query[0];
         foreach ($query as $key => $value) {

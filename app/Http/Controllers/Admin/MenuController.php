@@ -11,7 +11,7 @@ class MenuController extends AdminController
 {
     public $pathViewController = 'admin.pages.menu.';
     public $controllerName     = 'menu';
-    public $inTable     = 'menu';
+    public $inTable     = 'menus';
     public $model;
 
     public function __construct()

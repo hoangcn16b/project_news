@@ -13,7 +13,7 @@ class PasswordController extends Controller
     private $params             = [];
     public $pathViewController = 'admin.pages.password.';
     public $controllerName     = 'password';
-    public $inTable     = 'user';
+    public $inTable     = 'users';
     public $model;
 
     public function __construct()

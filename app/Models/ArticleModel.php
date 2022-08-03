@@ -11,7 +11,7 @@ class ArticleModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'article as a';
+        $this->table               = 'articles as a';
         $this->folderUpload        = 'article';
         $this->fieldSearchAccepted = ['name', 'content'];
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
@@ -24,7 +24,7 @@ class ArticleModel extends AdminModel
 
         if ($options['task'] == "admin-list-items") {
             $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name', 'c.id as category_id' )
-                ->leftJoin('category as c', 'a.category_id', '=', 'c.id');
+                ->leftJoin('categories as c', 'a.category_id', '=', 'c.id');
 
 
             if ($params['filter']['status'] !== "all") {
@@ -57,8 +57,8 @@ class ArticleModel extends AdminModel
 
         if ($options['task'] == 'news-list-items-featured') {
 
-            $query = $this->select('a.id', 'a.name', 'a.content', 'a.created', 'a.category_id', 'c.name as category_name', 'a.thumb')
-                ->leftJoin('category as c', 'a.category_id', '=', 'c.id')
+            $query = $this->select('a.id', 'a.name', 'a.content', 'a.created_at', 'a.category_id', 'c.name as category_name', 'a.thumb')
+                ->leftJoin('categories as c', 'a.category_id', '=', 'c.id')
                 ->where('a.status', '=', 'active')
                 ->where('a.type', 'featured')
                 ->orderBy('a.id', 'desc')
@@ -70,8 +70,8 @@ class ArticleModel extends AdminModel
 
         if ($options['task'] == 'news-list-items-latest') {
 
-            $query = $this->select('a.id', 'a.name', 'a.created', 'a.category_id', 'c.name as category_name', 'a.thumb')
-                ->leftJoin('category as c', 'a.category_id', '=', 'c.id')
+            $query = $this->select('a.id', 'a.name', 'a.created_at', 'a.category_id', 'c.name as category_name', 'a.thumb')
+                ->leftJoin('categories as c', 'a.category_id', '=', 'c.id')
                 ->where('a.status', '=', 'active')
                 ->orderBy('id', 'desc')
                 ->take(4);;
@@ -79,7 +79,7 @@ class ArticleModel extends AdminModel
         }
 
         if ($options['task'] == 'news-list-items-in-category') {
-            $query = $this->select('id', 'name', 'content', 'thumb', 'created')
+            $query = $this->select('id', 'name', 'content', 'thumb', 'created_at')
                 ->where('status', '=', 'active')
                 ->where('category_id', '=', $params['category_id'])
                 ->take(4);
@@ -87,7 +87,7 @@ class ArticleModel extends AdminModel
         }
 
         if ($options['task'] == 'news-list-items-related-in-category') {
-            $query = $this->select('id', 'name', 'content', 'thumb', 'created')
+            $query = $this->select('id', 'name', 'content', 'thumb', 'created_at')
                 ->where('status', '=', 'active')
                 ->where('a.id', '!=', $params['article_id'])
                 ->where('category_id', '=', $params['category_id'])
@@ -95,7 +95,7 @@ class ArticleModel extends AdminModel
             $result = $query->get()->toArray();
         }
         if ($options['task'] == 'get-category') {
-            $query = DB::table('category')->select('id', 'name');
+            $query = DB::table('categories')->select('id', 'name');
             $query = $query->get()->toArray();
             foreach ($query as $key => $value) {
                 $result[$value->id] = $value->name;
@@ -146,8 +146,8 @@ class ArticleModel extends AdminModel
         }
 
         if ($options['task'] == 'news-get-item') {
-            $result = self::select('a.id', 'a.name', 'content', 'a.category_id', 'c.name as category_name', 'a.thumb', 'a.created', 'c.display')
-                ->leftJoin('category as c', 'a.category_id', '=', 'c.id')
+            $result = self::select('a.id', 'a.name', 'content', 'a.category_id', 'c.name as category_name', 'a.thumb', 'a.created_at', 'c.display')
+                ->leftJoin('categories as c', 'a.category_id', '=', 'c.id')
                 ->where('a.id', '=', $params['article_id'])
                 ->where('a.status', '=', 'active')->first();
             if ($result) $result = $result->toArray();
@@ -171,7 +171,7 @@ class ArticleModel extends AdminModel
 
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d');
             $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
         }
@@ -185,15 +185,15 @@ class ArticleModel extends AdminModel
                 $params['thumb']      = $this->uploadThumb($params['thumb']);
             }
 
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
+            $params['updated_by']   = "hailan";
+            $params['updated_at']      = date('Y-m-d');
 
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
         }
 
         if ($options['task'] == 'change-category') {
             $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d');
             self::where('id', $params['id'])->update(['category_id' => $params['currentCategory']]);
         }
     }

@@ -11,7 +11,7 @@ class CategoryController extends AdminController
 {
     public $pathViewController = 'admin.pages.category.';
     public $controllerName     = 'category';
-    public $inTable     = 'category';
+    public $inTable     = 'categoríe';
     public $model;
 
     public function __construct()

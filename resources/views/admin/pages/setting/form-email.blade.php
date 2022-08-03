@@ -40,7 +40,7 @@ $elementsEmailBcc = [
 {{-- setting Account Email --}}
 
 <div class="x_title" style="margin-top: 20px">
-    <h2>BCC</h2>
+    <h2>Tài khoản</h2>
     <div class="clearfix"></div>
 </div>
 <div class="x_content">
@@ -61,7 +61,7 @@ $elementsEmailBcc = [
 {{-- setting BCC Email --}}
 <div>
     <div class="x_title" style="margin-top: 50px">
-        <h2>Tài khoản</h2>
+        <h2>BCC</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content" style="margin-top: 50px">

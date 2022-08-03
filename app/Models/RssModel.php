@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class RssModel extends AdminModel
 {
     public function __construct() {
-        $this->table               = 'rss';
+        $this->table               = 'rsses';
         $this->folderUpload        = 'rss' ; 
         $this->fieldSearchAccepted = ['id', 'name', 'link']; 
         $this->crudNotAccepted     = ['_token'];
@@ -20,7 +20,7 @@ class RssModel extends AdminModel
         $result = null;
 
         if($options['task'] == "admin-list-items") {
-            $query = $this->select('id', 'name', 'status', 'link', 'ordering', 'source', 'created', 'created_by', 'modified', 'modified_by');
+            $query = $this->select('id', 'name', 'status', 'link', 'ordering', 'source', 'created_at', 'created_by', 'updated_at', 'updated_by');
                
             if ($params['filter']['status'] !== "all")  {
                 $query->where('status', '=', $params['filter']['status'] );
@@ -103,13 +103,13 @@ class RssModel extends AdminModel
 
         if($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d');
             self::insert($this->prepareParams($params));        
         }
 
         if($options['task'] == 'edit-item') {
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
+            $params['updated_by']   = "hailan";
+            $params['updated_at']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
     }
