@@ -3,6 +3,12 @@
 use App\Helpers\Template as Template;
 $xhtmlButtonFilter = Template::showButtonFilter($controllerName, $itemsStatusCount, $params['filter']['status'], $params['search']);
 $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
+$categoryConfig['all'] = 'Filter by All';
+foreach ($getCategory as $key => $value) {
+    $categoryConfig[$key] = $value;
+}
+
+$xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
 
 @endphp
 
@@ -16,8 +22,9 @@ $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
                 @include('admin.templates.x_title', ['title' => 'Bộ lọc'])
                 <div class="x_content">
                     <div class="row">
-                        <div class="col-md-7">{!! $xhtmlButtonFilter !!}</div>
-                        <div class="col-md-5">{!! $xhtmlAreaSeach !!}</div>
+                        <div class="col-md-5">{!! $xhtmlButtonFilter !!}</div>
+                        <div class="col-md-3">{!! $xhtmlAreaFilter !!}</div>
+                        <div class="col-md-4">{!! $xhtmlAreaSeach !!}</div>
                     </div>
                 </div>
             </div>

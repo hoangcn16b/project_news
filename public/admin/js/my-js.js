@@ -7,6 +7,7 @@ $(document).ready(function () {
     let $inputSearchField = $("input[name  = search_field]");
     let $inputSearchValue = $("input[name  = search_value]");
     let $selectChangeAttr = $("select[name = select_change_attr]");
+    let $inputSearchFilter = $("input[name  = search_filter]");
 
     $("a.select-field").click(function (e) {
         e.preventDefault();
@@ -18,6 +19,19 @@ $(document).ready(function () {
         );
         $inputSearchField.val(field);
     });
+
+    $("a.select-filter").click(function (e) {
+        e.preventDefault();
+
+        let filter = $(this).data("filter");
+        let filterName = $(this).html();
+        $("button.btn-active-filter").html(
+            filterName + ' <span class="caret"></span>'
+        );
+        $inputSearchFilter.val(filter);
+        // console.log($inputSearchFilter.val(filter));
+    });
+
 
     $btnSearch.click(function () {
         var pathname = window.location.pathname;
@@ -34,10 +48,11 @@ $(document).ready(function () {
 
         let search_field = $inputSearchField.val();
         let search_value = $inputSearchValue.val();
+        let search_filter = $inputSearchFilter.val();
 
-        if (search_value.replace(/\s/g, "") == "") {
-            alert("Nhập vào giá trị cần tìm !!");
-        } else {
+        // if (search_value.replace(/\s/g, "") == "") {
+        //     alert("Nhập vào giá trị cần tìm !!");
+        // } else {
             window.location.href =
                 pathname +
                 "?" +
@@ -45,8 +60,10 @@ $(document).ready(function () {
                 "search_field=" +
                 search_field +
                 "&search_value=" +
-                search_value;
-        }
+                search_value +
+                "&search_filter=" +
+                search_filter;
+        // }
     });
 
     $btnClearSearch.click(function () {

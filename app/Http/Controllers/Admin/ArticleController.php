@@ -28,10 +28,11 @@ class ArticleController extends AdminController
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
         $this->params['search']['field']  = $request->input('search_field', ''); // all id description
         $this->params['search']['value']  = $request->input('search_value', '');
+        $this->params['search']['filter']  = $request->input('search_filter', '');
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-        $getCategory = $this->model->listItems($this->params, ['task'  => 'get-category']);
+        $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,

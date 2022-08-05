@@ -29,7 +29,8 @@ use App\Helpers\Hightlight as Hightlight;
                             $thumb = Template::showItemThumb($controllerName, $val['thumb'], $val['name']);
                             // $categoryName = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
-                            $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
+                            // $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
+                            $category = $val->category->name;
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $fieldNameType = 'type';
                             $categoryCol = 'category_id';
@@ -47,7 +48,7 @@ use App\Helpers\Hightlight as Hightlight;
                                 <p>{!! $thumb !!}</p>
                             </td>
                             <td width="10%">
-                                <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val['category_id']" :rowId="$id"
+                                <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->category->id" :rowId="$id"
                                     :fieldName="$getCategory" :inTable="$inTable" />
                             </td>
                             <td width="10%">

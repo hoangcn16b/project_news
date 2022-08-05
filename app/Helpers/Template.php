@@ -25,7 +25,7 @@ class Template
                 $link = route($controllerName) . "?filter_status=" .  $statusValue;
 
                 if ($paramsSearch['value'] !== '') {
-                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value'];
+                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value']. "&search_filter=" .  $paramsSearch['filter'];
                 }
 
                 $class  = ($currentFilterStatus == $statusValue) ? 'btn-danger' : 'btn-info';
@@ -59,7 +59,7 @@ class Template
                     <button type="button" class="btn btn-default dropdown-toggle btn-active-field" data-toggle="dropdown" aria-expanded="false">
                         %s <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <ul class="dropdown-menu ul-change-filter dropdown-menu-right" role="menu">
                         %s
                     </ul>
                 </div>
@@ -70,6 +70,33 @@ class Template
                     <button id="btn-search" type="button" class="btn btn-primary">Tìm kiếm</button>
                 </span>
             </div>', $tmplField[$searchField]['name'], $xhtmlField, $paramsSearch['value'], $searchField);
+        return $xhtml;
+    }
+
+    public static function showAreaFilter($controllerName, $paramsSearch, $tmplField)
+    {
+        $xhtml = null;
+
+        $xhtmlField = '';
+        foreach ($tmplField as $key => $field) { // all id
+            $xhtmlField .= sprintf('<li><a href="#" class="select-filter" data-filter="%s">%s</a></li>', $key, $field);
+        }
+        // dd($tmplField);
+
+
+        $searchField = (array_key_exists($paramsSearch['filter'],  $tmplField)) ? $paramsSearch['filter'] : "all";
+        $xhtml = sprintf('
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-btn-filter dropdown-toggle btn-active-filter" data-toggle="dropdown" aria-expanded="false">
+                                %s <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            %s
+                            </ul>
+                        </div>
+                        <input type="hidden" name="search_filter" value="%s">
+
+                    ', $tmplField[$searchField], $xhtmlField, $searchField);
         return $xhtml;
     }
 

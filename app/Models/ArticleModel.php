@@ -17,33 +17,44 @@ class ArticleModel extends AdminModel
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
     }
 
+    public function category()
+    {
+        return $this->belongsTo(CategoryModel::class, 'category_id');
+    }
+
     public function listItems($params = null, $options = null)
     {
 
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name', 'c.id as category_id' )
-                ->leftJoin('categories as c', 'a.category_id', '=', 'c.id');
+            $query = $this->with('category')->select('id', 'name', 'status', 'content', 'thumb', 'type', 'category_id');
 
 
             if ($params['filter']['status'] !== "all") {
-                $query->where('a.status', '=', $params['filter']['status']);
+                $query->where('status', '=', $params['filter']['status']);
             }
 
             if ($params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
                     $query->where(function ($query) use ($params) {
                         foreach ($this->fieldSearchAccepted as $column) {
-                            $query->orWhere('a.' . $column, 'LIKE',  "%{$params['search']['value']}%");
+                            $query->orWhere($column, 'LIKE',  "%{$params['search']['value']}%");
                         }
                     });
                 } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
-                    $query->where('a.' . $params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
+                    $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
             }
 
-            $result =  $query->orderBy('a.id', 'desc')
+            if ($params['search']['filter'] !== "") {
+                if ($params['search']['filter'] == "all") {
+                } else if (array_key_exists($params['search']['filter'], $this->getCategory(null, ['task' => 'get-category']))) {
+                    $query->where('category_id', '=',  $params['search']['filter']);
+                }
+            }
+
+            $result =  $query->orderBy('id', 'desc')
                 ->paginate($params['pagination']['totalItemsPerPage']);
         }
 
@@ -94,6 +105,13 @@ class ArticleModel extends AdminModel
                 ->take(4);
             $result = $query->get()->toArray();
         }
+
+        return $result;
+    }
+
+    public function getCategory($params = null, $options  = null)
+    {
+        $result = null;
         if ($options['task'] == 'get-category') {
             $query = DB::table('categories')->select('id', 'name');
             $query = $query->get()->toArray();
@@ -101,7 +119,6 @@ class ArticleModel extends AdminModel
                 $result[$value->id] = $value->name;
             }
         }
-
         return $result;
     }
 
@@ -124,6 +141,13 @@ class ArticleModel extends AdminModel
                     });
                 } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
+                }
+            }
+            
+            if ($params['search']['filter'] !== "") {
+                if ($params['search']['filter'] == "all") {
+                } else if (array_key_exists($params['search']['filter'], $this->getCategory(null, ['task' => 'get-category']))) {
+                    $query->where('category_id', '=',  $params['search']['filter']);
                 }
             }
 
