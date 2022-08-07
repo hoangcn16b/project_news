@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Config;
 class Template
 {
     public static function showButtonFilter($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch)
-    { // $currentFilterStatus active inactive all
+    {
+        // $currentFilterStatus active inactive all
         $xhtml = null;
         $tmplStatus = Config::get('zvn.template.status');
 
@@ -25,7 +26,7 @@ class Template
                 $link = route($controllerName) . "?filter_status=" .  $statusValue;
 
                 if ($paramsSearch['value'] !== '') {
-                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value']. "&search_filter=" .  $paramsSearch['filter'];
+                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value'] . "&search_filter=" .  $paramsSearch['filter'];
                 }
 
                 $class  = ($currentFilterStatus == $statusValue) ? 'btn-danger' : 'btn-info';
