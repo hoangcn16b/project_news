@@ -11,35 +11,54 @@ if (count($itemsMenu) > 0) {
     $xhtmlMenu = '<nav class="main_nav"><ul class="main_nav_list d-flex flex-row align-items-center justify-content-start">';
     $xhtmlMenuMobile = '<nav class="menu_nav"><ul class="menu_mm">';
     $menuIdCurrent = Route::input('menu_name');
-
+    // dd($itemsMenu);
     foreach ($itemsMenu as $item) {
         $linkMenu = $item['link'];
         if ($item['type'] == 'link') {
             // $linkMenu = URL::linkMenu($item['id'], $item['name']);
             $classActive = '';
-            $xhtmlMenu .= sprintf('<li class="%s"><a href="%s">%s</a></li>', $classActive, $linkMenu, $item['name']);
-            $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
-        } elseif ($item['type'] == 'sub_list_menu') {
-            if (!empty($item['in_table'])) {
-                $result = DB::table($item['in_table'])
-                    ->select('id', 'name')
-                    ->where('status', '=', 'active')
-                    ->get()
-                    ->toArray();
+            $xhtmlMenu .= sprintf('<li class="%s"><a target = "%s" href="%s">%s</a></li>', $classActive, $item['type_open'], $linkMenu, $item['name']);
+            $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a target = "%s" href="%s">%s</a></li>', $item['type_open'], $linkMenu, $item['name']);
+        } elseif ($item['type'] == 'list_category') {
+            $result = DB::table('categories')
+                ->select('id', 'name')
+                ->where('status', '=', 'active')
+                ->get()
+                ->toArray();
 
-                $ulList = '<ul class="child">';
-                $categoryIdCurrent = Route::input('category_id');
+            $ulList = '<ul class="child">';
+            $categoryIdCurrent = Route::input('category_id');
 
-                foreach ($result as $key => $value) {
-                    $classActiveSubList = $categoryIdCurrent == $value->id ? 'active' : '';
-                    $linkSubList = URL::linkCategory($value->id, $value->name);
+            foreach ($result as $key => $value) {
+                $classActiveSubList = $categoryIdCurrent == $value->id ? 'active' : '';
+                $linkSubList = URL::linkCategory($value->id, $value->name);
 
-                    $ulList .= sprintf('<li class="parent %s"><a href="%s">%s</a></li>', $classActiveSubList, $linkSubList, $value->name);
-                }
-                $ulList .= '</ul>';
-                $xhtmlMenu .= sprintf('<li class="parent" %s><a>%s</a>%s</li>', $classActiveSubList, $item['name'], $ulList);
-                $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
+                $ulList .= sprintf('<li class="parent %s"><a target = "%s" href="%s">%s</a></li>', $classActiveSubList, $item['type_open'], $linkSubList, $value->name);
             }
+            $ulList .= '</ul>';
+            $xhtmlMenu .= sprintf('<li class="parent" %s><a> %s </a> %s </li>', $classActiveSubList, $item['name'], $ulList);
+            $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
+        }
+        elseif ($item['type'] == 'list_article') {
+            $result = DB::table('articles')
+                ->select('id', 'name')
+                ->where('status', '=', 'active')
+                ->get()
+                ->toArray();
+
+            $ulList = '<ul class="child">';
+            $categoryIdCurrent = Route::input('category_id');
+            $categoryIdCurrent = '';
+
+            foreach ($result as $key => $value) {
+                $classActiveSubList = $categoryIdCurrent == $value->id ? 'active' : '';
+                $linkSubList = URL::linkCategory($value->id, $value->name);
+
+                $ulList .= sprintf('<li class="parent %s"><a target = "%s" href="%s">%s</a></li>', $classActiveSubList, $item['type_open'], $linkSubList, $value->name);
+            }
+            $ulList .= '</ul>';
+            $xhtmlMenu .= sprintf('<li class="parent" %s><a> %s </a> %s </li>', $classActiveSubList, $item['name'], $ulList);
+            $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
         }
     }
     if (session('userInfo')) {

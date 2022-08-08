@@ -13,7 +13,7 @@ use App\Helpers\Hightlight as Hightlight;
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Loại hiển thị</th>
                     <th class="column-title">
-                        <p>Dữ liệu từ bảng(dành cho <br>loại hiển thị danh sách con)
+                        Kiểu mở
                     </th>
                     <th class="column-title">Sắp xếp</th>
                     <th class="column-title">Hành động</th>
@@ -34,9 +34,9 @@ use App\Helpers\Hightlight as Hightlight;
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $inConfigDisplay = 'display_menu';
                             $inConfigOrdering = 'ordering';
-                            $fieldNameInTable = 'in_table';
+                            $fieldNameTypeOpen = 'type_open';
                             $fieldNameDisplay = 'display_menu';
-                            $thisColumnInTable = 'in_table';
+                            $thisColumnTypeOpen = 'type_open';
                             $thisColumnDisplay = 'type';
                             $thisColumnOrdering = 'ordering';
                             // category_product
@@ -56,12 +56,8 @@ use App\Helpers\Hightlight as Hightlight;
                                     :inTable="$inTable" />
                             </td>
                             <td width="15%" align="center">
-                                @if (!empty($val['type']) && $val['type'] == 'sub_list_menu')
-                                    <livewire:select :thisColumn="$thisColumnInTable" :thisType="$val['in_table']" :rowId="$id"
-                                        :fieldName="$fieldNameInTable" :inTable="$inTable" />
-                                @else
-                                    N/A
-                                @endif
+                                <livewire:select :thisColumn="$thisColumnTypeOpen" :thisType="$val['type_open']" :rowId="$id"
+                                    :fieldName="$fieldNameTypeOpen" :inTable="$inTable" />
                             </td>
                             <td style=" width:8%;">
                                 <livewire:ordering :thisColumn="$thisColumnOrdering" :ordering="$val['ordering']" :rowId="$id"

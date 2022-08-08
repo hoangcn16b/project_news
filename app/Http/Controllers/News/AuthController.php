@@ -21,7 +21,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        session()->put('previous_url', url()->previous());
+        // session()->put('previous_url', url()->previous());
+        if (!(session()->has('previous_url'))) {
+            session()->put('previous_url', url()->previous());
+        }
+        if (!(session('previous_url') == 'http://lar-exam.xyz/news69/login')) {
+            session()->put('previous_url', url()->previous());
+        }
         // session()->forget('previous_url');
 
 

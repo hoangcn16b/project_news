@@ -50,6 +50,7 @@ class MenuController extends AdminController
                 $task   = "edit-item";
                 $notify = "Cập nhật phần tử thành công!";
             }
+            // dd(123);
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }

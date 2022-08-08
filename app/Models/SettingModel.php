@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class SettingModel extends AdminModel
 {
+    public $settings;
     public function __construct()
     {
         $this->table               = 'settings';
@@ -20,31 +21,37 @@ class SettingModel extends AdminModel
     public function listItems($params = null, $options = null)
     {
         $result = null;
-        $query = DB::select("SELECT
-        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-general') AS `setting_general`,
-        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-email') AS `setting_email`,
-        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
-        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-social') AS `setting_social`,
-        (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-video') AS `setting_video`");
-        // dd($query);
-        $query = $query[0];
+        // $query = DB::select("SELECT
+        // (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-general') AS `setting_general`,
+        // (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-email') AS `setting_email`,
+        // (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-bcc') AS `setting_bcc`,
+        // (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-social') AS `setting_social`,
+        // (SELECT `value` FROM `settings` WHERE `key_value` = 'setting-video') AS `setting_video`");
+        // // dd($query);
+        // $query = $query[0];
+        // foreach ($query as $key => $value) {
+        //     $result[$key] = json_decode($value, true);
+        // }
+        $query = $this->pluck('value', 'key_value');
         foreach ($query as $key => $value) {
             $result[$key] = json_decode($value, true);
         }
+        // dd($result);
+        // $this->settings = $result;
         // dd($result['setting_general']);
-        if ($options['task'] == "admin-setting-general") {
-            $result = $result['setting_general'];
-        }
-        if ($options['task'] == "admin-setting-email-account") {
-            $result = $result['setting_email'];
-        }
-        if ($options['task'] == "admin-setting-email-bcc") {
-            $result = $result['setting_bcc'];
-        }
-        if ($options['task'] == "admin-setting-social") {
-            $result['facebook'] = $result['setting_social'];
-            $result['youtube'] = $result['setting_video'];
-        }
+        // if ($options['task'] == "admin-setting-general") {
+        //     $result = $result['setting_general'];
+        // }
+        // if ($options['task'] == "admin-setting-email-account") {
+        //     $result = $result['setting_email'];
+        // }
+        // if ($options['task'] == "admin-setting-email-bcc") {
+        //     $result = $result['setting_bcc'];
+        // }
+        // if ($options['task'] == "admin-setting-social") {
+        //     $result['facebook'] = $result['setting_social'];
+        //     $result['youtube'] = $result['setting_video'];
+        // }
         //-pluck
         // if ($options['task'] == "admin-setting-general") {
         //     $result = $this->select('value')->where('key_value', 'setting-general')->first();
@@ -76,6 +83,28 @@ class SettingModel extends AdminModel
         // }
         return $result;
     }
+
+    public function getSettings($params = null, $options = null)
+    {
+        $result = null;
+        $this->getSettings();
+        $result = $this->settings;
+        if ($options['task'] == "admin-setting-general") {
+            $result = $result['setting_general'];
+        }
+        if ($options['task'] == "admin-setting-email-account") {
+            $result = $result['setting_email'];
+        }
+        if ($options['task'] == "admin-setting-email-bcc") {
+            $result = $result['setting_bcc'];
+        }
+        if ($options['task'] == "admin-setting-social") {
+            $result['facebook'] = $result['setting_social'];
+            $result['youtube'] = $result['setting_video'];
+        }
+        return $result;
+    }
+
 
     public function saveItem($params = null, $options = null)
     {

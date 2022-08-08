@@ -68,20 +68,25 @@ return [
             'delete'    => ['class' => 'btn-danger btn-delete', 'title' => 'Delete', 'icon' => 'fa-trash', 'route-name' => '/delete'],
             'info'      => ['class' => 'btn-info', 'title' => 'View', 'icon' => 'fa-pencil', 'route-name' => '/delete'],
         ],
-        'display_menu'       => [
-            'link'               => ['name' => 'Liên kết đến'],
-            'sub_list_menu'      => ['name' => 'Danh sách con'],
+        'display_menu'         => [
+            'link'                => ['name' => 'Liên kết đến'],
+            'list_category'       => ['name' => 'Danh sách Danh Mục'],
+            'list_article'        => ['name' => 'Danh sách Bài Viết'],
 
         ],
-        'status_contact'       => [
-            'inactive'               => ['name' => 'Đang chờ'],
-            'active'             => ['name' => 'Đã xử lý'],
+        'type_open'            => [
+            '_self'               => ['name' => 'Liên kết trong'],
+            '_blank'              => ['name' => 'liên kết ngoài'],
         ],
-        'in_table'          => [
-            ''                   => ['name' => 'Mặc định(chưa có bảng)'],
-            'category'           => ['name' => 'Bảng Category'],
-            'article'            => ['name' => 'Bảng Article'],
-            'rss'                => ['name' => 'Bảng Rss'],
+        'status_contact'       => [
+            'inactive'            => ['name' => 'Đang chờ'],
+            'active'              => ['name' => 'Đã xử lý'],
+        ],
+        'in_table'             => [
+            ''                    => ['name' => 'Mặc định(chưa có bảng)'],
+            'category'            => ['name' => 'Bảng Category'],
+            'article'             => ['name' => 'Bảng Article'],
+            'rss'                 => ['name' => 'Bảng Rss'],
         ]
 
     ],

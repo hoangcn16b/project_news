@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class MenuRequest extends FormRequest
 {
-    private $table            = 'menu';
+    private $table            = 'menus';
     /**
      * Determine if the user is authorized to make this request.
      *

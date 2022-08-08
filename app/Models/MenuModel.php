@@ -46,7 +46,7 @@ class MenuModel extends AdminModel
         }
 
         if ($options['task'] == 'news-list-items') {
-            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'in_table', 'ordering')
+            $query = $this->select('id', 'name', 'link', 'type', 'type_open', 'ordering')
                 ->where('status', '=', 'active')
                 ->orderBy('ordering', 'asc')
                 ->limit(8);
@@ -137,6 +137,10 @@ class MenuModel extends AdminModel
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d');
+    
+            $params['type_open'] = '_self';
+            $params['in_table'] = '';
+            // dd($params);
             self::insert($this->prepareParams($params));
         }
 

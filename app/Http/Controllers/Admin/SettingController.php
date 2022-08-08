@@ -26,18 +26,24 @@ class SettingController extends Controller
 
     public function index(Request $request)
     {
-        $items = $this->model->listItems($this->params, ['task'  => 'all']);
-        $itemGeneralSetting = $this->model->listItems($this->params, ['task'  => 'admin-setting-general']);
-        $itemEmailAccount = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-account']);
-        $itemEmailBcc = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-bcc']);
-        $itemEmailSocial = $this->model->listItems($this->params, ['task'  => 'admin-setting-social']);
+        $items = $this->model->listItems($this->params, []);
+        $itemGeneralSetting = $items['setting-general'];
+        $itemEmailAccount = $items['setting-email'];
+        $itemEmailBcc = $items['setting-bcc'];
+        $itemSocial = $items['setting-social']; 
+        $itemVideo = $items['setting-video']; 
+        // $itemGeneralSetting = $this->model->listItems($this->params, ['task'  => 'admin-setting-general']);
+        // $itemEmailAccount = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-account']);
+        // $itemEmailBcc = $this->model->listItems($this->params, ['task'  => 'admin-setting-email-bcc']);
+        // $itemEmailSocial = $this->model->listItems($this->params, ['task'  => 'admin-setting-social']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
-            'items' => $items,
+            // 'items' => $items,
             'itemGeneralSetting'          => $itemGeneralSetting,
             'itemEmailAccount'          => $itemEmailAccount,
             'itemEmailBcc'          => $itemEmailBcc,
-            'itemEmailSocial'          => $itemEmailSocial,
+            'itemSocial'          => $itemSocial,
+            'itemVideo'          => $itemVideo,
         ]);
     }
 

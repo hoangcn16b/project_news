@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SliderRequest extends FormRequest
 {
-    private $table            = 'slider';
+    private $table            = 'sliders';
     /**
      * Determine if the user is authorized to make this request.
      *

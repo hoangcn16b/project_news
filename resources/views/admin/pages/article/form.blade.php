@@ -3,7 +3,7 @@
 use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use Illuminate\Support\Facades\DB;
-$query = DB::table('category')->select('id', 'name');
+$query = DB::table('categories')->select('id', 'name');
 $result = $query->get()->toArray();
 foreach ($result as $key => $value) {
     $itemsCategory[$value->id] = $value->name;

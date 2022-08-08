@@ -8,7 +8,7 @@ $formLabelAttr = config('zvn.template.form_label');
 
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 $orderingValue = config('zvn.template.ordering');
-$typeValue = ['link' => config('zvn.template.display_menu.link.name'), 'sub_list_menu' => config('zvn.template.display_menu.sub_list_menu.name')];
+$typeValue = ['link' => config('zvn.template.display_menu.link.name'), 'list_category' => config('zvn.template.display_menu.list_category.name'), 'list_article' => config('zvn.template.display_menu.list_article.name')];
 
 $arrDisplay = config('zvn.template.in_table');
 $displayValue = [];

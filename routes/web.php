@@ -157,9 +157,19 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         // Route::get('form/{id?}',                        ['as' => $controllerName . '/form',        'uses' => $controller . 'form'])->where('id', '[0-9]+');
         Route::post('save',                             ['as' => $controllerName . '/save',        'uses' => $controller . 'save']);
     });
+
+    // ============================== CATEGORY ==============================
+    $prefix         = 'democategory';
+    $controllerName = 'democategory';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                                 ['as' => $controllerName,                  'uses' => $controller . 'index']);
+        Route::get('form/{id?}',                        ['as' => $controllerName . '/form',        'uses' => $controller . 'form'])->where('id', '[0-9]+');
+        Route::post('save',                             ['as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+    });
 });
 
-Route::group(['prefix' => 'laravel-filemanager'], function () {
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => []], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 

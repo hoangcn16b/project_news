@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ArticleRequest extends FormRequest
 {
-    private $table            = 'article';
+    private $table            = 'articles';
 
     /**
      * Determine if the user is authorized to make this request.
