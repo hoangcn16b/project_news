@@ -14,13 +14,13 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->bigIncrements('id')->autoIncrement();
-            $table->string('name', 255);
-            $table->string('status', 100);
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('status', 100)->nullable();
             $table->string('is_home')->nullable();
-            $table->string('display');
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('display')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

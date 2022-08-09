@@ -17,7 +17,7 @@ class CategoryController extends AdminController
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params["pagination"]["totalItemsPerPage"] = 10;
+        // $this->params["pagination"]["totalItemsPerPage"] = 10;
         view()->share('inTable', $this->inTable);
         view()->share('controllerName', $this->controllerName);
     }

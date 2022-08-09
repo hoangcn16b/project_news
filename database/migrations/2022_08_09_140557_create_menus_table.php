@@ -14,16 +14,17 @@ class CreateMenusTable extends Migration
     public function up()
     {
         Schema::create('menus', function (Blueprint $table) {
-            $table->bigIncrements('id')->autoIncrement();
-            $table->string('name', 255);
+            $table->bigIncrements('id');
+            $table->string('name');
             $table->string('type')->nullable();
-            $table->string('link');
-            $table->string('in_table');
-            $table->string('type_open');
-            $table->string('status');
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('link')->nullable();
+            $table->string('in_table')->nullable();
+            $table->string('type_open')->nullable();
+            $table->string('status')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
+            $table->integer('ordering')->default(10);
         });
     }
 

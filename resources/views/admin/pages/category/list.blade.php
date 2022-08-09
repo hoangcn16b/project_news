@@ -1,10 +1,10 @@
 @php
-    use App\Helpers\Template as Template;
-    use App\Helpers\Hightlight as Hightlight;
+use App\Helpers\Template as Template;
+use App\Helpers\Hightlight as Hightlight;
 
 @endphp
 <div class="x_content">
-    
+
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
             <thead>
@@ -23,29 +23,37 @@
                 @if (count($items) > 0)
                     @foreach ($items as $key => $val)
                         @php
-                        
-                            $index           = $key + 1;
-                            $class           = ($index % 2 == 0) ? "even" : "odd";
-                            $id              = $val['id'];
-                            $name            = Hightlight::show($val['name'], $params['search'], 'name');
+                            
+                            $index = $key + 1;
+                            $class = $index % 2 == 0 ? 'even' : 'odd';
+                            $id = $val['id'];
+                            $name = Hightlight::show($val['name'], $params['search'], 'name');
+                            $name = str_repeat('----/ ', $val['depth'] - 1) . $name;
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
                             // $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
-                            $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);
+                            $createdHistory = Template::showItemHistory($val['created_by'], $val['created']);
                             $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
-                            $listBtnAction   = Template::showButtonAction($controllerName, $id);
+                            $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $fieldName = 'display';
                             $thisColumn = 'display';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
-                            <td >{{ $index }}</td>
+                            <td>{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
                             {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}
-                            <td><livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable"/> </td>
-                            <td><livewire:changehome :isHome="$val['is_home']" :rowId="$id"/> </td>
-                            <td><livewire:select :thisColumn="$thisColumn" :thisType="$val['display']" :rowId="$id" :fieldName="$fieldName" :inTable="$inTable"/> </td>
+                            <td>
+                                <livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable" />
+                            </td>
+                            <td>
+                                <livewire:changehome :isHome="$val['is_home']" :rowId="$id" />
+                            </td>
+                            <td>
+                                <livewire:select :thisColumn="$thisColumn" :thisType="$val['display']" :rowId="$id" :fieldName="$fieldName"
+                                    :inTable="$inTable" />
+                            </td>
                             {{-- <td>{!! $display !!}</td> --}}
                             <td>{!! $createdHistory !!}</td>
                             <td>{!! $modifiedHistory !!}</td>
@@ -59,4 +67,3 @@
         </table>
     </div>
 </div>
-           

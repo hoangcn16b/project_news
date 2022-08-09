@@ -6,9 +6,14 @@ use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Kalnoy\Nestedset\NodeTrait;
+// use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CategoryModel extends AdminModel
 {
+    // use HasFactory;
+    use NodeTrait;
+    protected $fillable = ['name'];
     public function __construct()
     {
         $this->table               = 'categories';
@@ -23,7 +28,8 @@ class CategoryModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by');
+            // $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by');
+            $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('id', '>', '1');
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -40,9 +46,10 @@ class CategoryModel extends AdminModel
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
             }
+            $result =  $query->orderBy('id', 'desc')->get();
+            // ->paginate($params['pagination']['totalItemsPerPage']);
+            // dd($result);
 
-            $result =  $query->orderBy('id', 'desc')
-                ->paginate($params['pagination']['totalItemsPerPage']);
         }
 
         if ($options['task'] == 'news-list-items') {

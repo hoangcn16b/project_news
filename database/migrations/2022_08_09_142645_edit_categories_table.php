@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class EditDemocategoriesTable extends Migration
+class EditCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class EditDemocategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('democategories', function (Blueprint $table) {
-            $table->string('category_type');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->nestedSet();
+            
         });
     }
 
@@ -25,7 +26,7 @@ class EditDemocategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('democategories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             //
         });
     }

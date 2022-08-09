@@ -14,18 +14,17 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->increments('id')->autoIncrement();
+            $table->increments('id');
             $table->string('name', 100);
             $table->integer('category_id');
             $table->text('content')->nullable();
             $table->string('thumb')->nullable();
-            $table->string('status', 100);
-            $table->dateTime('publish_at');
+            $table->string('status', 100)->nullable();
+            $table->dateTime('publish_at')->nullable();
             $table->string('type', 100)->nullable();
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
-            // $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
