@@ -169,7 +169,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
     });
 });
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => []], function () {
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['permission.admin']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 

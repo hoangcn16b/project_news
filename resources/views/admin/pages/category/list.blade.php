@@ -1,9 +1,11 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
+use App\Models\CategoryModel;
 
 @endphp
 <div class="x_content">
+
 
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
@@ -11,6 +13,7 @@ use App\Helpers\Hightlight as Hightlight;
                 <tr class="headings">
                     <th class="column-title">#</th>
                     <th class="column-title">Name</th>
+                    <th class="column-title">Ordering</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Hiện thị Home</th>
                     <th class="column-title">Kiểu hiện thị</th>
@@ -28,7 +31,7 @@ use App\Helpers\Hightlight as Hightlight;
                             $class = $index % 2 == 0 ? 'even' : 'odd';
                             $id = $val['id'];
                             $name = Hightlight::show($val['name'], $params['search'], 'name');
-                            $name = str_repeat('----/ ', $val['depth'] - 1) . $name;
+                            $name = str_repeat('-----/ ', $val['depth'] - 1) . $name;
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
                             // $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
@@ -42,6 +45,10 @@ use App\Helpers\Hightlight as Hightlight;
                         <tr class="{{ $class }} pointer">
                             <td>{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
+                            <td>
+                                <a href="#">UP</a> &nbsp &nbsp
+                                <a href="#">DOWN</a>
+                            </td>
                             {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}
                             <td>

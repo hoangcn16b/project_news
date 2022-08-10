@@ -13,14 +13,16 @@ class CategoryModel extends AdminModel
 {
     // use HasFactory;
     use NodeTrait;
-    protected $fillable = ['name'];
-    public function __construct()
-    {
-        $this->table               = 'categories';
-        $this->folderUpload        = 'category';
-        $this->fieldSearchAccepted = ['id', 'name'];
-        $this->crudNotAccepted     = ['_token'];
-    }
+    // protected $fillable = ['name', 'status', 'is_home', 'display'];
+    protected $guarded = [];
+    protected $table               = 'categories';
+    protected $folderUpload        = 'category';
+    protected $fieldSearchAccepted = ['id', 'name'];
+    protected $crudNotAccepted     = ['_token', 'parent_id'];
+    // public function __construct()
+    // {
+
+    // }
 
     public function listItems($params = null, $options = null)
     {
@@ -75,6 +77,14 @@ class CategoryModel extends AdminModel
 
             $result = $query->pluck('name', 'id')->toArray();
         }
+
+
+        if ($options['task'] == "admin-list-items-category-nestedset") {
+            $query = $this->find($params['id']);
+            // dd($query);
+            // $result = $query->pluck('name', 'id')->toArray();
+        }
+
         return $result;
     }
 
@@ -111,7 +121,23 @@ class CategoryModel extends AdminModel
         $result = null;
 
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
+            if (isset($params['id'])) {
+                $result['item'] = self::select('id', 'name', 'status')->where('id', $params['id'])->first()->toArray();
+                $query = $this->find($params['id']);
+                $parentThisId = $query['parent_id'];
+                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('_lft', '<', $query->_lft)->orWhere('_rgt', '>', $query->_rgt)->get()->toArray();
+                $result['parent'] = $this->find($parentThisId)->id;
+                // foreach ($query as $key => $value) {
+                //     $result['list_category'][$value['id']] = $value['name'];
+                // }
+                $result['list_category'] = $query;
+                // $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
+            } else {
+                $result['item'] = [];
+                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->get()->toArray();
+                $result['list_category'] = $query;
+                $result['parent'] = [];
+            }
         }
 
         if ($options['task'] == 'news-get-item') {
@@ -119,7 +145,6 @@ class CategoryModel extends AdminModel
 
             if ($result) $result = $result->toArray();
         }
-
         return $result;
     }
 
@@ -143,20 +168,48 @@ class CategoryModel extends AdminModel
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d');
-            self::insert($this->prepareParams($params));
+
+            $parent = CategoryModel::find($params['parent_id']);
+
+            $params = $this->prepareParams($params);
+            $parent->children()->create($params);
         }
 
         if ($options['task'] == 'edit-item') {
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d');
-            self::where('id', $params['id'])->update($this->prepareParams($params));
+
+            $thisId = $params['id'];
+            $thisParentId = $params['parent_id'];
+            // die;
+            $parent = CategoryModel::find($params['parent_id']);
+            $this->afterNode($params['parent_id'])->save();
+            // $parent->children()->where('id', $params['id'])->update($this->prepareParams($params));
+            // self::where('id', $params['id'])->update($this->prepareParams($params));
         }
     }
 
     public function deleteItem($params = null, $options = null)
     {
+
         if ($options['task'] == 'delete-item') {
+            // $this->delete();
+            $nestedSet = $this->find($params['id']);
+            $lft = $nestedSet->_lft;
+            $rgt = $nestedSet->_rgt;
+            $getListToDelete = self::select()->where('_lft', '>', $lft)->Where('_rgt', '<', $rgt)->get();
+            $ids = [];
+            if (!empty($getListToDelete)) {
+                foreach ($getListToDelete as $key => $value) {
+                    $ids[] = $value->id;
+                }
+                // $ids = implode(',', $ids);
+                self::whereIn('id', $ids)->delete();
+            }
+            // dd($ids);
+
             self::where('id', $params['id'])->delete();
+            $this->fixTree();
         }
     }
 }
