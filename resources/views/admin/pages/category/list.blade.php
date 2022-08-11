@@ -28,17 +28,18 @@ use App\Models\CategoryModel;
                         @php
                             $id = $val['id'];
                             
-                            $node = CategoryModel::find($id);
-                            $resultPre = $node->getPrevSibling();
-                            $resultNext = $node->getNextSibling();
-                            // dd($resultPre);
+                            $nodePre = CategoryModel::find($id)->getPrevSibling();
+                            $nodeNext = CategoryModel::find($id)->getNextSibling();
+                            // $resultPre = $node->getPrevSibling();
+                            // $resultNext = $node->getNextSibling();
+                            // dd($node);
                             $buttonDown = '<a href="' . route('category/ordering', ['ordering' => 'down', 'id' => $id]) . '"><i class="fa fa-arrow-down"></i></a>';
                             $buttonUp = '<a href="' . route('category/ordering', ['ordering' => 'up', 'id' => $id]) . '"><i class="fa fa-arrow-up"></i></a>';
                             
-                            if ($resultPre == null) {
+                            if ($nodePre == null) {
                                 $buttonUp = '';
                             }
-                            if ($resultNext == null) {
+                            if ($nodeNext == null) {
                                 $buttonDown = '';
                             }
                             // $result = $val->getPrevSibling();
