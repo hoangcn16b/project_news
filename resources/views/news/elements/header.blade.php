@@ -1,8 +1,9 @@
 @php
 use App\Models\MenuModel as MenuModel;
 use App\Helpers\URL;
-
+use App\Models\CategoryModel as CategoryModel;
 $menuModel = new MenuModel();
+$categoryModel = new CategoryModel();
 $itemsMenu = $menuModel->listItems(null, ['task' => 'news-list-items']);
 
 $xhtmlMenu = '';
@@ -38,8 +39,7 @@ if (count($itemsMenu) > 0) {
             $ulList .= '</ul>';
             $xhtmlMenu .= sprintf('<li class="parent" %s><a> %s </a> %s </li>', $classActiveSubList, $item['name'], $ulList);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
-        }
-        elseif ($item['type'] == 'list_article') {
+        } elseif ($item['type'] == 'list_article') {
             $result = DB::table('articles')
                 ->select('id', 'name')
                 ->where('status', '=', 'active')
@@ -66,6 +66,18 @@ if (count($itemsMenu) > 0) {
     } else {
         $xhtmlMenuUser = sprintf('<li><a href="%s">%s</a></li>', route('auth/login'), 'Login');
     }
+
+    // $category = CategoryModel::find(1);
+    // $categories = $category->descendants()->pluck('id');
+
+    // $categories[] = $category->getKey();
+    // $goods = CategoryModel::whereIn('id', $categories)->get();
+    $categories = CategoryModel::withDepth()
+        ->with('ancestors')
+        ->get()
+        ->toTree();
+    // $categories = $categories[0];
+    // dd($categories);
 
     $xhtmlMenu .= $xhtmlMenuUser . '</ul></nav>';
     $xhtmlMenuMobile .= $xhtmlMenuUser . '</ul></nav>';
@@ -106,7 +118,38 @@ if (count($itemsMenu) > 0) {
 @endphp
 
 <header class="header">
+    <table class="table">
+        <thead class=>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Children</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($categories as $key => $category)
+                <tr>
+                    <td>
+                        {{-- @dd($category) --}}
+                        {{ $key + 1 }}
+                    </td>
+                    <td>
+                        {{ $category->name }}
+                    </td>
+                    <td>
+                        @foreach ($category->children as $item)
+                            {{ $item->name }},
+                        @endforeach
 
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+    {{-- @foreach ($category[0] as $child) --}}
+    {{-- <div style="margin-left: 30px;"> </div> --}}
+    {{-- <x-category-item :category="$child"> --}}
+    {{-- @endforeach --}}
     <!-- Header Content -->
     <div class="header_content_container">
         <div class="container">

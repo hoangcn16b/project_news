@@ -114,4 +114,13 @@ class CategoryController extends AdminController
             'status' => 'success'
         ]);
     }
+
+    public function ordering(Request $request)
+    {
+        $params["currentOrdering"]   = $request->ordering;
+        $params["id"]               = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-ordering']);
+        $notify = "Cập nhật thứ tự thành công!";
+        return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
+    }
 }

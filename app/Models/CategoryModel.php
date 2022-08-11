@@ -179,13 +179,29 @@ class CategoryModel extends AdminModel
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d');
 
-            $thisId = $params['id'];
-            $thisParentId = $params['parent_id'];
-            // die;
-            $parent = CategoryModel::find($params['parent_id']);
-            $this->afterNode($params['parent_id'])->save();
+            $currentParentId = $this->find($params['id'])->parent_id;
+            $parentId = $params['parent_id'];
+            $params = $this->prepareParams($params);
+            self::where('id', $params['id'])->update($params);
+
+            if ($currentParentId != $parentId) {
+                $parent = $this->find($parentId);
+                $node = $this->find($params['id']);
+                $node->appendToNode($parent)->save();
+            }
+            // $parent = CategoryModel::find($params['parent_id']);
+            // $this->afterNode($params['parent_id'])->save();
             // $parent->children()->where('id', $params['id'])->update($this->prepareParams($params));
             // self::where('id', $params['id'])->update($this->prepareParams($params));
+        }
+
+        if ($options['task'] == 'change-ordering') {
+            $node = $this->find($params['id']);
+            if ($params['currentOrdering'] == 'up') {
+                $node->up();
+            } elseif ($params['currentOrdering'] == 'down') {
+                $node->down();
+            }
         }
     }
 
@@ -193,23 +209,20 @@ class CategoryModel extends AdminModel
     {
 
         if ($options['task'] == 'delete-item') {
-            // $this->delete();
-            $nestedSet = $this->find($params['id']);
-            $lft = $nestedSet->_lft;
-            $rgt = $nestedSet->_rgt;
-            $getListToDelete = self::select()->where('_lft', '>', $lft)->Where('_rgt', '<', $rgt)->get();
-            $ids = [];
-            if (!empty($getListToDelete)) {
-                foreach ($getListToDelete as $key => $value) {
-                    $ids[] = $value->id;
-                }
-                // $ids = implode(',', $ids);
-                self::whereIn('id', $ids)->delete();
-            }
-            // dd($ids);
-
-            self::where('id', $params['id'])->delete();
-            $this->fixTree();
+            $node = $this->find($params['id']);
+            $node->delete();
+            // $lft = $node->_lft;
+            // $rgt = $node->_rgt;
+            // $getListToDelete = self::select()->where('_lft', '>', $lft)->Where('_rgt', '<', $rgt)->get();
+            // $ids = [];
+            // if (!empty($getListToDelete)) {
+            //     foreach ($getListToDelete as $key => $value) {
+            //         $ids[] = $value->id;
+            //     }
+            //     self::whereIn('id', $ids)->delete();
+            // }
+            // self::where('id', $params['id'])->delete();
+            // $this->fixTree();
         }
     }
 }

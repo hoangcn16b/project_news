@@ -2,7 +2,7 @@
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
 use App\Models\CategoryModel;
-
+// dd($items);
 @endphp
 <div class="x_content">
 
@@ -26,10 +26,35 @@ use App\Models\CategoryModel;
                 @if (count($items) > 0)
                     @foreach ($items as $key => $val)
                         @php
+                            $id = $val['id'];
                             
+                            $node = CategoryModel::find($id);
+                            $resultPre = $node->getPrevSibling();
+                            $resultNext = $node->getNextSibling();
+                            // dd($resultPre);
+                            $buttonDown = '<a href="' . route('category/ordering', ['ordering' => 'down', 'id' => $id]) . '"><i class="fa fa-arrow-down"></i></a>';
+                            $buttonUp = '<a href="' . route('category/ordering', ['ordering' => 'up', 'id' => $id]) . '"><i class="fa fa-arrow-up"></i></a>';
+                            
+                            if ($resultPre == null) {
+                                $buttonUp = '';
+                            }
+                            if ($resultNext == null) {
+                                $buttonDown = '';
+                            }
+                            // $result = $val->getPrevSibling();
+                            // dd($items[$key - 1]['depth'] . $val['depth']);
+                            // if ($items[$key + 1]['depth'] > $val['depth']) {
+                            //     $buttonDown = '<a href="' . route('category/ordering', ['ordering' => 'down', 'id' => $id]) . '">DOWN</a>';
+                            // }
+                            // if ($items[$key - 1] == 0) {
+                            //     $buttonUp = '';
+                            // } else {
+                            //     if ($items[$key - 1]['depth'] < $val['depth']) {
+                            //         $buttonUp = '<a href="' . route('category/ordering', ['ordering' => 'up', 'id' => $id]) . '">UP</a>';
+                            //     }
+                            // }
                             $index = $key + 1;
                             $class = $index % 2 == 0 ? 'even' : 'odd';
-                            $id = $val['id'];
                             $name = Hightlight::show($val['name'], $params['search'], 'name');
                             $name = str_repeat('-----/ ', $val['depth'] - 1) . $name;
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
@@ -45,9 +70,12 @@ use App\Models\CategoryModel;
                         <tr class="{{ $class }} pointer">
                             <td>{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
-                            <td>
-                                <a href="#">UP</a> &nbsp &nbsp
-                                <a href="#">DOWN</a>
+                            <td width="10%">
+                                {!! $buttonUp !!}
+                                &nbsp
+                                &nbsp
+                                &nbsp
+                                {!! $buttonDown !!}
                             </td>
                             {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}
