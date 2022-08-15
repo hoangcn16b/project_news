@@ -6,17 +6,69 @@ use App\Models\CategoryModel;
 @endphp
 <div class="x_content">
 
-    <div class="dd" id="nestable3">
-        <ol class="dd-list">
-
-            <div class="dd-handle dd3-handle">Drag</div>
-            @foreach ($items as $item)
+    {{-- <div class="dd" id="nestable3">
+        <ol class="dd-list"> --}}
+    {{-- <div class="dd-handle dd3-handle">Drag</div> --}}
+    {{-- @foreach ($items as $item)
                 @include('admin.pages.category.item', ['item' => $item])
-            @endforeach
+            @endforeach --}}
 
+    {{-- </ol>
+    </div> --}}
 
+    {{-- @php
+        function showCategory($items, &$xhtml)
+        {
+            foreach ($items as $item) {
+                $xhtml .= sprintf('class="dd-item dd3-item" data-id="%s">', $item->id);
+        
+                if ($item->children->count() > 0) {
+                    $xhtml .= '<ol class="dd-list">';
+                    showCategory($item->children, $xhtml);
+                    $xhtml .= '</ol>';
+                }
+        
+                $xhtml .= '</li>';
+            }
+        }
+        
+        $xhtml = '';
+        showCategory($items, $xhtml);
+    @endphp --}}
+    {{-- <div class="dd" id="nestable3">
+        <ol class="dd-list">
+            <li class="dd-item dd3-item" data-id="13">
+                <div class="dd-handle dd3-handle">Drag</div>
+                <div class="dd3-content">Item 13</div>
+            </li>
+            <li class="dd-item dd3-item" data-id="14">
+                <div class="dd-handle dd3-handle">Drag</div>
+                <div class="dd3-content">Item 14</div>
+            </li>
+            <li class="dd-item dd3-item" data-id="15">
+                <button class="dd-collapse" data-action="collapse" type="button">Collapse</button>
+                <button class="dd-expand" data-action="expand" type="button">Expand</button>
+                <div class="dd-handle dd3-handle">Drag</div>
+                <div class="dd3-content">Item 15</div>
+                <ol class="dd-list">
+                    <li class="dd-item dd3-item" data-id="16">
+                        <div class="dd-handle dd3-handle">Drag</div>
+                        <div class="dd3-content">Item 16</div>
+                    </li>
+                    <li class="dd-item dd3-item" data-id="17">
+                        <div class="dd-handle dd3-handle">Drag</div>
+                        <div class="dd3-content">Item 17</div>
+                    </li>
+                    <li class="dd-item dd3-item" data-id="18">
+                        <div class="dd-handle dd3-handle">Drag</div>
+                        <div class="dd3-content">Item 18</div>
+                    </li>
+                </ol>
+            </li>
         </ol>
-    </div>
+    </div> --}}
+
+
 
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
@@ -41,32 +93,6 @@ use App\Models\CategoryModel;
                         @php
                             $id = $val['id'];
                             
-                            $nodePre = $val->getPrevSibling();
-                            $nodeNext = $val->getNextSibling();
-                            // $resultPre = $node->getPrevSibling();
-                            // $resultNext = $node->getNextSibling();
-                            // dd($node);
-                            $buttonDown = '<a href="' . route('category/ordering', ['ordering' => 'down', 'id' => $id]) . '"><i class="fa fa-arrow-down"></i></a>';
-                            $buttonUp = '<a href="' . route('category/ordering', ['ordering' => 'up', 'id' => $id]) . '"><i class="fa fa-arrow-up"></i></a>';
-                            
-                            if ($nodePre == null) {
-                                $buttonUp = '';
-                            }
-                            if ($nodeNext == null) {
-                                $buttonDown = '';
-                            }
-                            // $result = $val->getPrevSibling();
-                            // dd($items[$key - 1]['depth'] . $val['depth']);
-                            // if ($items[$key + 1]['depth'] > $val['depth']) {
-                            //     $buttonDown = '<a href="' . route('category/ordering', ['ordering' => 'down', 'id' => $id]) . '">DOWN</a>';
-                            // }
-                            // if ($items[$key - 1] == 0) {
-                            //     $buttonUp = '';
-                            // } else {
-                            //     if ($items[$key - 1]['depth'] < $val['depth']) {
-                            //         $buttonUp = '<a href="' . route('category/ordering', ['ordering' => 'up', 'id' => $id]) . '">UP</a>';
-                            //     }
-                            // }
                             $index = $key + 1;
                             $class = $index % 2 == 0 ? 'even' : 'odd';
                             $name = Hightlight::show($val['name'], $params['search'], 'name');
@@ -85,11 +111,15 @@ use App\Models\CategoryModel;
                             <td>{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
                             <td width="10%">
-                                {!! $buttonUp !!}
-                                &nbsp
-                                &nbsp
-                                &nbsp
-                                {!! $buttonDown !!}
+                                @if (!empty($val->getPrevSibling()))
+                                    <a href="{{ route('category/ordering', ['ordering' => 'up', 'id' => $id]) }}"><i
+                                            class="fa fa-arrow-up"></i></a>
+                                @endif
+                                &nbsp; &nbsp; &nbsp; &nbsp;
+                                @if (!empty($val->getNextSibling()))
+                                    <a href="{{ route('category/ordering', ['ordering' => 'down', 'id' => $id]) }}"><i
+                                            class="fa fa-arrow-down"></i></a>
+                                @endif
                             </td>
                             {{-- <td>{!! $status !!}</td> --}}
                             {{-- <td>{!! $isHome  !!}</td> --}}

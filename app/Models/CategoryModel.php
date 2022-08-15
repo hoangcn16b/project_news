@@ -31,8 +31,8 @@ class CategoryModel extends AdminModel
 
         if ($options['task'] == "admin-list-items") {
             // $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by');
-            $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('id', '>', '1');
-
+            $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created_at', 'created_by', 'updated_at', 'updated_by', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->having('depth', '>', 0);
+            // withDepth()->having('depth', '>', 0)->defaultOrder()->get()->toTree();
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
             }
@@ -48,7 +48,7 @@ class CategoryModel extends AdminModel
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
             }
-            $result =  $query->orderBy('id', 'desc')->get();
+            $result =  $query->get();
             // ->paginate($params['pagination']['totalItemsPerPage']);
             // dd($result);
 
