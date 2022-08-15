@@ -18,6 +18,7 @@ if (count($itemsMenu) > 0) {
         if ($item['type'] == 'link') {
             // $linkMenu = URL::linkMenu($item['id'], $item['name']);
             $classActive = '';
+
             $xhtmlMenu .= sprintf('<li class="%s"><a target = "%s" href="%s">%s</a></li>', $classActive, $item['type_open'], $linkMenu, $item['name']);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a target = "%s" href="%s">%s</a></li>', $item['type_open'], $linkMenu, $item['name']);
         } elseif ($item['type'] == 'list_category') {
@@ -26,19 +27,92 @@ if (count($itemsMenu) > 0) {
                 ->where('status', '=', 'active')
                 ->get()
                 ->toArray();
+            // dd($result);
+            // $ulList = '<ul class="child">';
+            // $categoryIdCurrent = Route::input('category_id');
 
-            $ulList = '<ul class="child">';
-            $categoryIdCurrent = Route::input('category_id');
+            // foreach ($result as $key => $value) {
+            //     $classActiveSubList = $categoryIdCurrent == $value->id ? 'active' : '';
+            //     $linkSubList = URL::linkCategory($value->id, $value->name);
 
-            foreach ($result as $key => $value) {
-                $classActiveSubList = $categoryIdCurrent == $value->id ? 'active' : '';
-                $linkSubList = URL::linkCategory($value->id, $value->name);
-
-                $ulList .= sprintf('<li class="parent %s"><a target = "%s" href="%s">%s</a></li>', $classActiveSubList, $item['type_open'], $linkSubList, $value->name);
-            }
-            $ulList .= '</ul>';
-            $xhtmlMenu .= sprintf('<li class="parent" %s><a> %s </a> %s </li>', $classActiveSubList, $item['name'], $ulList);
+            //     $ulList .= sprintf('<li class="parent %s"><a target = "%s" href="%s">%s</a></li>', $classActiveSubList, $item['type_open'], $linkSubList, $value->name);
+            // }
+            // $ulList .= '</ul>';
+            // $xhtmlMenu .= sprintf('<li class="parent" %s><a> %s </a> %s </li>', $classActiveSubList, $item['name'], $ulList);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $linkMenu, $item['name']);
+
+            //---------------------------
+            $categories = categoryModel::withDepth()
+                ->having('depth', '>', 0)
+                ->get()
+                ->toTree();
+
+            $xhtmlMenu .= sprintf(
+                '<li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"> %s </a> ',
+                $item['name'],
+            );
+            $xhtmlMenu .= '<ul class="dropdown-menu">';
+
+            function showCategory($categories, &$xhtml)
+            {
+                foreach ($categories as $category) {
+                    $categoryIdCurrent = Route::input('category_id');
+
+                    $linkSubList = URL::linkCategory($category->id, $category->name);
+                    $classActiveSubList = $categoryIdCurrent == $category->id ? 'active' : '';
+                    if ($category->children->count() > 0) {
+                        $xhtml .= sprintf('<li><a class=" %s dropdown-item dropdown-toggle" href="%s">%s</a>', $classActiveSubList, $linkSubList, $category->name);
+                    } else {
+                        $xhtml .= sprintf('<li><a class="%s dropdown-item" href="%s">%s</a>', $classActiveSubList, $linkSubList, $category->name);
+                    }
+                    if ($category->children->count() > 0) {
+                        $xhtml .= '<ul class="submenu dropdown-menu">';
+                        showCategory($category->children, $xhtml);
+                        $xhtml .= '</ul>';
+                    }
+                    $xhtml .= '</li>';
+                }
+            }
+
+            showCategory($categories, $xhtmlMenu);
+            $xhtmlMenu .= ' </ul>';
+            $xhtmlMenu .= '</li>';
+
+            //         $xhtmlMenu .= '
+            // <li class="nav-item dropdown">
+            // 	<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">  More items  </a>
+            //     <ul class="dropdown-menu">
+            // 	  <li><a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
+            // 	  <li><a class="dropdown-item dropdown-toggle" href="#"> Dropdown item 2 </a>
+            // 	  	 <ul class="submenu dropdown-menu">
+            // 		    <li><a class="dropdown-item" href="">Submenu item 1</a></li>
+            // 		    <li><a class="dropdown-item" href="">Submenu item 2</a></li>
+            // 		    <li><a class="dropdown-item" href="">Submenu item 3</a></li>
+            // 		 </ul>
+            // 	  </li>
+            // 	  <li><a class="dropdown-item dropdown-toggle" href="#"> Dropdown item 3 </a>
+            // 	  	 <ul class="submenu dropdown-menu">
+            // 		    <li><a class="dropdown-item" href="">Another submenu 1</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 2</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 3</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 4</a></li>
+            // 		 </ul>
+            // 	  </li>
+            // 	  <li><a class="dropdown-item dropdown-toggle" href="#"> Dropdown item 4 </a>
+            // 	  	 <ul class="submenu dropdown-menu">
+            // 		    <li><a class="dropdown-item" href="">Another submenu 1</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 2</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 3</a></li>
+            // 		    <li><a class="dropdown-item" href="">Another submenu 4</a></li>
+            // 		 </ul>
+            // 	  </li>
+            // 	  <li><a class="dropdown-item" href="#"> Dropdown item 4 </a></li>
+            // 	  <li><a class="dropdown-item" href="#"> Dropdown item 5 </a></li>
+            //     </ul>
+            // </li>
+            //             ';
+            //=----------------------------
         } elseif ($item['type'] == 'list_article') {
             $result = DB::table('articles')
                 ->select('id', 'name')
@@ -72,10 +146,7 @@ if (count($itemsMenu) > 0) {
 
     // $categories[] = $category->getKey();
     // $goods = CategoryModel::whereIn('id', $categories)->get();
-    $categories = CategoryModel::withDepth()
-        ->with('ancestors')
-        ->get()
-        ->toTree();
+
     // $categories = $categories[0];
     // dd($categories);
 
@@ -119,87 +190,56 @@ if (count($itemsMenu) > 0) {
 
 <header class="header">
     <table class="table">
-        <thead class=>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Children</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($categories as $key => $category)
-                <tr>
-                    <td>
-                        {{-- @dd($category) --}}
-                        {{ $key + 1 }}
-                    </td>
-                    <td>
-                        {{ $category->name }}
-                    </td>
-                    <td>
-                        @foreach ($category->children as $item)
-                            {{ $item->name }},
-                        @endforeach
 
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    {{-- @foreach ($category[0] as $child) --}}
-    {{-- <div style="margin-left: 30px;"> </div> --}}
-    {{-- <x-category-item :category="$child"> --}}
-    {{-- @endforeach --}}
-    <!-- Header Content -->
-    <div class="header_content_container">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="header_content d-flex flex-row align-items-center justfy-content-start">
-                        <div class="logo_container">
-                            <a href="{!! route('home') !!}">
-                                <div class="logo"><span>ZEND</span>VN</div>
-                            </a>
-                        </div>
-                        <div class="header_extra ml-auto d-flex flex-row align-items-center justify-content-start">
-                            <a href="#">
-                                <div class="background_image"
-                                    style="background-image:url({{ asset('news/images/zendvn-online.png') }});background-size: contain">
-                                </div>
+        <div class="header_content_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_content d-flex flex-row align-items-center justfy-content-start">
+                            <div class="logo_container">
+                                <a href="{!! route('home') !!}">
+                                    <div class="logo"><span>ZEND</span>VN</div>
+                                </a>
+                            </div>
+                            <div class="header_extra ml-auto d-flex flex-row align-items-center justify-content-start">
+                                <a href="#">
+                                    <div class="background_image"
+                                        style="background-image:url({{ asset('news/images/zendvn-online.png') }});background-size: contain">
+                                    </div>
 
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Header Navigation & Search -->
-    <div class="header_nav_container" id="header">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="header_nav_content d-flex flex-row align-items-center justify-content-start">
+        <!-- Header Navigation & Search -->
+        <div class="header_nav_container" id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_nav_content d-flex flex-row align-items-center justify-content-start">
 
-                        <!-- Logo -->
-                        <div class="logo_container">
-                            <a href="#">
-                                <div class="logo"><span>ZEND</span>VN</div>
-                            </a>
+                            <!-- Logo -->
+                            <div class="logo_container">
+                                <a href="#">
+                                    <div class="logo"><span>ZEND</span>VN</div>
+                                </a>
+                            </div>
+
+                            <!-- Navigation -->
+                            {!! $xhtmlMenu !!}
+
+                            <!-- Hamburger -->
+                            <div class="hamburger ml-auto menu_mm"><i class="fa fa-bars  trans_200 menu_mm"
+                                    aria-hidden="true"></i></div>
                         </div>
-
-                        <!-- Navigation -->
-                        {!! $xhtmlMenu !!}
-
-                        <!-- Hamburger -->
-                        <div class="hamburger ml-auto menu_mm"><i class="fa fa-bars  trans_200 menu_mm"
-                                aria-hidden="true"></i></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </header>
 
 <div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">

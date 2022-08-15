@@ -6,6 +6,17 @@ use App\Models\CategoryModel;
 @endphp
 <div class="x_content">
 
+    <div class="dd" id="nestable3">
+        <ol class="dd-list">
+
+            <div class="dd-handle dd3-handle">Drag</div>
+            @foreach ($items as $item)
+                @include('admin.pages.category.item', ['item' => $item])
+            @endforeach
+
+
+        </ol>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
@@ -23,13 +34,15 @@ use App\Models\CategoryModel;
                 </tr>
             </thead>
             <tbody>
+
+
                 @if (count($items) > 0)
                     @foreach ($items as $key => $val)
                         @php
                             $id = $val['id'];
                             
-                            $nodePre = CategoryModel::find($id)->getPrevSibling();
-                            $nodeNext = CategoryModel::find($id)->getNextSibling();
+                            $nodePre = $val->getPrevSibling();
+                            $nodeNext = $val->getNextSibling();
                             // $resultPre = $node->getPrevSibling();
                             // $resultNext = $node->getNextSibling();
                             // dd($node);
@@ -99,6 +112,7 @@ use App\Models\CategoryModel;
                 @else
                     @include('admin.templates.list_empty', ['colspan' => 6])
                 @endif
+
             </tbody>
         </table>
     </div>
