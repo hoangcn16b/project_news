@@ -16,11 +16,12 @@ class DashboardModel extends AdminModel
         if ($options['task'] == 'dashboard-list-items') {
             $query = DB::select("SELECT
                 (SELECT COUNT(id) FROM users) AS User, 
-                (SELECT COUNT(id) FROM categories) AS Category,
+                (SELECT COUNT(id) FROM categories where id != 1) AS Category,
                 (SELECT COUNT(id) FROM articles) AS Article,
                 (SELECT COUNT(id) FROM sliders) AS Slider,
                 (SELECT COUNT(id) FROM rsses) AS Rss,
-                (SELECT COUNT(id) FROM menus) AS Menu
+                (SELECT COUNT(id) FROM menus) AS Menu,
+                (SELECT COUNT(id) FROM product_categories) AS 'Product Category'
             ");
         }
         

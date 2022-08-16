@@ -24,9 +24,12 @@ class Template
 
                 $currentTemplateStatus = $tmplStatus[$statusValue]; // $value['status'] inactive block active
                 $link = route($controllerName) . "?filter_status=" .  $statusValue;
-
+                $paramsFilter = '';
+                if (isset($paramsSearch['filter'])) {
+                    $paramsFilter = $paramsSearch['filter'];
+                }
                 if ($paramsSearch['value'] !== '') {
-                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value'] . "&search_filter=" .  $paramsSearch['filter'];
+                    $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value'] . "&search_filter=" .  $paramsFilter;
                 }
 
                 $class  = ($currentFilterStatus == $statusValue) ? 'btn-danger' : 'btn-info';
@@ -83,7 +86,6 @@ class Template
             $xhtmlField .= sprintf('<li><a href="#" class="select-filter" data-filter="%s">%s</a></li>', $key, $field);
         }
         // dd($tmplField);
-
 
         $searchField = (array_key_exists($paramsSearch['filter'],  $tmplField)) ? $paramsSearch['filter'] : "all";
         $xhtml = sprintf('

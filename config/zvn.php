@@ -100,6 +100,7 @@ return [
             'user'      => ['all', 'username', 'email', 'fullname'],
             'menu'      => ['all', 'name'],
             'contact'      => ['all', 'name', 'email'],
+            'productCategory'      => ['all', 'name'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -110,6 +111,8 @@ return [
             'user'      => ['edit'],
             'menu'      => ['edit', 'delete'],
             'contact'      => ['delete'],
+            'productCategory'      => ['edit', 'delete'],
+
         ]
     ]
 

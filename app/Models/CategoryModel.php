@@ -96,7 +96,7 @@ class CategoryModel extends AdminModel
         if ($options['task'] == 'admin-count-items-group-by-status') {
 
             $query = $this::groupBy('status')
-                ->select(DB::raw('status , COUNT(id) as count'));
+                ->select(DB::raw('status , COUNT(id) as count'))->where('id', '<>', 1);
 
             if ($params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
@@ -122,7 +122,7 @@ class CategoryModel extends AdminModel
 
         if ($options['task'] == 'get-item') {
             if (isset($params['id'])) {
-                $result['item'] = self::select('id', 'name', 'status')->where('id', $params['id'])->first()->toArray();
+                $result['item'] = self::select('id', 'name', 'status')->where('id', $params['id'])->where('id', '<>', '1')->first()->toArray();
                 $query = $this->find($params['id']);
                 $parentThisId = $query['parent_id'];
                 $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('_lft', '<', $query->_lft)->orWhere('_rgt', '>', $query->_rgt)->get()->toArray();
@@ -134,7 +134,7 @@ class CategoryModel extends AdminModel
                 // $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
             } else {
                 $result['item'] = [];
-                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->get()->toArray();
+                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->having('depth', '<>', '1')->get()->toArray();
                 $result['list_category'] = $query;
                 $result['parent'] = [];
             }
