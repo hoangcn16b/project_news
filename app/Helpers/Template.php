@@ -279,4 +279,19 @@ class Template
         $content = str_replace(['<p>', '</p>'], '', $content);
         return preg_replace('/\s+?(\S+)?$/', '', substr($content, 0, $length)) . $prefix;
     }
+
+    public static function collapseString($string, $length = 10)
+    {
+        $str = explode(" ", $string, 2000);
+        $xhtml = '';
+        foreach ($str as $key => $value) {
+            if ($key + 1 > $length) {
+                $xhtml .= '...';
+                break;
+            } else {
+                $xhtml .= $value . ' ';
+            }
+        }
+        return $xhtml;
+    }
 }

@@ -12,7 +12,7 @@ class ProductCategoryModel extends AdminModel
     public function __construct()
     {
         $this->table               = 'product_categories';
-        $this->folderUpload        = 'product_categories';
+        $this->folderUpload        = 'product category';
         $this->fieldSearchAccepted = ['id', 'name'];
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
         $this->getSpecial     = ['all' => 'Filter by All', 'active' => 'Danh mục đặc biệt', 'inactive' => 'Danh mục thường'];

@@ -4,9 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductCategoryRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
-    private $table            = 'product_categories';
+    private $table            = 'products';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,15 +27,21 @@ class ProductCategoryRequest extends FormRequest
     {
         $id = $this->id;
 
+        $condName = "bail|required|between:5,255|unique:$this->table,name";
         $condThumb = 'bail|required|image|max:5000';
-        $condName  = "bail|required|between:5,100|unique:$this->table,name";
 
-        if(!empty($id)){ // edit
+        if (!empty($id)) {
+            $condName .= ",$id";
             $condThumb = 'bail|image|max:5000';
-            $condName  .= ",$id";
         }
+
         return [
             'name'        => $condName,
+            'price'       => "bail|required|regex:/^\d+(\.\d{1,2})?$/",
+            'sale_off'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
+            // 'description' => 'bail|required|min:5',
+            'ordering'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
+            'special'      => 'bail|in:0,1',
             'status'      => 'bail|in:active,inactive',
             'thumb'       => $condThumb
         ];

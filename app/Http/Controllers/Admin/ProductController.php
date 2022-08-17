@@ -4,23 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
-use App\Models\ProductCategoryModel as MainModel;
-use App\Http\Requests\ProductCategoryRequest as MainRequest;
+use App\Models\ProductModel as MainModel;
+use App\Models\ProductModel;
+use App\Http\Requests\ProductRequest as MainRequest;
 
-class ProductCategoryController extends AdminController
+class ProductController extends AdminController
 {
-    public $pathViewController = 'admin.pages.product_category.';  // slider
-    public $controllerName     = 'productCategory';
-    public $folderFileUpload     = 'product category';
-    public $inTable     = 'product_categories';
+    public $pathViewController = 'admin.pages.product.';  // slider
+    public $controllerName     = 'product';
+    public $inTable     = 'products';
+    public $folderFileUpload     = 'product';
     public $model;
 
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params["pagination"]["totalItemsPerPage"] = 5;
-        view()->share('inTable', $this->inTable);
+        $this->params["pagination"]["totalItemsPerPage"] = 50;
         view()->share('controllerName', $this->controllerName);
+        view()->share('inTable', $this->inTable);
         view()->share('folderFileUpload', $this->folderFileUpload);
     }
 
@@ -33,11 +34,12 @@ class ProductCategoryController extends AdminController
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-
+        $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,
-            'itemsStatusCount' =>  $itemsStatusCount
+            'itemsStatusCount' =>  $itemsStatusCount,
+            'getCategory'   => $getCategory
         ]);
     }
 
@@ -58,4 +60,23 @@ class ProductCategoryController extends AdminController
         }
     }
 
+    public function category(Request $request)
+    {
+        $params["currentCategory"]    = $request->category;
+        $params["id"]             = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-category']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function type(Request $request)
+    {
+        $params["currentType"]    = $request->type;
+        $params["id"]             = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-type']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

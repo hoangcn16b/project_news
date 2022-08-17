@@ -101,6 +101,7 @@ return [
             'menu'      => ['all', 'name'],
             'contact'      => ['all', 'name', 'email'],
             'productCategory'      => ['all', 'name'],
+            'product'      => ['all', 'name'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -112,6 +113,7 @@ return [
             'menu'      => ['edit', 'delete'],
             'contact'      => ['delete'],
             'productCategory'      => ['edit', 'delete'],
+            'product'      => ['edit', 'delete'],
 
         ]
     ]
