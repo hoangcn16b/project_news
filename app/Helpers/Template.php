@@ -80,10 +80,11 @@ class Template
     public static function showAreaFilter($controllerName, $paramsSearch, $tmplField)
     {
         $xhtml = null;
-
         $xhtmlField = '';
+
         foreach ($tmplField as $key => $field) { // all id
-            $xhtmlField .= sprintf('<li><a href="#" class="select-filter" data-filter="%s">%s</a></li>', $key, $field);
+            // $linkFilter = route($controllerName . '', ['filter_status' => $paramsSearch['status'] ?? '', 'search_field' => $paramsSearch['filed'] ?? '', 'search_value' => $paramsSearch['value'] ?? '', 'search_filter' => $key ?? '']);
+            $xhtmlField .= sprintf('<li><a href="%s" class="select-filter" data-filter="%s">%s</a></li>', '#', $key, $field);
         }
         // dd($tmplField);
 

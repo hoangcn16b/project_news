@@ -34,7 +34,7 @@ class ProductController extends AdminController
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-        $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category']);
+        $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category'], false);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,
@@ -70,13 +70,13 @@ class ProductController extends AdminController
         ]);
     }
 
-    public function type(Request $request)
-    {
-        $params["currentType"]    = $request->type;
-        $params["id"]             = $request->id;
-        $this->model->saveItem($params, ['task' => 'change-type']);
-        return response()->json([
-            'status' => 'success'
-        ]);
-    }
+    // public function type(Request $request)
+    // {
+    //     $params["currentType"]    = $request->type;
+    //     $params["id"]             = $request->id;
+    //     $this->model->saveItem($params, ['task' => 'change-type']);
+    //     return response()->json([
+    //         'status' => 'success'
+    //     ]);
+    // }
 }

@@ -1,6 +1,8 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
+$fieldNameTypeOpen = 'source';
+$fieldNameSource = 'rss_source';
 @endphp
 <div class="x_content">
     <div class="table-responsive">
@@ -20,6 +22,7 @@ use App\Helpers\Hightlight as Hightlight;
             </thead>
             <tbody>
                 @if (count($items) > 0)
+
                     @foreach ($items as $key => $val)
                         @php
                             $index = $key + 1;
@@ -34,7 +37,7 @@ use App\Helpers\Hightlight as Hightlight;
                             // $modifiedHistory = Template::showItemHistory($val['modified_by'], $val['modified']);
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $ordering = 'ordering';
-                            
+                            $thisColumnSource = 'source';
                         @endphp
 
                         <tr class="{{ $class }} pointer">
@@ -45,7 +48,10 @@ use App\Helpers\Hightlight as Hightlight;
                                 <livewire:ordering :thisColumn="$ordering" :ordering="$val['ordering']" :rowId="$id"
                                     :inTable="$inTable" />
                             </td>
-                            <td>{{ $source }}</td>
+                            <td width="15%" align="center">
+                                <livewire:select :thisColumn="$thisColumnSource" :thisType="$val['source']" :rowId="$id" :fieldName="$fieldNameSource"
+                                    :inTable="$inTable" />
+                            </td>
                             <td>
                                 <livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable" />
                             </td>

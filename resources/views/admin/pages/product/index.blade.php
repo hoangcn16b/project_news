@@ -4,11 +4,13 @@ use App\Helpers\Template as Template;
 use App\Models\ProductModel;
 $xhtmlButtonFilter = Template::showButtonFilter($controllerName, $itemsStatusCount, $params['filter']['status'], $params['search']);
 $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
-$categoryConfig['all'] = 'Filter by All';
-$getCategory = ProductModel::getCategory(null, ['task' => 'get-category']);
-foreach ($getCategory as $key => $value) {
-    $categoryConfig[$key] = $value;
-}
+// $categoryConfig['all'] = 'Filter by All';
+// $getCategory = ProductModel::getCategory(null, ['task' => 'get-category']);
+// foreach ($getCategory as $key => $value) {
+//     $categoryConfig[$key] = $value;
+// }
+$categoryConfig = ProductModel::getCategory(null, ['task' => 'get-category'], true);
+
 
 $xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
 

@@ -1,40 +1,42 @@
 @extends('admin.main')
 @php
-    use App\Helpers\Form as FormTemplate;
-    use App\Helpers\Template;
+use App\Helpers\Form as FormTemplate;
+use App\Helpers\Template;
 
-    $formInputAttr = config('zvn.template.form_input');
-    $formLabelAttr = config('zvn.template.form_label');
+$formInputAttr = config('zvn.template.form_input');
+$formLabelAttr = config('zvn.template.form_label');
 
-    $statusValue      = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
+$statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 
-    $specialValue      = [ 'inactive' => 'Danh mục thường' ,'active' => 'Danh mục đặc biệt'];
+$specialValue = ['inactive' => 'Danh mục thường', 'active' => 'Danh mục đặc biệt'];
 
-    $inputHiddenID    = Form::hidden('id', @$item['id']);
-    $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
+$inputHiddenID = Form::hidden('id', @$item['id']);
+$inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
-    $elements = [
-        [
-            'label'   => Form::label('name', 'Name', $formLabelAttr),
-            'element' => Form::text('name', @$item['name'], $formInputAttr )
-        ],[
-            'label'   => Form::label('status', 'Status', $formLabelAttr),
-            'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr)
-        ],
-        [
-            'label'   => Form::label('special', 'Special', $formLabelAttr),
-            'element' => Form::select('special', $specialValue, @$item['special'], $formInputAttr)
-        ]
-        ,[
-            'label'   => Form::label('thumb', 'Picture', $formLabelAttr),
-            'element' => Form::file('thumb', $formInputAttr ),
-            'thumb'   => (!empty(@$item['id'])) ? Template::showItemThumb($folderFileUpload, @$item['thumb'], @$item['thumb']) : null ,
-            'type'    => "thumb"
-        ],[
-            'element' => $inputHiddenID . $inputHiddenThumb . Form::submit('Save', ['class'=>'btn btn-success']),
-            'type'    => "btn-submit"
-        ]
-    ];
+$elements = [
+    [
+        'label' => Form::label('name', 'Name', $formLabelAttr),
+        'element' => Form::text('name', @$item['name'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('status', 'Status', $formLabelAttr),
+        'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('special', 'Special', $formLabelAttr),
+        'element' => Form::select('special', $specialValue, @$item['special'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('thumb', 'Picture', $formLabelAttr),
+        'element' => Form::file('thumb', $formInputAttr),
+        'thumb' => !empty(@$item['id']) ? Template::showItemThumb($folderFileUpload, @$item['thumb'], @$item['thumb']) : null,
+        'type' => 'thumb',
+    ],
+    [
+        'element' => $inputHiddenID . $inputHiddenThumb . Form::submit('Save', ['class' => 'btn btn-success']),
+        'type' => 'btn-submit',
+    ],
+];
 @endphp
 
 @section('content')
@@ -47,13 +49,14 @@
                 @include('admin.templates.x_title', ['title' => 'Form'])
                 <div class="x_content">
                     {{ Form::open([
-                        'method'         => 'POST', 
-                        'url'            => route("$controllerName/save"),
+                        'method' => 'POST',
+                        'url' => route("$controllerName/save"),
                         'accept-charset' => 'UTF-8',
-                        'enctype'        => 'multipart/form-data',
-                        'class'          => 'form-horizontal form-label-left',
-                        'id'             => 'main-form' ])  }}
-                        {!! FormTemplate::show($elements)  !!}
+                        'enctype' => 'multipart/form-data',
+                        'class' => 'form-horizontal form-label-left',
+                        'id' => 'main-form',
+                    ]) }}
+                    {!! FormTemplate::show($elements) !!}
                     {{ Form::close() }}
                 </div>
             </div>

@@ -110,9 +110,10 @@ class ProductModel extends AdminModel
         return $result;
     }
 
-    public function getCategory($params = null, $options  = null)
+    public function getCategory($params = null, $options  = null, $hasDefault = false)
     {
         $result = null;
+        if ($hasDefault) $result['all'] = 'Filter by All';
         if ($options['task'] == 'get-category') {
             $query = DB::table('product_categories')->select('id', 'name');
             $query = $query->get()->toArray();

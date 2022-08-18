@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     let $btnSearch = $("button#btn-search");
     let $btnClearSearch = $("button#btn-clear-search");
 
@@ -32,7 +31,6 @@ $(document).ready(function () {
         // console.log($inputSearchFilter.val(filter));
     });
 
-
     $btnSearch.click(function () {
         var pathname = window.location.pathname;
         let params = ["filter_status"];
@@ -53,16 +51,17 @@ $(document).ready(function () {
         // if (search_value.replace(/\s/g, "") == "") {
         //     alert("Nhập vào giá trị cần tìm !!");
         // } else {
-            window.location.href =
-                pathname +
-                "?" +
-                link +
-                "search_field=" +
-                search_field +
-                "&search_value=" +
-                search_value +
-                "&search_filter=" +
-                search_filter;
+
+        window.location.href =
+            pathname +
+            "?" +
+            link +
+            "search_field=" +
+            search_field +
+            "&search_value=" +
+            search_value +
+            "&search_filter=" +
+            search_filter;
         // }
     });
 
