@@ -1,10 +1,7 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
-// echo '<pre>';
-// print_r ($items);
-// echo '</pre>';
-// die;
+$listCategory = array_flip($listCategory);
 @endphp
 <div class="x_content">
     <div class="table-responsive">
@@ -58,7 +55,7 @@ use App\Helpers\Hightlight as Hightlight;
                             </td>
                             <td width="15%">
                                 <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->productCategory->id" :rowId="$id"
-                                    :fieldName="$getCategory" :inTable="$inTable" />
+                                    :fieldName="$listCategory" :inTable="$inTable" />
                             </td>
                             <td>
                                 <livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable" />

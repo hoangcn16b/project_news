@@ -1,6 +1,10 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
+foreach ($getCategoryNestedset['list_category'] as $key => $value) {
+    $listCategory[$value['id']] = $value->name_category;
+}
+$listCategory = array_flip($listCategory);
 
 @endphp
 <div class="x_content">
@@ -47,9 +51,9 @@ use App\Helpers\Hightlight as Hightlight;
                             <td width="14%">
                                 <p>{!! $thumb !!}</p>
                             </td>
-                            <td width="10%">
+                            <td width="15%">
                                 <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->category->id" :rowId="$id"
-                                    :fieldName="$getCategory" :inTable="$inTable" />
+                                    :fieldName="$listCategory" :inTable="$inTable" />
                             </td>
                             <td width="10%">
                                 <livewire:select :thisColumn="$ColType" :thisType="$val['type']" :rowId="$id" :fieldName="$fieldNameType"

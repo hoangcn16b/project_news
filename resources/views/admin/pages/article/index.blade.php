@@ -4,10 +4,10 @@ use App\Helpers\Template as Template;
 $xhtmlButtonFilter = Template::showButtonFilter($controllerName, $itemsStatusCount, $params['filter']['status'], $params['search']);
 $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
 $categoryConfig['all'] = 'Filter by All';
-foreach ($getCategory as $key => $value) {
-    $categoryConfig[$key] = $value;
-}
 
+foreach ($getCategoryNestedset['list_category'] as $key => $value) {
+    $categoryConfig[$value['id']] = $value->name_category;
+}
 $xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
 
 @endphp

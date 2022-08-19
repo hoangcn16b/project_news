@@ -18,7 +18,7 @@ class ArticleController extends AdminController
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params["pagination"]["totalItemsPerPage"] = 5;
+        $this->params["pagination"]["totalItemsPerPage"] = 25;
         view()->share('controllerName', $this->controllerName);
         view()->share('inTable', $this->inTable);
     }
@@ -33,11 +33,13 @@ class ArticleController extends AdminController
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
         $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category']);
+        $getCategoryNestedset = $this->model->getCategoryNestedset(null, ['task'  => 'get-category']);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,
             'itemsStatusCount' =>  $itemsStatusCount,
-            'getCategory'   => $getCategory
+            'getCategory'   => $getCategory,
+            'getCategoryNestedset' => $getCategoryNestedset
         ]);
     }
 

@@ -34,12 +34,12 @@ class ProductController extends AdminController
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
-        $getCategory = $this->model->getCategory($this->params, ['task'  => 'get-category'], false);
+        $listCategory = $this->model->getCategory($this->params, ['task'  => 'get-category'], false);
         return view($this->pathViewController .  'index', [
             'params'        => $this->params,
             'items'         => $items,
             'itemsStatusCount' =>  $itemsStatusCount,
-            'getCategory'   => $getCategory
+            'listCategory'   => $listCategory
         ]);
     }
 

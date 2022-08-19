@@ -81,13 +81,9 @@ class Template
     {
         $xhtml = null;
         $xhtmlField = '';
-
         foreach ($tmplField as $key => $field) { // all id
-            // $linkFilter = route($controllerName . '', ['filter_status' => $paramsSearch['status'] ?? '', 'search_field' => $paramsSearch['filed'] ?? '', 'search_value' => $paramsSearch['value'] ?? '', 'search_filter' => $key ?? '']);
             $xhtmlField .= sprintf('<li><a href="%s" class="select-filter" data-filter="%s">%s</a></li>', '#', $key, $field);
         }
-        // dd($tmplField);
-
         $searchField = (array_key_exists($paramsSearch['filter'],  $tmplField)) ? $paramsSearch['filter'] : "all";
         $xhtml = sprintf('
                         <div class="input-group-btn">
@@ -203,9 +199,9 @@ class Template
     {
         // $values = Config::get('zvn.template.' . $values);
         $values = config('zvn.template.' . $values);
-        $xhtml = sprintf('<select style ="text-align:center" wire:model="%s" name="%s" class="form-control">', $model, $model);
+        $xhtml = sprintf('<select wire:model="%s" name="%s" class="form-control">', $model, $model);
         foreach ($values as $key => $option) {
-            $xhtml .= sprintf('<option style ="text-align:center" value="%s">%s</option>', $key, $option['name']);
+            $xhtml .= sprintf('<option value="%s">%s</option>', $key, $option['name']);
         }
         $xhtml .= '</select>';
         return $xhtml;
@@ -213,10 +209,9 @@ class Template
 
     public static function selectDBByLiveWire($model, $values)
     {
-
-        $xhtml = sprintf('<select style ="text-align:center" wire:model="%s" name="%s" class="form-control">', $model, $model);
-        foreach ($values as $key => $option) {
-            $xhtml .= sprintf('<option style ="text-align:center" value="%s">%s</option>', $key, $option);
+        $xhtml = sprintf('<select wire:model="%s" name="%s" class="form-control">', $model, $model);
+        foreach (array_flip($values) as $key => $option) {
+            $xhtml .= sprintf('<option value="%s">%s</option>', $key, $option);
         }
         $xhtml .= '</select>';
         return $xhtml;

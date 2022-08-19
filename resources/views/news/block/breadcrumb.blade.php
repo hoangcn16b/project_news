@@ -1,11 +1,9 @@
 @php
 use App\Models\CategoryModel as CategoryModel;
 use App\Helpers\URL;
-
 $ancestors = CategoryModel::withDepth()
     ->having('depth', '>', 0)
     ->ancestorsOf($item['id']);
-
 @endphp
 
 <div class="home">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CategoryModel;
 use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -29,7 +30,6 @@ class ArticleModel extends AdminModel
 
         if ($options['task'] == "admin-list-items") {
             $query = $this->with('category')->select('id', 'name', 'status', 'content', 'thumb', 'type', 'category_id');
-
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -122,6 +122,17 @@ class ArticleModel extends AdminModel
         return $result;
     }
 
+    public function getCategoryNestedset($params = null, $options  = null)
+    {
+
+        $result = null;
+        if ($options['task'] == 'get-category') {
+            $category = new CategoryModel();
+            $result = $category->getItem(null, ['task' => 'get-item']);
+        }
+        return $result;
+    }
+
     public function countItems($params = null, $options  = null)
     {
 
@@ -143,7 +154,7 @@ class ArticleModel extends AdminModel
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
             }
-            
+
             if ($params['search']['filter'] !== "") {
                 if ($params['search']['filter'] == "all") {
                 } else if (array_key_exists($params['search']['filter'], $this->getCategory(null, ['task' => 'get-category']))) {
@@ -182,7 +193,7 @@ class ArticleModel extends AdminModel
 
     public function saveItem($params = null, $options = null)
     {
-        $this->table = 'article';
+        $this->table = 'articles';
         if ($options['task'] == 'change-status') {
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
             self::where('id', $params['id'])->update(['status' => $status]);
@@ -224,7 +235,7 @@ class ArticleModel extends AdminModel
 
     public function deleteItem($params = null, $options = null)
     {
-        $this->table = 'article';
+        $this->table = 'articles';
         if ($options['task'] == 'delete-item') {
             $item   = $this->getItem($params, ['task' => 'get-thumb']);
             $this->deleteThumb($item['thumb']);

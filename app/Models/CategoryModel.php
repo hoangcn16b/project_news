@@ -122,10 +122,10 @@ class CategoryModel extends AdminModel
 
         if ($options['task'] == 'get-item') {
             if (isset($params['id'])) {
-                $result['item'] = self::select('id', 'name', 'status')->where('id', $params['id'])->where('id', '<>', '1')->first()->toArray();
+                $result['item'] = self::select('id', 'name', 'status')->where('id', $params['id'])->where('id', '<>', '1')->first();
                 $query = $this->find($params['id']);
                 $parentThisId = $query['parent_id'];
-                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('_lft', '<', $query->_lft)->orWhere('_rgt', '>', $query->_rgt)->get()->toArray();
+                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->where('_lft', '<', $query->_lft)->orWhere('_rgt', '>', $query->_rgt)->get();
                 $result['parent'] = $this->find($parentThisId)->id;
                 // foreach ($query as $key => $value) {
                 //     $result['list_category'][$value['id']] = $value['name'];
@@ -134,7 +134,7 @@ class CategoryModel extends AdminModel
                 // $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
             } else {
                 $result['item'] = [];
-                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->having('depth', '<>', '1')->get()->toArray();
+                $query = $this->select('id', 'name', '_lft', '_rgt', 'parent_id')->withDepth()->defaultOrder()->having('depth', '>', '0')->get();
                 $result['list_category'] = $query;
                 $result['parent'] = [];
             }
@@ -224,5 +224,11 @@ class CategoryModel extends AdminModel
             // self::where('id', $params['id'])->delete();
             // $this->fixTree();
         }
+    }
+
+    public function getNameCategoryAttribute()
+    {
+        $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
+        return str_repeat('-----/ ', $depth) . $this->name;
     }
 }

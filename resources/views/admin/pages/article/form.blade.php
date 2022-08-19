@@ -2,11 +2,14 @@
 @php
 use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
-use Illuminate\Support\Facades\DB;
-$query = DB::table('categories')->select('id', 'name');
-$result = $query->get()->toArray();
+use App\Models\CategoryModel;
+$model = new CategoryModel();
+$result = $model
+    ->withDepth()
+    ->defaultOrder()
+    ->get();
 foreach ($result as $key => $value) {
-    $itemsCategory[$value->id] = $value->name;
+    $itemsCategory[$value->id] = $value->name_category;
 }
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
@@ -50,7 +53,7 @@ $elements = [
 @section('content')
     @include ('admin.templates.page_header', ['pageIndex' => false])
     @include ('admin.templates.error')
-    
+
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -70,5 +73,4 @@ $elements = [
             </div>
         </div>
     </div>
-    
 @endsection
