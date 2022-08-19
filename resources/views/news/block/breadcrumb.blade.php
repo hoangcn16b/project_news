@@ -1,24 +1,10 @@
 @php
 use App\Models\CategoryModel as CategoryModel;
 use App\Helpers\URL;
-$categoryModel = new CategoryModel();
-$getAncestor = '';
 
-$ancestors = CategoryModel::ancestorsOf($item['id']);
-foreach ($ancestors as $key => $ancestor) {
-
-    if ($ancestor->id == 1) {
-        $getAncestor .= '<li><a href="'.route('home').'">Trang chủ</a></li>';
-        $linkSubList = route('home');
-        continue;
-    }else {
-        $linkSubList = URL::linkCategory($ancestor->id, $ancestor->name);
-
-    }
-    $getAncestor .= ' <li> <a href=" '.$linkSubList.' "> ' . $ancestor->name . '</a></li>';
-}
-
-// dd($node);
+$ancestors = CategoryModel::withDepth()
+    ->having('depth', '>', 0)
+    ->ancestorsOf($item['id']);
 
 @endphp
 
@@ -33,8 +19,10 @@ foreach ($ancestors as $key => $ancestor) {
                         <div class="home_title">{!! $item['name'] !!}</div>
                         <div class="breadcrumbs">
                             <ul class="d-flex flex-row align-items-start justify-content-start">
-                                {{-- <li><a href="{!! route('home') !!}">Trang chủ</a></li> --}}
-                                {!! $getAncestor !!}
+                                <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                                @foreach ($ancestors as $ancestor)
+                                    <li> <a href="{{ URL::linkCategory($ancestor->id, $ancestor->name) }}">{{ $ancestor->name }}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
