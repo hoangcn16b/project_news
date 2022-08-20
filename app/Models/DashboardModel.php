@@ -21,7 +21,8 @@ class DashboardModel extends AdminModel
                 (SELECT COUNT(id) FROM sliders) AS Slider,
                 (SELECT COUNT(id) FROM rsses) AS Rss,
                 (SELECT COUNT(id) FROM menus) AS Menu,
-                (SELECT COUNT(id) FROM product_categories) AS 'Product Category'
+                (SELECT COUNT(id) FROM product_categories where id != 6) AS 'Product Category',
+                (SELECT COUNT(id) FROM products) AS 'Product'
             ");
         }
         

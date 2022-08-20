@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Routing\Route;
 
 class Template
 {
@@ -82,7 +83,10 @@ class Template
         $xhtml = null;
         $xhtmlField = '';
         foreach ($tmplField as $key => $field) { // all id
-            $xhtmlField .= sprintf('<li><a href="%s" class="select-filter" data-filter="%s">%s</a></li>', '#', $key, $field);
+
+            // $link          = route($controllerName . '/filter' , ['id' => $key]);
+
+            $xhtmlField .= sprintf('<li><a href="%s" class="select-filter btn-filter" data-filter="%s">%s</a></li>', '#', $key, $field);
         }
         $searchField = (array_key_exists($paramsSearch['filter'],  $tmplField)) ? $paramsSearch['filter'] : "all";
         $xhtml = sprintf('

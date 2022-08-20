@@ -19,10 +19,6 @@ class CategoryModel extends AdminModel
     protected $folderUpload        = 'category';
     protected $fieldSearchAccepted = ['id', 'name'];
     protected $crudNotAccepted     = ['_token', 'parent_id'];
-    // public function __construct()
-    // {
-
-    // }
 
     public function listItems($params = null, $options = null)
     {
@@ -145,6 +141,22 @@ class CategoryModel extends AdminModel
 
             if ($result) $result = $result->toArray();
         }
+        return $result;
+    }
+
+    public function listCategory($params = null, $options  = null, $hasDefault = false, $root = false)
+    {
+        $result = null;
+        if ($hasDefault) $result['all'] = 'Filter by All';
+        if ($options['task'] == 'get-category') {
+            $query = CategoryModel::withDepth()->defaultOrder();
+            $query = $query->get();
+            foreach ($query as $key => $value) {
+                $depth = $value->depth <= 1 ? 0 : $value->depth - 1;
+                $result[$value->id] = str_repeat('-----/ ', $depth) . $value->name;
+            }
+        }
+        if (!$root) unset($result[1]);
         return $result;
     }
 

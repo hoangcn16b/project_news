@@ -37,7 +37,7 @@ class ProductRequest extends FormRequest
 
         return [
             'name'        => $condName,
-            'price'       => "bail|required|regex:/^\d+(\.\d{1,2})?$/",
+            'price'       => "bail|required",
             'sale_off'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
             // 'description' => 'bail|required|min:5',
             'ordering'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',

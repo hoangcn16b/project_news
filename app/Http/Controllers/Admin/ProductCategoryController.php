@@ -18,7 +18,8 @@ class ProductCategoryController extends AdminController
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params["pagination"]["totalItemsPerPage"] = 5;
+        // $this->model->fixTree();
+        // $this->params["pagination"]["totalItemsPerPage"] = 5;
         view()->share('inTable', $this->inTable);
         view()->share('controllerName', $this->controllerName);
         view()->share('folderFileUpload', $this->folderFileUpload);
@@ -41,6 +42,21 @@ class ProductCategoryController extends AdminController
         ]);
     }
 
+    public function form(Request $request)
+    {
+        $item = null;
+        if ($request->id !== null) {
+            $params["id"] = $request->id;
+            $item = $this->model->getItem($params, ['task' => 'get-item']);
+        } else {
+            $item = $this->model->getItem(null, ['task' => 'get-item']);
+        }
+
+        return view($this->pathViewController .  'form', [
+            'item'        => $item
+        ]);
+    }
+    
     public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {

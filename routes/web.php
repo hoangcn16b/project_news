@@ -80,6 +80,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('change-status-{status}/{id}',       ['as' => $controllerName . '/status',      'uses' => $controller . 'status']);
         Route::get('change-type-{type}/{id}',           ['as' => $controllerName . '/type',        'uses' => $controller . 'type']);
         Route::get('change-category-{category}/{id}',           ['as' => $controllerName . '/category',        'uses' => $controller . 'category']);
+        Route::get('filter/{id}',           ['as' => $controllerName . '/filter',        'uses' => $controller . 'filter']);
     });
 
     // ============================== USER ==============================

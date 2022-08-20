@@ -6,6 +6,7 @@ use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductCategoryModel;
 
 class ProductModel extends AdminModel
 {
@@ -30,7 +31,6 @@ class ProductModel extends AdminModel
 
         if ($options['task'] == "admin-list-items") {
             $query = $this->with('productCategory')->select('id', 'name', 'price', 'sale_off', 'status', 'description', 'content', 'thumb', 'ordering', 'product_category_id');
-
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -110,17 +110,29 @@ class ProductModel extends AdminModel
         return $result;
     }
 
-    public function getCategory($params = null, $options  = null, $hasDefault = false)
+    public function getCategoryNestedset($params = null, $options  = null)
+    {
+        $result = null;
+        if ($options['task'] == 'get-category') {
+            $category = new ProductCategoryModel();
+            $result = $category->getItem(null, ['task' => 'get-item']);
+        }
+        return $result;
+    }
+
+    public function listCategory($params = null, $options  = null, $hasDefault = false, $root = false)
     {
         $result = null;
         if ($hasDefault) $result['all'] = 'Filter by All';
         if ($options['task'] == 'get-category') {
-            $query = DB::table('product_categories')->select('id', 'name');
-            $query = $query->get()->toArray();
+            $query = ProductCategoryModel::withDepth()->defaultOrder();
+            $query = $query->get();
             foreach ($query as $key => $value) {
-                $result[$value->id] = $value->name;
+                $depth = $value->depth <= 1 ? 0 : $value->depth - 1;
+                $result[$value->id] = str_repeat('-----/ ', $depth) . $value->name;
             }
         }
+        if (!$root) unset($result[6]);
         return $result;
     }
 
@@ -199,6 +211,7 @@ class ProductModel extends AdminModel
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d H:i:s');
             $params['thumb']      = $this->uploadThumb($params['thumb']);
+
             self::insert($this->prepareParams($params));
         }
 
@@ -206,7 +219,6 @@ class ProductModel extends AdminModel
             if (!empty($params['thumb'])) {
                 // Xóa hình cũ
                 $this->deleteThumb($params['thumb_current']);
-
                 // Up hình mới
                 $params['thumb']      = $this->uploadThumb($params['thumb']);
             }
@@ -232,5 +244,15 @@ class ProductModel extends AdminModel
             $this->deleteThumb($item['thumb']);
             self::where('id', $params['id'])->delete();
         }
+    }
+    public function getPriceProductAttribute()
+    {
+        return number_format($this->price, 0, ',', '.');
+    }
+
+    public function getNameCategoryAttribute()
+    {
+        $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
+        return str_repeat('-----/ ', $depth) . $this->name;
     }
 }

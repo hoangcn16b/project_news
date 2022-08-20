@@ -13,8 +13,8 @@ use App\Helpers\Hightlight as Hightlight;
                     <th class="column-title">Special</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Sắp xếp</th>
-                    <th class="column-title">Tạo mới</th>
-                    <th class="column-title">Chỉnh sửa</th>
+                    {{-- <th class="column-title">Tạo mới</th> --}}
+                    {{-- <th class="column-title">Chỉnh sửa</th> --}}
                     <th class="column-title">Hành động</th>
                 </tr>
             </thead>
@@ -26,12 +26,13 @@ use App\Helpers\Hightlight as Hightlight;
                             $class = $index % 2 == 0 ? 'even' : 'odd';
                             $id = $val['id'];
                             $name = Hightlight::show($val['name'], $params['search'], 'name');
+                            $name = $val->name_category;
                             // $description = Hightlight::show($val['description'], $params['search'], 'description');
                             // $link = Hightlight::show($val['link'], $params['search'], 'link');
                             $thumb = Template::showItemThumb($folderFileUpload, $val['thumb'], $val['name']);
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']); ;
-                            $createdHistory = Template::showItemHistory($val['created_by'], $val['created_at']);
-                            $modifiedHistory = Template::showItemHistory($val['updated_by'], $val['updated_at']);
+                            // $createdHistory = Template::showItemHistory($val['created_by'], $val['created_at']);
+                            // $modifiedHistory = Template::showItemHistory($val['updated_by'], $val['updated_at']);
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $colSpecial = 'special';
                             $ordering = 'ordering';
@@ -40,7 +41,7 @@ use App\Helpers\Hightlight as Hightlight;
                         <tr class="{{ $class }} pointer">
                             <td>{{ $index }}</td>
                             <td width="20%">
-                                <p><strong>Name:</strong> {!! $name !!}</p>
+                                {!! $name !!}
                             </td>
                             <td width="10%">
                                 {!! $thumb !!}
@@ -56,8 +57,8 @@ use App\Helpers\Hightlight as Hightlight;
                                 <livewire:ordering :thisColumn="$ordering" :ordering="$val['ordering']" :rowId="$id"
                                     :inTable="$inTable" />
                             </td>
-                            <td>{!! $createdHistory !!}</td>
-                            <td>{!! $modifiedHistory !!}</td>
+                            {{-- <td>{!! $createdHistory !!}</td> --}}
+                            {{-- <td>{!! $modifiedHistory !!}</td> --}}
                             <td class="last">{!! $listBtnAction !!}</td>
                         </tr>
                     @endforeach

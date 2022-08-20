@@ -10,8 +10,9 @@ $resultCategory = $result['list_category'];
 $parent = $result['parent'];
 
 foreach ($resultCategory as $key => $value) {
-    $depth = $value['depth'] <= 1 ? 0 : $value['depth'] - 1;
-    $listCategory['list_category'][$value['id']] = str_repeat('-----/ ', $depth) . $value['name'];
+    // $depth = $value['depth'] <= 1 ? 0 : $value['depth'] - 1;
+    // $listCategory['list_category'][$value['id']] = str_repeat('-----/ ', $depth) . $value['name'];
+    $listCategory[$value['id']]  = $value->name_category;
 }
 //------------------
 $formInputAttr = config('zvn.template.form_input');
@@ -32,7 +33,7 @@ $elements = [
     ],
     [
         'label' => Form::label('parent_id', 'Category', $formLabelAttr),
-        'element' => Form::select('parent_id', $listCategory['list_category'], $parent, $formInputAttr),
+        'element' => Form::select('parent_id', $listCategory, $parent, $formInputAttr),
     ],
     [
         'element' => $inputHiddenID . Form::submit('Save', ['class' => 'btn btn-success']),

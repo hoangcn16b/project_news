@@ -2,14 +2,19 @@
 @php
 use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
+$result = $item ?? '';
+$item = $result['item'];
+$resultCategory = $result['list_category'];
+$parent = $result['parent'];
 
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
-
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 
 $specialValue = ['inactive' => 'Danh mục thường', 'active' => 'Danh mục đặc biệt'];
-
+foreach ($resultCategory as $key => $value) {
+    $listCategory[$value['id']]  = $value->name_category;
+}
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
@@ -25,6 +30,10 @@ $elements = [
     [
         'label' => Form::label('special', 'Special', $formLabelAttr),
         'element' => Form::select('special', $specialValue, @$item['special'], $formInputAttr),
+    ],
+    [
+        'label' => Form::label('parent_id', 'Category', $formLabelAttr),
+        'element' => Form::select('parent_id', $listCategory, $parent, $formInputAttr),
     ],
     [
         'label' => Form::label('thumb', 'Picture', $formLabelAttr),

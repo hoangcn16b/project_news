@@ -133,6 +133,22 @@ class ArticleModel extends AdminModel
         return $result;
     }
 
+    public function listCategory($params = null, $options  = null, $hasDefault = false, $root = false)
+    {
+        $result = null;
+        if ($hasDefault) $result['all'] = 'Filter by All';
+        if ($options['task'] == 'get-category') {
+            $query = CategoryModel::withDepth()->defaultOrder();
+            $query = $query->get();
+            foreach ($query as $key => $value) {
+                $depth = $value->depth <= 1 ? 0 : $value->depth - 1;
+                $result[$value->id] = str_repeat('-----/ ', $depth) . $value->name;
+            }
+        }
+        if (!$root) unset($result[1]);
+        return $result;
+    }
+
     public function countItems($params = null, $options  = null)
     {
 

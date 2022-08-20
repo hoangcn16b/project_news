@@ -4,8 +4,18 @@ use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductModel;
+use App\Models\ProductCategoryModel;
 
-$itemsCategory = ProductModel::getCategory(null, ['task' => 'get-category']);
+// $model = new ProductCategoryModel();
+// $result = $model
+//     ->withDepth()
+//     ->defaultOrder()
+//     ->get();
+// foreach ($result as $key => $value) {
+//     $itemsCategory[$value->id] = $value->name_category;
+// }
+$itemsCategory = ProductCategoryModel::listCategory(null, ['task' => 'get-category'], false, true);
+
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');
@@ -22,11 +32,11 @@ $elements = [
         'element' => Form::text('name', @$item['name'], $formInputAttr),
     ],
     [
-        'label' => Form::label('price', 'Price', $formLabelAttr),
-        'element' => Form::number('price', @$item['price'], $formInputAttr),
+        'label' => Form::label('price', 'Price(Vnd)', $formLabelAttr),
+        'element' => Form::text('price', @$item->price_product, $formInputAttr),
     ],
     [
-        'label' => Form::label('sale_off', 'Sale Off', $formLabelAttr),
+        'label' => Form::label('sale_off', 'Sale Off(%)', $formLabelAttr),
         'element' => Form::number('sale_off', @$item['sale_off'] ?? '0', $formInputAttr),
     ],
     [

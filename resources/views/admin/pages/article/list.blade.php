@@ -1,9 +1,9 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
-foreach ($getCategoryNestedset['list_category'] as $key => $value) {
-    $listCategory[$value['id']] = $value->name_category;
-}
+// foreach ($getCategoryNestedset['list_category'] as $key => $value) {
+//     $listCategory[$value['id']] = $value->name_category;
+// }
 $listCategory = array_flip($listCategory);
 
 @endphp
@@ -39,7 +39,6 @@ $listCategory = array_flip($listCategory);
                             $fieldNameType = 'type';
                             $categoryCol = 'category_id';
                             $ColType = 'type';
-                            
                         @endphp
 
                         <tr class="{{ $class }} pointer">

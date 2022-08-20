@@ -4,13 +4,15 @@ use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use App\Models\CategoryModel;
 $model = new CategoryModel();
-$result = $model
-    ->withDepth()
-    ->defaultOrder()
-    ->get();
-foreach ($result as $key => $value) {
-    $itemsCategory[$value->id] = $value->name_category;
-}
+// $result = $model
+//     ->withDepth()
+//     ->defaultOrder()
+//     ->get();
+// foreach ($result as $key => $value) {
+//     $itemsCategory[$value->id] = $value->name_category;
+// }
+
+$itemsCategory = CategoryModel::listCategory(null, ['task' => 'get-category'], false, true);
 $formInputAttr = config('zvn.template.form_input');
 $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');

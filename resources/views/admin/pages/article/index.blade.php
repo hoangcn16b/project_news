@@ -1,14 +1,16 @@
 @extends('admin.main')
 @php
+use App\Models\CategoryModel;
 use App\Helpers\Template as Template;
 $xhtmlButtonFilter = Template::showButtonFilter($controllerName, $itemsStatusCount, $params['filter']['status'], $params['search']);
 $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
-$categoryConfig['all'] = 'Filter by All';
+// $categoryConfig['all'] = 'Filter by All';
 
-foreach ($getCategoryNestedset['list_category'] as $key => $value) {
-    $categoryConfig[$value['id']] = $value->name_category;
-}
-$xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
+// foreach ($getCategoryNestedset['list_category'] as $key => $value) {
+//     $categoryConfig[$value['id']] = $value->name_category;
+// }
+$listCategoryFilter = CategoryModel::listCategory(null, ['task' => 'get-category'], true, false);
+$xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $listCategoryFilter);
 
 @endphp
 

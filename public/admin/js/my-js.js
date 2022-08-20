@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     let $btnSearch = $("button#btn-search");
     let $btnClearSearch = $("button#btn-clear-search");
+    let $btnFilterCategory = $("a.btn-filter");
 
     let $inputSearchField = $("input[name  = search_field]");
     let $inputSearchValue = $("input[name  = search_value]");
@@ -19,8 +20,8 @@ $(document).ready(function () {
         $inputSearchField.val(field);
     });
 
-    $("a.select-filter").click(function (e) {
-        e.preventDefault();
+    $("a.select-filter").click(function () {
+        // e.preventDefault();
 
         let filter = $(this).data("filter");
         let filterName = $(this).html();
@@ -28,7 +29,38 @@ $(document).ready(function () {
             filterName + ' <span class="caret"></span>'
         );
         $inputSearchFilter.val(filter);
+        $(this).submit();
         // console.log($inputSearchFilter.val(filter));
+    });
+
+    $btnFilterCategory.click(function () {
+        var pathname = window.location.pathname;
+        let params = ["filter_status"];
+        let searchParams = new URLSearchParams(window.location.search); // ?filter_status=active
+
+        let link = "";
+        $.each(params, function (key, param) {
+            // filter_status
+            if (searchParams.has(param)) {
+                link += param + "=" + searchParams.get(param) + "&"; // filter_status=active
+            }
+        });
+
+        let search_field = $inputSearchField.val();
+        let search_value = $inputSearchValue.val();
+        let search_filter = $inputSearchFilter.val();
+
+        window.location.href =
+            pathname +
+            "?" +
+            link +
+            "search_field=" +
+            search_field +
+            "&search_value=" +
+            search_value +
+            "&search_filter=" +
+            search_filter;
+        
     });
 
     $btnSearch.click(function () {

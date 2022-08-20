@@ -34,7 +34,9 @@ $listCategory = array_flip($listCategory);
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
                             $description = Template::collapseString($val['description'], 10);
+                            // dd($val);
                             $category = $val->productCategory->name;
+                            
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $categoryCol = 'product_category_id';
                             $colOrdering = 'ordering';
@@ -43,8 +45,8 @@ $listCategory = array_flip($listCategory);
                             <td>{{ $index }}</td>
                             <td width="30%">
                                 <p><strong>Name:</strong> {!! $name !!}</p>
-                                <p><strong>Price:</strong> {!! $val['price'] !!}</p>
-                                <p><strong>Sale Off:</strong> {!! $val['sale_off'] !!}</p>
+                                <p><strong>Price:</strong> {!! $val->price_product !!} đ</p>
+                                <p><strong>Sale Off:</strong> {!! $val['sale_off'] !!} %</p>
                                 <p><strong>Description:</strong> {!! $description !!}</p>
                             </td>
                             <td width="30%">

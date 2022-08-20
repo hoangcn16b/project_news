@@ -9,7 +9,7 @@ $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
 // foreach ($getCategory as $key => $value) {
 //     $categoryConfig[$key] = $value;
 // }
-$categoryConfig = ProductModel::getCategory(null, ['task' => 'get-category'], true);
+$categoryConfig = ProductModel::listCategory(null, ['task' => 'get-category'], true, false);
 
 
 $xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
