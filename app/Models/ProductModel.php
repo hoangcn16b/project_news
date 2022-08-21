@@ -50,7 +50,7 @@ class ProductModel extends AdminModel
 
             if ($params['search']['filter'] !== "") {
                 if ($params['search']['filter'] == "all") {
-                } else if (array_key_exists($params['search']['filter'], $this->getCategory(null, ['task' => 'get-category']))) {
+                } else if (array_key_exists($params['search']['filter'], $this->listCategory(null, ['task' => 'get-category']))) {
                     $query->where('product_category_id', '=',  $params['search']['filter']);
                 }
             }
@@ -160,7 +160,7 @@ class ProductModel extends AdminModel
 
             if ($params['search']['filter'] !== "") {
                 if ($params['search']['filter'] == "all") {
-                } else if (array_key_exists($params['search']['filter'], $this->getCategory(null, ['task' => 'get-category']))) {
+                } else if (array_key_exists($params['search']['filter'], $this->listCategory(null, ['task' => 'get-category']))) {
                     $query->where('product_category_id', '=',  $params['search']['filter']);
                 }
             }

@@ -12,6 +12,9 @@ return [
     'template'         => [
         'form_input' => [
             'class' => 'form-control col-md-6 col-xs-12'
+        ], 
+        'form_select2' => [
+            'class' => 'form-control col-md-6 col-xs-12 select-select2'
         ],
         'form_label' => [
             'class' => 'control-label col-md-3 col-sm-3 col-xs-12'

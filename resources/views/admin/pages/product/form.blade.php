@@ -3,20 +3,12 @@
 use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductModel;
 use App\Models\ProductCategoryModel;
 
-// $model = new ProductCategoryModel();
-// $result = $model
-//     ->withDepth()
-//     ->defaultOrder()
-//     ->get();
-// foreach ($result as $key => $value) {
-//     $itemsCategory[$value->id] = $value->name_category;
-// }
 $itemsCategory = ProductCategoryModel::listCategory(null, ['task' => 'get-category'], false, true);
 
 $formInputAttr = config('zvn.template.form_input');
+$select2 = config('zvn.template.form_select2');
 $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
@@ -41,7 +33,7 @@ $elements = [
     ],
     [
         'label' => Form::label('product_category_id', 'Category', $formLabelAttr),
-        'element' => Form::select('product_category_id', $itemsCategory, @$item['product_category_id'], $formInputAttr),
+        'element' => Form::select('product_category_id', $itemsCategory, @$item['product_category_id'], $select2),
     ],
     [
         'label' => Form::label('description', 'Description', $formLabelAttr),
@@ -90,7 +82,7 @@ $elements = [
                         'url' => route("$controllerName/save"),
                         'accept-charset' => 'UTF-8',
                         'enctype' => 'multipart/form-data',
-                        'class' => 'form-horizontal form-label-left',
+                        'class' => 'form-horizontal form-label-left dropzone',
                         'id' => 'main-form',
                     ]) }}
                     {!! FormTemplate::show($elements) !!}

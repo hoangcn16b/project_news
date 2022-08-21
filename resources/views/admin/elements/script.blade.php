@@ -41,6 +41,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 <script src="/node_modules/nestable2/jquery.nestable.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/nestable2/1.6.0/jquery.nestable.min.js"></script>
+{{-- select2 --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+
 <script>
     $('.dd').nestable({
         /* config options */

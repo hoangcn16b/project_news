@@ -169,7 +169,7 @@ class Template
     public static function showSelectFromModel($controllerName, $arrValue, $id, $displayValue, $fieldName)
     {
         $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
-        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
+        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control select-select2">', $link);
 
         foreach ($arrValue as $key => $value) {
             $xhtmlSelected = '';
@@ -203,7 +203,7 @@ class Template
     {
         // $values = Config::get('zvn.template.' . $values);
         $values = config('zvn.template.' . $values);
-        $xhtml = sprintf('<select wire:model="%s" name="%s" class="form-control">', $model, $model);
+        $xhtml = sprintf('<select wire:model="%s" name="%s" class="form-control ">', $model, $model);
         foreach ($values as $key => $option) {
             $xhtml .= sprintf('<option value="%s">%s</option>', $key, $option['name']);
         }

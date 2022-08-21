@@ -60,7 +60,7 @@ $(document).ready(function () {
             search_value +
             "&search_filter=" +
             search_filter;
-        
+
     });
 
     $btnSearch.click(function () {
@@ -187,74 +187,48 @@ $(document).ready(function () {
             position: "top center",
             className: event.detail.type,
         });
-        // $('.toast-notify').click(function () {
-        //     var ele = $(this);
-        //     $.ajax({
-        //         type: "GET",
-        //         success: function (response) {
-        //             ele.notify("Cập nhật thành công", {
-        //                 position: "top center",
-        //                 className: "success",
-        //             });
-        //         },
-        //     });
-        // });
-
     });
-
-    // let tab = 0;
-    // const tabs = document.getElementsByClassName('nav-item');
-    // const tabsContent = document.getElementsByClassName('tab-pane');
-
-    // for (let i = 0; i < tabs.length; i++) {
-    //     if (i === tab) {
-    //         tabs[i].classList.add('active');
-    //         tabsContent[i].classList.add('active', 'in');
-    //     } else {
-    //         tabs[i].classList.remove('active');
-    //         tabsContent[i].classList.remove('active', 'in');
-    //     }
-    //     tabs[i].addEventListener('click', () => {
-    //         tab = i;
-    //     });
-    // }
 
     let myTagify = document.querySelectorAll('.my-tagify');
     myTagify.forEach(ele => {
         new Tagify(ele);
     });
-    // var input = document.querySelector('input[name=hotline]');
-    // var inputBcc = document.querySelector('input[name=bcc]');
-    // var inputFacebook = document.querySelector('input[name=facebook]');
-    // var inputYoutube = document.querySelector('input[name=youtube]');
-    // new Tagify(input)
-    // new Tagify(inputBcc)
-    // new Tagify(inputFacebook)
-    // new Tagify(inputYoutube)
 
-    // var input = document.querySelector('input[name="facebook"]'),
-    //     // init Tagify script on the above inputs
-    //     tagify = new Tagify(input, {
-    //         whitelist: ["https://www.facebook.com/profile.php?id=100006215655785"],
-    //         maxTags: 10,
-    //         dropdown: {
-    //             maxItems: 20,           // <- mixumum allowed rendered suggestions
-    //             classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-    //             enabled: 0,             // <- show suggestions on focus
-    //             closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-    //         }
-    //     })
-    // var input = document.querySelector('input[name="youtube"]'),
-    //     // init Tagify script on the above inputs
-    //     tagify = new Tagify(input, {
-    //         whitelist: ["https://www.youtube.com"],
-    //         maxTags: 10,
-    //         dropdown: {
-    //             maxItems: 20,           // <- mixumum allowed rendered suggestions
-    //             classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-    //             enabled: 0,             // <- show suggestions on focus
-    //             closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-    //         }
-    //     })
+    // const money = 123456789000;
+    // const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9 }
+    // const formated = new Intl.NumberFormat('vi-VN', config).format(money);
+    // console.log(formated);
+    // const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9 }
+    $('.select-select2').select2();
+
+    $('#price').keyup(function (e) {
+        e.preventDefault();
+        let price = $(this).val();
+        price = price.split(".");
+        let arrP = '';
+        let priceNumber = '';
+        let j = 0;
+        price = Number(price);
+        // console.log(price);
+
+        // while (price % 1000 > 0) {
+        //     if (Math.floor(price) > 0) {
+        //         priceNumber = priceNumber + Math.floor(price);
+        //         priceFormat = priceNumber + '.' + Math.floor(price);
+        //     }
+        //     price = price - priceNumber;
+        // }
+        // console.log(priceFormat);
+
+        // if (price.length > 1) {
+        //     for (let i = 0; i < price.length; i++) {
+        //         priceNumber = price[i] + '.' + priceNumber;
+        //     }
+        // } else {
+        //     priceNumber = price[0];
+        // }
+        // let formated = new Intl.NumberFormat('vi-VN').format(priceNumber);
+        // document.getElementById('price').value = priceNumber;
+    });
 
 });
