@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
         $id = $this->id;
 
         $condName = "bail|required|between:5,255|unique:$this->table,name";
-        $condThumb = 'bail|required|image|max:5000';
+        // $condThumb = 'bail|required|image|max:5000';
 
         if (!empty($id)) {
             $condName .= ",$id";
@@ -43,7 +43,7 @@ class ProductRequest extends FormRequest
             'ordering'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
             'special'      => 'bail|in:0,1',
             'status'      => 'bail|in:active,inactive',
-            'thumb'       => $condThumb
+            // 'thumb'       => $condThumb
         ];
     }
 

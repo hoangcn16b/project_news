@@ -33,6 +33,13 @@ class AdminModel extends Model
         $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image');
         return $thumbName;
     }
+
+    public function uploadMultiThumb($thumbObj)
+    {
+        $thumbName        = Str::random(10) . '.' . $thumbObj->clientExtension();
+        $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image');
+        return $thumbName;
+    }
     public function uploadLogo($thumbObj)
     {
         // dd($thumbObj);

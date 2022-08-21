@@ -1,9 +1,13 @@
-<?php 
+<?php
+
 namespace App\Helpers;
+
 use Config;
 
-class Form {
-    public static function show ($elements) { 
+class Form
+{
+    public static function show($elements)
+    {
         $xhtml = null;
         foreach ($elements as $element) {
             $xhtml .= self::formGroup($element);
@@ -11,7 +15,8 @@ class Form {
         return $xhtml;
     }
 
-    public static function formGroup ($element, $params = null) {
+    public static function formGroup($element, $params = null)
+    {
         $type = isset($element['type']) ? $element['type'] : "input";
         $xhtml = null;
 
@@ -23,7 +28,9 @@ class Form {
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             %s
                         </div>
-                    </div>', $element['label'], $element['element']
+                    </div>',
+                    $element['label'],
+                    $element['element']
                 );
                 break;
             case 'thumb':
@@ -34,7 +41,10 @@ class Form {
                             %s
                             <p style="margin-top: 50px;">%s</p>
                         </div>
-                    </div>', $element['label'], $element['element'], $element['thumb']
+                    </div>',
+                    $element['label'],
+                    $element['element'],
+                    $element['thumb']
                 );
                 break;
             case 'avatar':
@@ -45,7 +55,10 @@ class Form {
                             %s
                             <p style="margin-top: 50px;">%s</p>
                         </div>
-                    </div>', $element['label'], $element['element'], $element['avatar']
+                    </div>',
+                    $element['label'],
+                    $element['element'],
+                    $element['avatar']
                 );
                 break;
             case 'btn-submit':
@@ -55,7 +68,8 @@ class Form {
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             %s
                         </div>
-                    </div>', $element['element']
+                    </div>',
+                    $element['element']
                 );
                 break;
             case 'btn-submit-edit':
@@ -65,14 +79,20 @@ class Form {
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
                             %s
                         </div>
-                    </div>', $element['element']
+                    </div>',
+                    $element['element']
+                );
+                break;
+            case 'dropzone':
+                $xhtml .= sprintf(
+                    '<div class="dropzone" id="dropzone">
+
+                    </div>',
+                    $element['element']
                 );
                 break;
         }
 
         return $xhtml;
     }
- 
 }
-
-

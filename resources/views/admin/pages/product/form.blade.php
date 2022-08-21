@@ -18,6 +18,17 @@ $itemsSpecial = ['0' => 'Không đặc biệt', '1' => 'Đặc biệt'];
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
+$thumbDecode = json_decode($item['thumb'], true);
+$thumb = $thumbDecode['image'][0];
+if ($thumb) {
+    $imgThumb = '';
+    if (!empty(@$item['id'])) {
+        foreach ($thumbDecode['image'] as $key => $img) {
+            $imgThumb .= Template::showItemThumb($controllerName, @$img, @$thumbDecode['alt'][$key]);
+        }
+    }
+}
+
 $elements = [
     [
         'label' => Form::label('name', 'Name', $formLabelAttr),
@@ -55,12 +66,34 @@ $elements = [
         'label' => Form::label('special', 'Special', $formLabelAttr),
         'element' => Form::select('special', $itemsSpecial, @$item['special'], $formInputAttr),
     ],
+    // [
+    //     'label' => Form::label('thumb', 'Thumb', $formLabelAttr),
+    //     'element' => Form::file('thumb', $formInputAttr),
+    //     'thumb' => !empty(@$item['id']) ? Template::showItemThumb($controllerName, @$item['thumb'], @$item['name']) : null,
+    //     'type' => 'thumb',
+    // ],
     [
-        'label' => Form::label('thumb', 'Thumb', $formLabelAttr),
-        'element' => Form::file('thumb', $formInputAttr),
-        'thumb' => !empty(@$item['id']) ? Template::showItemThumb($controllerName, @$item['thumb'], @$item['name']) : null,
+        'label' => Form::label('upload', 'Upload New Images', $formLabelAttr),
+        'element' => '
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="btn-add-image">Add Image</button>
+                        <div class="image-wrapper" id="sortable">
+                            <div class="mb-3 d-flex p-2 bg-warning">
+                                <input class="form-control col-md-3 col-sm-3 col-xs-12" type="file" name="thumb1[]" id="formFile">
+                                <input class="col-md-3" type="text" name="alt[]">
+                                <button type="button" class="btn btn-danger btn-delete-image">X</button>
+                            </div>
+                        </div>
+                    </div>',
+    ],
+    [
+        'label' => Form::label('current_image', 'Current Image', $formLabelAttr),
+        'element' => null,
+
+        'thumb' => !empty(@$item['id']) ? ($imgThumb ?? '') : null,
         'type' => 'thumb',
     ],
+
     [
         'element' => $inputHiddenID . $inputHiddenThumb . Form::submit('Save', ['class' => 'btn btn-success']),
         'type' => 'btn-submit',
@@ -82,10 +115,11 @@ $elements = [
                         'url' => route("$controllerName/save"),
                         'accept-charset' => 'UTF-8',
                         'enctype' => 'multipart/form-data',
-                        'class' => 'form-horizontal form-label-left dropzone',
+                        'class' => 'form-horizontal form-label-left',
                         'id' => 'main-form',
                     ]) }}
                     {!! FormTemplate::show($elements) !!}
+
                     {{ Form::close() }}
                 </div>
             </div>

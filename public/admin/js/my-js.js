@@ -231,4 +231,42 @@ $(document).ready(function () {
         // document.getElementById('price').value = priceNumber;
     });
 
+    Dropzone.options.dropzone =
+    {
+        maxFilesize: 10,
+        renameFile: function (file) {
+            var dt = new Date();
+            var time = dt.getTime();
+            return time + file.name;
+        },
+        acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        addRemoveLinks: true,
+        timeout: 60000,
+        success: function (file, response) {
+            console.log(response);
+        },
+        error: function (file, response) {
+            return false;
+        }
+    };
+
+    // $("#sortable").sortable();
+    $('#btn-add-image').on('click', function () {
+        let imageItem = `
+        <div class="mb-3 d-flex p-2 bg-warning">
+            <input class="form-control col-md-3 col-sm-3 col-xs-12" type="file" name="thumb1[]" id="formFile">
+            <input class=" col-md-3 col-sm-3 col-xs-12" type="text" name="alt[]">
+            <button type="button" class="btn btn-danger btn-delete-image">X</button>
+        </div>
+        `;
+        $('.image-wrapper').append(imageItem);
+
+        $("#sortable").sortable();
+    });
+
+    $(document).on('click', '.btn-delete-image', function (e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
+
 });

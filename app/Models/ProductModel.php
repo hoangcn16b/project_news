@@ -30,7 +30,7 @@ class ProductModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->with('productCategory')->select('id', 'name', 'price', 'sale_off', 'status', 'description', 'content', 'thumb', 'ordering', 'product_category_id');
+            $query = $this->with('productCategory')->select('id', 'name', 'price', 'sale_off', 'status', 'description', 'content', 'thumb', 'ordering', 'product_category_id')->where('id', '>', 0);
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -210,19 +210,52 @@ class ProductModel extends AdminModel
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d H:i:s');
-            $params['thumb']      = $this->uploadThumb($params['thumb']);
-
+            if ($params['thumb1']) {
+                $arrJson = [];
+                foreach ($params['thumb1'] as $key => $value) {
+                    // echo $thumbName        = Str::random(10) . '.' . $params['thumb1'][$key]->clientExtension() . '<br>';
+                    $thumbName = $this->uploadMultiThumb($params['thumb1'][$key]);
+                    $arrJson['image'][] = $thumbName;
+                    $arrJson['alt'][] = $params['alt'][$key];
+                }
+                $arrJson = json_encode($arrJson);
+                $params['thumb'] = $arrJson;
+            }
+            unset($params['thumb1']);
+            unset($params['alt']);
+            // $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
         }
 
         if ($options['task'] == 'edit-item') {
-            if (!empty($params['thumb'])) {
+            if (!empty($params['thumb1'])) {
                 // Xóa hình cũ
-                $this->deleteThumb($params['thumb_current']);
+                $thumbDecode = json_decode($params['thumb_current'], true);
+                if ($params['thumb_current']) {
+                    foreach ($thumbDecode['image'] as $key1 => $curImg) {
+                        $this->deleteThumb($curImg);
+                    }
+                }
                 // Up hình mới
-                $params['thumb']      = $this->uploadThumb($params['thumb']);
+                // $params['thumb']      = $this->uploadThumb($params['thumb']);
+                if ($params['thumb1']) {
+                    $arrJson = [];
+                    foreach ($params['thumb1'] as $key => $value) {
+                        // echo $thumbName        = Str::random(10) . '.' . $params['thumb1'][$key]->clientExtension() . '<br>';
+                        $thumbName = $this->uploadMultiThumb($params['thumb1'][$key]);
+                        $arrJson['image'][] = $thumbName;
+                        $arrJson['alt'][] = $params['alt'][$key];
+                    }
+                    $arrJson = json_encode($arrJson);
+                    $params['thumb'] = $arrJson;
+                }
             }
 
+            unset($params['thumb1']);
+            unset($params['alt']);
+            $price = explode('.', $params['price']);
+
+            $params['price'] = implode('', $price);
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d H:i:s');
 

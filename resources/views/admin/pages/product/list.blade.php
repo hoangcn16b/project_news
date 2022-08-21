@@ -28,8 +28,9 @@ $listCategory = array_flip($listCategory);
                             $name = Hightlight::show($val['name'], $params['search'], 'name');
                             $content = Hightlight::show($val['content'], $params['search'], 'content');
                             $content = Template::collapseString($content, 80);
-                            
-                            $thumb = Template::showItemThumb($folderFileUpload, $val['thumb'], $val['name']);
+                            $thumbDecode = json_decode($val['thumb'], true);
+                            $thumb = $thumbDecode['image'][0];
+                            $thumb = Template::showItemThumb($folderFileUpload, $thumb ?? '', $val['name']);
                             // $categoryName = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             // $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
