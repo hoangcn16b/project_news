@@ -31,9 +31,8 @@ class PasswordRequest extends FormRequest
         $oldPass = $this->password;
         $newPass = $this->new_password;
         $confirmPass = $this->new_confirm_password;
-        $userModel = new UserModel();
-
-        $checkRealPass = $userModel->checkPassword($id, $oldPass);
+        // $userModel = new UserModel();
+        // $checkRealPass = $userModel->checkPassword($id, $oldPass);
         if ($oldPass != null) {
 
 

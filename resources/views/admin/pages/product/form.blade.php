@@ -13,20 +13,34 @@ $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 $itemsSpecial = ['0' => 'Không đặc biệt', '1' => 'Đặc biệt'];
-// $itemsCategory = config('zvn.template.article_post');
+$attrPriceForm = [
+    'class' => 'form-control col-md-6 col-xs-12',
+];
 
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
-$thumbDecode = json_decode($item['thumb'], true);
-$thumb = $thumbDecode['image'][0];
-if ($thumb) {
-    $imgThumb = '';
-    if (!empty(@$item['id'])) {
-        foreach ($thumbDecode['image'] as $key => $img) {
-            $imgThumb .= Template::showItemThumb($controllerName, @$img, @$thumbDecode['alt'][$key]);
-        }
+$imgThumb = '';
+$imgCur = sprintf('<div class="form-group"><div class="" id="sortable">');
+if (!empty(@$item['id'])) {
+    $thumbDecode = json_decode($item['thumb'], true);
+    $thumb = $thumbDecode['image'][0];
+    foreach ($thumbDecode['image'] as $key => $img) {
+        // $imgThumb .= Template::showItemThumb($controllerName, @$img, @$thumbDecode['alt'][$key]);
+        $imgThumb = sprintf('<img src="%s" alt="%s" class="zvn-thumb" width ="75" height = "100">', asset("images/$controllerName/$img"), $thumbDecode['alt'][$key]);
+        $imgCur .= sprintf(
+            '<div class="mb-3 d-flex p-2 bg-warning">
+                %s
+                <input class="" type="hidden" name="thumbCur[]" id="formFile" value=" %s ">
+                <input class="form-control col-md-3 col-sm-3 col-xs-12" type="text" name="altCur[]" value = " %s ">
+                <button type="button" class="btn btn-danger btn-delete-image">X</button>
+            </div>',
+            $imgThumb,
+            $img,
+            $thumbDecode['alt'][$key],
+        );
     }
+    $imgCur .= sprintf('</div></div>');
 }
 
 $elements = [
@@ -36,7 +50,7 @@ $elements = [
     ],
     [
         'label' => Form::label('price', 'Price(Vnd)', $formLabelAttr),
-        'element' => Form::text('price', @$item->price_product, $formInputAttr),
+        'element' => Form::text('price', @$item->price_product, $attrPriceForm),
     ],
     [
         'label' => Form::label('sale_off', 'Sale Off(%)', $formLabelAttr),
@@ -90,7 +104,7 @@ $elements = [
         'label' => Form::label('current_image', 'Current Image', $formLabelAttr),
         'element' => null,
 
-        'thumb' => !empty(@$item['id']) ? ($imgThumb ?? '') : null,
+        'thumb' => !empty(@$item['id']) ? $imgCur ?? '' : null,
         'type' => 'thumb',
     ],
 

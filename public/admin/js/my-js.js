@@ -202,15 +202,39 @@ $(document).ready(function () {
     $('.select-select2').select2();
 
     $('#price').keyup(function (e) {
-        e.preventDefault();
-        let price = $(this).val();
-        price = price.split(".");
-        let arrP = '';
-        let priceNumber = '';
-        let j = 0;
-        price = Number(price);
-        // console.log(price);
+        // e.preventDefault();
+        // let price = $(this).val();
+        // // price = price.split(".");
+        // price = price.replace('.', '');
+        // price = price.split("");
+        // let priceNumber = '';
+        // let lengthPrice = price.length;
+        // // console.log(price);
 
+        // if (price) {
+        //     let j = 0;
+        //     let k = lengthPrice;
+        //     if (lengthPrice <= 3) {
+        //         for (let i = 0; i < lengthPrice; i++) {
+        //             priceNumber += price[i];
+        //         }
+        //     }
+        //     if (lengthPrice % 3 > 0) {
+
+        //     }
+        // console.log(priceNumber);
+
+        // for (let i = 0; i < lengthPrice; i++) {
+        //     k = k - 1;
+        //     if (j % 3 == 0) {
+        //         priceNumber = price[k] + '.' + priceNumber;
+        //     } else {
+        //         priceNumber = price[k] + priceNumber;
+        //     }
+        //     j++;
+        // }
+        // }
+        // price = String(price);
         // while (price % 1000 > 0) {
         //     if (Math.floor(price) > 0) {
         //         priceNumber = priceNumber + Math.floor(price);
@@ -218,17 +242,19 @@ $(document).ready(function () {
         //     }
         //     price = price - priceNumber;
         // }
-        // console.log(priceFormat);
-
-        // if (price.length > 1) {
-        //     for (let i = 0; i < price.length; i++) {
-        //         priceNumber = price[i] + '.' + priceNumber;
+        // console.log(price[0]);
+        // if (price.length > 3) {
+        //     let lengthP = price.length;
+        //     for (let i = 0; i < lengthP; i++) {
+        //         priceNumber = priceNumber + '.' + price[lengthP] + price[lengthP - 1] + price[lengthP - 2];
         //     }
         // } else {
-        //     priceNumber = price[0];
+        //     priceNumber = price;
         // }
+        // console.log(priceNumber);
+
         // let formated = new Intl.NumberFormat('vi-VN').format(priceNumber);
-        // document.getElementById('price').value = priceNumber;
+        // document.getElementById('price').value = priceNumber.slice(0, -1);
     });
 
     Dropzone.options.dropzone =
@@ -250,7 +276,7 @@ $(document).ready(function () {
         }
     };
 
-    // $("#sortable").sortable();
+    $("#sortable").sortable();
     $('#btn-add-image').on('click', function () {
         let imageItem = `
         <div class="mb-3 d-flex p-2 bg-warning">
