@@ -265,7 +265,7 @@ class ProductModel extends AdminModel
             unset($params['thumbCur']);
             unset($params['alt']);
             unset($params['altCur']);
-            $price = explode('.', $params['price']);
+            $price = explode(',', $params['price']);
             $params['price'] = implode('', $price);
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d H:i:s');
@@ -290,7 +290,7 @@ class ProductModel extends AdminModel
     }
     public function getPriceProductAttribute()
     {
-        return number_format($this->price, 0, ',', '.');
+        return number_format($this->price, 0, '.', ',');
     }
 
     public function getNameCategoryAttribute()

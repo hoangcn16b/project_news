@@ -15,6 +15,10 @@ $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive
 $itemsSpecial = ['0' => 'Không đặc biệt', '1' => 'Đặc biệt'];
 $attrPriceForm = [
     'class' => 'form-control col-md-6 col-xs-12',
+    'id' => 'currency-field',
+    'data-type' => 'currency',
+    'min' => '1',
+    'pattern' => "[0-9][0-9,]*[0-9]",
 ];
 
 $inputHiddenID = Form::hidden('id', @$item['id']);
