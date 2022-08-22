@@ -223,6 +223,8 @@ class ProductModel extends AdminModel
             }
             unset($params['thumb1']);
             unset($params['alt']);
+            $price = explode(',', $params['price']);
+            $params['price'] = implode('', $price);
             // $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
         }
