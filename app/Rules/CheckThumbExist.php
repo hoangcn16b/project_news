@@ -30,20 +30,8 @@ class CheckThumb implements Rule
         // dd($user);
         // dd(md5($value));
         $check = true;
-        $i = 0;
-        $fileConfg = ['jpg', 'jpeg', 'png', 'gif'];
+
         if (isset($value)) {
-            foreach ($value as $key => $val) {
-                if (!in_array($val->clientExtension(), $fileConfg)) {
-                    $this->nameExtIncorrect[] = $val->getClientOriginalName();
-                    // break;
-                    $i++;
-                }
-            }
-            if ($i > 0) {
-                $check = false;
-                $this->listFileIncorrect = implode(', ', $this->nameExtIncorrect);
-            }
         } else {
             return false;
         }

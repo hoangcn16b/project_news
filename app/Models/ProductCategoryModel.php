@@ -144,7 +144,7 @@ class ProductCategoryModel extends AdminModel
                 $result[$value->id] = str_repeat('-----/ ', $depth) . $value->name;
             }
         }
-        if (!$root) unset($result[1]);
+        if ($root == false) unset($result[1]);
         return $result;
     }
     // public function getItem($params = null, $options = null)

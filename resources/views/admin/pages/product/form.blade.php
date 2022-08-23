@@ -3,9 +3,9 @@
 use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductCategoryModel;
+use App\Models\ProductModel;
 
-$itemsCategory = ProductCategoryModel::listCategory(null, ['task' => 'get-category'], false, true);
+$itemsCategory = ProductModel::listCategory(null, ['task' => 'get-category'], false, false);
 
 $formInputAttr = config('zvn.template.form_input');
 $select2 = config('zvn.template.form_select2');
@@ -18,31 +18,35 @@ $attrPriceForm = [
     'id' => 'currency-field',
     'data-type' => 'currency',
     'min' => '1',
-    'pattern' => "[0-9][0-9,]*[0-9]",
+    'pattern' => '[0-9][0-9,]*[0-9]',
 ];
 
 $inputHiddenID = Form::hidden('id', @$item['id']);
 $inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
+// dd($item['thumb']);
 
 $imgThumb = '';
 $imgCur = sprintf('<div class="form-group"><div class="" id="sortable">');
 if (!empty(@$item['id'])) {
-    $thumbDecode = json_decode($item['thumb'], true);
-    $thumb = $thumbDecode['image'][0];
-    foreach ($thumbDecode['image'] as $key => $img) {
-        // $imgThumb .= Template::showItemThumb($controllerName, @$img, @$thumbDecode['alt'][$key]);
-        $imgThumb = sprintf('<img src="%s" alt="%s" class="zvn-thumb" width ="75" height = "100">', asset("images/$controllerName/$img"), $thumbDecode['alt'][$key]);
-        $imgCur .= sprintf(
-            '<div class="mb-3 d-flex p-2 bg-warning">
+    if (!empty($item['thumb'])) {
+        // dd($item['thumb']);
+        $thumbDecode = json_decode($item['thumb'] ?? '', true);
+        $thumb = $thumbDecode['image'][0] ?? '';
+        foreach ($thumbDecode['image'] ?? [] as $key => $img) {
+            // $imgThumb .= Template::showItemThumb($controllerName, @$img, @$thumbDecode['alt'][$key]);
+            $imgThumb = sprintf('<img src="%s" alt="%s" class="zvn-thumb" width ="75" height = "100">', asset("images/$controllerName/$img"), $thumbDecode['alt'][$key]);
+            $imgCur .= sprintf(
+                '<div class="mb-3 d-flex p-2 bg-warning">
                 %s
                 <input class="" type="hidden" name="thumbCur[]" id="formFile" value=" %s ">
                 <input class="form-control col-md-3 col-sm-3 col-xs-12" type="text" name="altCur[]" value = " %s ">
                 <button type="button" class="btn btn-danger btn-delete-image">X</button>
             </div>',
-            $imgThumb,
-            $img,
-            $thumbDecode['alt'][$key],
-        );
+                $imgThumb,
+                $img,
+                $thumbDecode['alt'][$key],
+            );
+        }
     }
     $imgCur .= sprintf('</div></div>');
 }

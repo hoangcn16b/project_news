@@ -1,7 +1,7 @@
 @php
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
-$listCategory = array_flip($listCategory);
+// $listCategory = array_flip($listCategory);
 @endphp
 <div class="x_content">
     <div class="table-responsive">
@@ -29,11 +29,11 @@ $listCategory = array_flip($listCategory);
                             $content = Hightlight::show($val['content'], $params['search'], 'content');
                             $content = Template::collapseString($content, 80);
                             $thumbDecode = json_decode($val['thumb'], true);
-                            $thumb = $thumbDecode['image'][0];
-                            $thumb = Template::showItemThumb($folderFileUpload, $thumb ?? '', $val['name']);
+                            $thumb = $thumbDecode['image'][0] ?? '';
+                            $thumb = Template::showItemThumb($folderFileUpload, $thumb ?? '', $thumbDecode['alt'][0] ?? $val['name']);
                             // $categoryName = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
-                            // $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
+                            $selectCategory = Template::showSelectFromModel($controllerName, $listCategory, $id, $val['product_category_id'], 'category');
                             $description = Template::collapseString($val['description'], 10);
                             // dd($val);
                             $category = $val->productCategory->name;
@@ -57,8 +57,9 @@ $listCategory = array_flip($listCategory);
                                 <p>{!! $thumb !!}</p>
                             </td>
                             <td width="15%">
-                                <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->productCategory->id" :rowId="$id"
-                                    :fieldName="$listCategory" :inTable="$inTable" />
+                                {!! $selectCategory !!}
+                                {{-- <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->productCategory->id" :rowId="$id"
+                                    :fieldName="$listCategory" :inTable="$inTable" /> --}}
                             </td>
                             <td>
                                 <livewire:status :isStatus="$val['status']" :rowId="$id" :inTable="$inTable" />

@@ -125,14 +125,14 @@ class ProductModel extends AdminModel
         $result = null;
         if ($hasDefault) $result['all'] = 'Filter by All';
         if ($options['task'] == 'get-category') {
-            $query = ProductCategoryModel::withDepth()->defaultOrder();
-            $query = $query->get();
+            $query = ProductCategoryModel::withDepth()->defaultOrder()->having('depth', '>', 0)->get();
+            // $result = $query->get()->pluck('name_category', 'id');
             foreach ($query as $key => $value) {
-                $depth = $value->depth <= 1 ? 0 : $value->depth - 1;
-                $result[$value->id] = str_repeat('-----/ ', $depth) . $value->name;
+                $result[$value->id] = str_repeat('-----/ ', $value->depth - 1) . $value->name;
             }
         }
-        if (!$root) unset($result[6]);
+        // if (!$root) unset($result[6]);
+
         return $result;
     }
 
@@ -206,7 +206,6 @@ class ProductModel extends AdminModel
             self::where('id', $params['id'])->update(['type' => $params['currentType']]);
         }
 
-
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d H:i:s');
@@ -231,15 +230,15 @@ class ProductModel extends AdminModel
 
         if ($options['task'] == 'edit-item') {
 
-            if ($params['thumbCur']) {
-                $newThumbCur = [];
+            $newThumbCur = [];
+            if (isset($params['thumbCur'])) {
                 foreach ($params['thumbCur'] as $keyThumbCur => $valueThumbCur) {
                     $newThumbCur['image'][] = $valueThumbCur;
                     $newThumbCur['alt'][] = $params['altCur'][$keyThumbCur];
                 }
             }
-            $thumbDecode = json_decode($params['thumb_current'], true);
-            $removeThumb = array_diff($thumbDecode['image'], $newThumbCur['image']);
+            $thumbDecode = json_decode($params['thumb_current'] ?? [], true);
+            $removeThumb = array_diff($thumbDecode['image'] ?? [], $newThumbCur['image'] ?? []);
             // $removeAlt = array_diff($thumbDecode['alt'], $newThumbCur['alt']);
             if (!empty($removeThumb)) {
                 foreach ($removeThumb as $key1 => $curImg) {
@@ -255,12 +254,12 @@ class ProductModel extends AdminModel
                 }
                 $params['thumb'] = $newThumbCur;
             } else {
-                $tmp = [];
-                foreach ($newThumbCur['image'] as $keyNewThumb => $valueNewThumb) {
-                    $tmp['image'][] = $valueNewThumb;
-                    $tmp['alt'][] = $newThumbCur['alt'][$keyNewThumb];
-                }
-                $params['thumb'] = $tmp;
+                // $tmp = [];
+                // foreach ($newThumbCur['image'] as $keyNewThumb => $valueNewThumb) {
+                //     $tmp['image'][] = $valueNewThumb;
+                //     $tmp['alt'][] = $newThumbCur['alt'][$keyNewThumb];
+                // }
+                $params['thumb'] = $newThumbCur;
             }
             $params['thumb'] = json_encode($params['thumb']);
             unset($params['thumb1']);
@@ -276,7 +275,7 @@ class ProductModel extends AdminModel
 
         if ($options['task'] == 'change-category') {
             $params['created_by'] = "hailan";
-            $params['created_at']    = date('Y-m-d');
+            $params['created_at']    = date('Y-m-d H:i:s');
             self::where('id', $params['id'])->update(['product_category_id' => $params['currentCategory']]);
         }
     }
@@ -297,7 +296,7 @@ class ProductModel extends AdminModel
 
     public function getNameCategoryAttribute()
     {
-        $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
-        return str_repeat('-----/ ', $depth) . $this->name;
+        // $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
+        return str_repeat('-----/ ', $this->depth - 1) . $this->name;
     }
 }

@@ -240,7 +240,6 @@ class CategoryModel extends AdminModel
 
     public function getNameCategoryAttribute()
     {
-        $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
-        return str_repeat('-----/ ', $depth) . $this->name;
+        return str_repeat('-----/ ', $this->depth -1) . $this->name;
     }
 }

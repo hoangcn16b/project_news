@@ -11,7 +11,6 @@ $xhtmlAreaSeach = Template::showAreaSearch($controllerName, $params['search']);
 // }
 $categoryConfig = ProductModel::listCategory(null, ['task' => 'get-category'], true, false);
 
-
 $xhtmlAreaFilter = Template::showAreaFilter($controllerName, $params['search'], $categoryConfig);
 
 @endphp

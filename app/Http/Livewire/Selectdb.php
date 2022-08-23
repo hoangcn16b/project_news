@@ -24,6 +24,10 @@ class Selectdb extends Component
         $this->thisCol = $thisCol;
     }
 
+    public function getFieldName() {
+        return $this->fieldName;
+    }
+
     public function updatedThisVal($value)
     {
         try {

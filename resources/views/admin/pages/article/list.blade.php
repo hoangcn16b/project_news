@@ -4,8 +4,6 @@ use App\Helpers\Hightlight as Hightlight;
 // foreach ($getCategoryNestedset['list_category'] as $key => $value) {
 //     $listCategory[$value['id']] = $value->name_category;
 // }
-$listCategory = array_flip($listCategory);
-
 @endphp
 <div class="x_content">
     <div class="table-responsive">
@@ -33,7 +31,7 @@ $listCategory = array_flip($listCategory);
                             $thumb = Template::showItemThumb($controllerName, $val['thumb'], $val['name']);
                             // $categoryName = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
-                            // $category = Template::showSelectFromModel($controllerName, $getCategory, $id, $val['category_id'], 'category');
+                            $selectCategory = Template::showSelectFromModel($controllerName, $listCategory, $id, $val['category_id'], 'category');
                             $category = $val->category->name;
                             $listBtnAction = Template::showButtonAction($controllerName, $id);
                             $fieldNameType = 'type';
@@ -51,8 +49,9 @@ $listCategory = array_flip($listCategory);
                                 <p>{!! $thumb !!}</p>
                             </td>
                             <td width="15%">
-                                <livewire:selectdb :thisCol="$categoryCol" :thisVal="$val->category->id" :rowId="$id"
-                                    :fieldName="$listCategory" :inTable="$inTable" />
+                                {!! $selectCategory !!}
+                                {{-- <livewire:selectdb wire:key="$id" :thisCol="$categoryCol" :thisVal="$val->category->id" :rowId="$id"
+                                    :fieldName="$listCategory" :inTable="$inTable" /> --}}
                             </td>
                             <td width="10%">
                                 <livewire:select :thisColumn="$ColType" :thisType="$val['type']" :rowId="$id" :fieldName="$fieldNameType"
