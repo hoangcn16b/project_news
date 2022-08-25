@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         $id = $this->id;
-        $thumb = $this->thumb1;
+        $thumb1 = $this->thumb1;
         $condName = "bail|required|between:5,255|unique:$this->table,name";
         // $condThumb = 'bail|required|image|max:5000';
 
@@ -44,7 +44,7 @@ class ProductRequest extends FormRequest
             'ordering'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
             'special'      => 'bail|in:0,1',
             'status'      => 'bail|in:active,inactive',
-            'thumb1'       =>   new CheckThumb($thumb)
+            'thumb1'       =>   new CheckThumb($thumb1)
         ];
     }
 

@@ -346,4 +346,18 @@ $(document).ready(function () {
         input[0].setSelectionRange(caret_pos, caret_pos);
     }
 
+    $('.select2-attr').change(function () {
+        let selectValue = $(this).val();
+        let selectedOpts = $(this).find('option:selected').text();
+        // console.log(selectedOpts);
+        if (this.value != 'select') {
+            $("#append-attr").append(selectedOpts + ' <input class="tagify-attr my-tagify" name="attr_value[' + selectValue + ']" type="text"><br>');
+            let myTagify = document.querySelectorAll('.my-tagify');
+            myTagify.forEach(ele => {
+                new Tagify(ele);
+            });
+        } else {
+            $("#tagify-attr").remove();
+        }
+    });
 });

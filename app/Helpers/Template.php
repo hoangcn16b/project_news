@@ -230,7 +230,7 @@ class Template
     public static function showItemThumb($controllerName, $thumbName, $thumbAlt)
     {
         $xhtml = sprintf(
-            '<img src="%s" alt="%s" class="zvn-thumb" width ="75" height = "100">',
+            '<img src="%s" alt="%s" class="zvn-thumb" >',
             asset("images/$controllerName/$thumbName"),
             $thumbAlt
         );

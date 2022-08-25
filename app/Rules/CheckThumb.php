@@ -26,9 +26,6 @@ class CheckThumb implements Rule
      */
     public function passes($attribute, $value)
     {
-        // $user = UserModel::find($this->userInfo['id']);
-        // dd($user);
-        // dd(md5($value));
         $check = true;
         $i = 0;
         $fileConfg = ['jpg', 'jpeg', 'png', 'gif'];

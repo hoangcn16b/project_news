@@ -4,11 +4,24 @@ use App\Helpers\Form as FormTemplate;
 use App\Helpers\Template;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductModel;
-
+use App\Models\ProductAttributeModel;
 $itemsCategory = ProductModel::listCategory(null, ['task' => 'get-category'], false, false);
-
+$productAttr = ProductAttributeModel::productAttr($item ?? '');
+$listAttr = [];
+$attrSelectedId = null;
+$listAttr['select'] = 'Select Attribute';
+foreach ($productAttr as $key => $value) {
+    $listAttr[$value['attribute']['id']] = $value['attribute']['name'];
+    if ($value['product_id'] == $item['id']) {
+        $attrSelectedId = $value['attribute']['id'];
+        $attrSelectedName = $value['attribute']['name'];
+    }
+}
+// dd($productAttr);
+$configTagsInput = ['class' => 'some_class_name my-tagify', 'width' => '100', 'height' => 40];
 $formInputAttr = config('zvn.template.form_input');
 $select2 = config('zvn.template.form_select2');
+$select2Attr = ['class' => 'form-control col-md-6 col-xs-12 select-select2 select2-attr'];
 $formLabelAttr = config('zvn.template.form_label');
 $formCkeditor = config('zvn.template.form_ckeditor');
 $statusValue = ['active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
@@ -67,6 +80,16 @@ $elements = [
     [
         'label' => Form::label('product_category_id', 'Category', $formLabelAttr),
         'element' => Form::select('product_category_id', $itemsCategory, @$item['product_category_id'], $select2),
+    ],
+    [
+        'label' => Form::label('attribute', 'Attribute', $formLabelAttr),
+        'element' =>
+            Form::select('attribute_id', $listAttr, $attrSelectedId, $select2Attr) .
+            '<div id="append-attr">
+                ' .
+            $attrSelectedName .
+            ' <input class="tagify-attr my-tagify" name="attr_value['.$attrSelectedId.']" type="text"><br>
+            </div>',
     ],
     [
         'label' => Form::label('description', 'Description', $formLabelAttr),
