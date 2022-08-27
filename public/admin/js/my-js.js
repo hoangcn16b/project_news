@@ -194,170 +194,150 @@ $(document).ready(function () {
         new Tagify(ele);
     });
 
-    // const money = 123456789000;
-    // const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9 }
-    // const formated = new Intl.NumberFormat('vi-VN', config).format(money);
-    // console.log(formated);
-    // const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9 }
     $('.select-select2').select2();
 
-    $('#price').keyup(function (e) {
+    // Dropzone.options.dropzone =
+    // {
+    //     maxFilesize: 10,
+    //     renameFile: function (file) {
+    //         var dt = new Date();
+    //         var time = dt.getTime();
+    //         return time + file.name;
+    //     },
+    //     acceptedFiles: ".jpeg,.jpg,.png,.gif",
+    //     addRemoveLinks: true,
+    //     timeout: 60000,
+    //     success: function (file, response) {
+    //         console.log(response);
+    //     },
+    //     error: function (file, response) {
+    //         return false;
+    //     }
+    // };
 
-        e.preventDefault();
+    // $(function () {
+    //     var mediaDropzone;
+    //     mediaDropzone = new Dropzone("#dropzone");
+    //     return mediaDropzone.on("success", function (file, responseText) {
+    //         var imageUrl;
+    //         imageUrl = responseText.file_name.url;
+    //     });
+    // });
+    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+    
 
-        // let price = $(this).val();
-        // // price = price.split(".");
-        // price = price.replace('.', '');
-        // price = price.split("");
-        // let priceNumber = '';
-        // let lengthPrice = price.length;
-        // // console.log(price);
-
-        // if (price) {
-        //     let j = 0;
-        //     let k = lengthPrice;
-        //     if (lengthPrice <= 3) {
-        //         for (let i = 0; i < lengthPrice; i++) {
-        //             priceNumber += price[i];
-        //         }
-        //     }
-        //     if (lengthPrice % 3 > 0) {
-
-        //     }
-        // console.log(priceNumber);
-
-        // for (let i = 0; i < lengthPrice; i++) {
-        //     k = k - 1;
-        //     if (j % 3 == 0) {
-        //         priceNumber = price[k] + '.' + priceNumber;
-        //     } else {
-        //         priceNumber = price[k] + priceNumber;
-        //     }
-        //     j++;
-        // }
-        // }
-        // price = String(price);
-        // while (price % 1000 > 0) {
-        //     if (Math.floor(price) > 0) {
-        //         priceNumber = priceNumber + Math.floor(price);
-        //         priceFormat = priceNumber + '.' + Math.floor(price);
-        //     }
-        //     price = price - priceNumber;
-        // }
-        // console.log(price[0]);
-        // if (price.length > 3) {
-        //     let lengthP = price.length;
-        //     for (let i = 0; i < lengthP; i++) {
-        //         priceNumber = priceNumber + '.' + price[lengthP] + price[lengthP - 1] + price[lengthP - 2];
-        //     }
-        // } else {
-        //     priceNumber = price;
-        // }
-        // console.log(priceNumber);
-
-        // let formated = new Intl.NumberFormat('vi-VN').format(priceNumber);
-        // document.getElementById('price').value = priceNumber.slice(0, -1);
-    });
-
-    Dropzone.options.dropzone =
-    {
-        maxFilesize: 10,
-        renameFile: function (file) {
-            var dt = new Date();
-            var time = dt.getTime();
-            return time + file.name;
-        },
-        acceptedFiles: ".jpeg,.jpg,.png,.gif",
-        addRemoveLinks: true,
-        timeout: 60000,
-        success: function (file, response) {
-            console.log(response);
-        },
-        error: function (file, response) {
-            return false;
-        }
-    };
-
-    $("#sortable").sortable();
-    $('#btn-add-image').on('click', function () {
-        let imageItem = `
+    
+//sortable
+$("#sortable").sortable();
+$('#btn-add-image').on('click', function () {
+    let imageItem = `
         <div class="mb-3 d-flex p-2 bg-warning">
             <input class="form-control col-md-3 col-sm-3 col-xs-12" type="file" name="thumb1[]" id="formFile">
             <input class=" col-md-3 col-sm-3 col-xs-12" type="text" name="alt[]">
             <button type="button" class="btn btn-danger btn-delete-image">X</button>
         </div>
         `;
-        $('.image-wrapper').append(imageItem);
+    $('.image-wrapper').append(imageItem);
 
-        $("#sortable").sortable();
-    });
+    $("#sortable").sortable();
+});
+$(document).on('click', '.btn-delete-image', function (e) {
+    e.preventDefault();
+    $(this).parent().remove();
+});
 
-    $(document).on('click', '.btn-delete-image', function (e) {
-        e.preventDefault();
-        $(this).parent().remove();
-    });
-
-
-    $("input[data-type='currency']").on({
-        keyup: function () {
-            formatCurrency($(this));
-        },
-        blur: function () {
-            formatCurrency($(this), "blur");
-        }
-    });
-    function formatNumber(n) {
-        // format number 1000000 to 1,234,567
-        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+//currency
+$("input[data-type='currency']").on({
+    keyup: function () {
+        formatCurrency($(this));
+    },
+    blur: function () {
+        formatCurrency($(this), "blur");
     }
-    function formatCurrency(input, blur) {
-        // appends $ to value, validates decimal side
-        // and puts cursor back in right position.
+});
+function formatNumber(n) {
+    // format number 1000000 to 1,234,567
+    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+function formatCurrency(input, blur) {
+    // appends $ to value, validates decimal side
+    // and puts cursor back in right position.
 
-        // get input value
-        var input_val = input.val();
+    // get input value
+    var input_val = input.val();
 
-        // don't validate empty input
-        if (input_val === "") { return; }
+    // don't validate empty input
+    if (input_val === "") { return; }
 
-        // original length
-        var original_len = input_val.length;
+    // original length
+    var original_len = input_val.length;
 
-        // initial caret position 
-        var caret_pos = input.prop("selectionStart");
+    // initial caret position 
+    var caret_pos = input.prop("selectionStart");
 
-        // no decimal entered
-        // add commas to number
-        // remove all non-digits
-        input_val = formatNumber(input_val);
-        input_val = "" + input_val;
+    // no decimal entered
+    // add commas to number
+    // remove all non-digits
+    input_val = formatNumber(input_val);
+    input_val = "" + input_val;
 
-        // final formatting
-        if (blur === "blur") {
-            input_val += "";
-        }
-
-        // send updated string to input
-        input.val(input_val);
-
-        // put caret back in the right position
-        var updated_len = input_val.length;
-        caret_pos = updated_len - original_len + caret_pos;
-        input[0].setSelectionRange(caret_pos, caret_pos);
+    // final formatting
+    if (blur === "blur") {
+        input_val += "";
     }
 
-    $('.select2-attr').change(function () {
-        let selectValue = $(this).val();
-        let selectedOpts = $(this).find('option:selected').text();
-        // console.log(selectedOpts);
-        if (this.value != 'select') {
-            $("#append-attr").append(selectedOpts + ' <input class="tagify-attr my-tagify" name="attr_value[' + selectValue + ']" type="text"><br>');
-            let myTagify = document.querySelectorAll('.my-tagify');
-            myTagify.forEach(ele => {
-                new Tagify(ele);
-            });
-        } else {
-            $("#tagify-attr").remove();
-        }
-    });
+    // send updated string to input
+    input.val(input_val);
+
+    // put caret back in the right position
+    var updated_len = input_val.length;
+    caret_pos = updated_len - original_len + caret_pos;
+    input[0].setSelectionRange(caret_pos, caret_pos);
+}
+
+$(".btn-add-image").click(function () {
+    // console.log('clicked btn-add-image')
+    $('#file_upload').trigger('click');
+});
+
+// event delegation
+$('.list-input-hidden-upload').on('change', '#file_upload', function (event) {
+    let today = new Date();
+    let time = today.getTime();
+    let image = event.target.files[0];
+    let name = $("input[name='name']").val();
+    let alt = name.replace(/\s/g, '+');
+    let file_name = event.target.files[0].name;
+    // console.log(alt);
+    let box_image = $('<div class="box-image"></div>');
+    box_image.append('<img src="' + URL.createObjectURL(image) + '" class="picture-box" width="150" height="180">');
+    box_image.append('<input type="text" name="altNewImg[]" value="' + alt + '" id="alt-{{ $key }}" class="images_alt">');
+    box_image.append('<div class="wrap-btn-delete"><button class="btn btn-danger btn-delete-image" type="button" data-id=' + time + '><i class="fldemo glyphicon glyphicon-remove"></i> Remove</button></div>');
+    $(".list-images").append(box_image);
+    $(this).removeAttr('id');
+    $(this).attr('id', time);
+    let input_type_file = '<input type="file" name="filenames[]" id="file_upload" class="myfrm form-control hidden">';
+    $('.list-input-hidden-upload').append(input_type_file);
+});
+
+$(".list-images").on('click', '.btn-delete-image', function () {
+    let id = $(this).data('id');
+    $('#' + id).remove();
+    $(this).parents('.box-image').remove();
+});
+
+$('.select2-attr').change(function () {
+    let selectValue = $(this).val();
+    let selectedOpts = $(this).find('option:selected').text();
+    // console.log(selectedOpts);
+    if (this.value != 'select') {
+        $("#append-attr").append(selectedOpts + ' <input class="tagify-attr my-tagify" name="attr_value[' + selectValue + ']" type="text"><br>');
+        let myTagify = document.querySelectorAll('.my-tagify');
+        myTagify.forEach(ele => {
+            new Tagify(ele);
+        });
+    } else {
+        $("#tagify-attr").remove();
+    }
+});
 });

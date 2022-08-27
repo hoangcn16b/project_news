@@ -2,6 +2,7 @@
 use App\Helpers\Template as Template;
 use App\Helpers\Hightlight as Hightlight;
 // $listCategory = array_flip($listCategory);
+// dd($items);
 @endphp
 <div class="x_content">
     <div class="table-responsive">
@@ -31,6 +32,7 @@ use App\Helpers\Hightlight as Hightlight;
                             $thumbDecode = json_decode($val['thumb'], true);
                             $thumb = $thumbDecode['image'][0] ?? '';
                             $thumb = Template::showItemThumb($folderFileUpload, $thumb ?? '', $thumbDecode['alt'][0] ?? $val['name']);
+                            // $price = number_format(((float) $val['price']), 0, '.', ',');
                             // $categoryName = $val['category_name'];
                             // $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             $selectCategory = Template::showSelectFromModel($controllerName, $listCategory, $id, $val['product_category_id'], 'category');

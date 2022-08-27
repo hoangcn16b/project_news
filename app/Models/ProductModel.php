@@ -196,6 +196,7 @@ class ProductModel extends AdminModel
 
     public function saveItem($params = null, $options = null)
     {
+
         $this->table = 'products';
         if ($options['task'] == 'change-status') {
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
@@ -207,50 +208,69 @@ class ProductModel extends AdminModel
         }
 
         if ($options['task'] == 'add-item') {
+
             $params['created_by'] = "hailan";
             $params['created_at']    = date('Y-m-d H:i:s');
-            if ($params['thumb1']) {
+            if (!empty($params['filenames'])) {
                 $arrJson = [];
-                foreach ($params['thumb1'] as $key => $value) {
-                    // echo $thumbName        = Str::random(10) . '.' . $params['thumb1'][$key]->clientExtension() . '<br>';
-                    $thumbName = $this->uploadMultiThumb($params['thumb1'][$key]);
+                foreach ($params['filenames'] as $key => $value) {
+                    // $thumbName        = Str::random(10) . '.' . $params['filenames'][$key]->clientExtension();
+                    $thumbName = $this->uploadMultiThumb($params['filenames'][$key]);
                     $arrJson['image'][] = $thumbName;
-                    $arrJson['alt'][] = $params['alt'][$key];
+                    $arrJson['alt'][] = $params['altNewImg'][$key];
                 }
                 $arrJson = json_encode($arrJson);
                 $params['thumb'] = $arrJson;
             }
-            unset($params['thumb1']);
+
+            unset($params['filenames']);
+            unset($params['images_uploaded']);
             unset($params['alt']);
+            unset($params['altNewImg']);
+            unset($params['images_uploaded_origin']);
+            unset($params['attr_value']);
             $price = explode(',', $params['price']);
             $params['price'] = implode('', $price);
+
             // $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
         }
 
         if ($options['task'] == 'edit-item') {
 
+            //lấy ra danh sách thông tin ảnh đã chỉnh sửa.
             $newThumbCur = [];
-            if (isset($params['thumbCur'])) {
-                foreach ($params['thumbCur'] as $keyThumbCur => $valueThumbCur) {
+            if (isset($params['images_uploaded'])) {
+                foreach ($params['images_uploaded'] as $keyThumbCur => $valueThumbCur) {
                     $newThumbCur['image'][] = $valueThumbCur;
-                    $newThumbCur['alt'][] = $params['altCur'][$keyThumbCur];
+                    $newThumbCur['alt'][] = $params['alt'][$keyThumbCur];
                 }
             }
-            $thumbDecode = json_decode($params['thumb_current'] ?? [], true);
-            $removeThumb = array_diff($thumbDecode['image'] ?? [], $newThumbCur['image'] ?? []);
-            // $removeAlt = array_diff($thumbDecode['alt'], $newThumbCur['alt']);
-            if (!empty($removeThumb)) {
-                foreach ($removeThumb as $key1 => $curImg) {
-                    $this->deleteThumb($curImg);
+
+            //lấy ra ảnh đã bị loại bỏ
+            // echo '<pre>';
+            // print_r($params);
+            // echo '</pre>';
+            // die;
+            if (!empty($params['thumb_current'])) {
+                $thumbDecode = json_decode(($params['thumb_current'] ?? []), true);
+                $removeThumb = array_diff($thumbDecode['image'] ?? [], $newThumbCur['image'] ?? []);
+                // $removeAlt = array_diff($thumbDecode['alt'], $newThumbCur['alt']);
+
+                //xoá ảnh đã bị loại bỏ 
+                if (!empty($removeThumb)) {
+                    foreach ($removeThumb as $key1 => $curImg) {
+                        $this->deleteThumb($curImg);
+                    }
                 }
             }
-            if (!empty($params['thumb1'])) {
-                foreach ($params['thumb1'] as $key => $value) {
-                    // $thumbName        = Str::random(10) . '.' . $params['thumb1'][$key]->clientExtension() . '<br>';
-                    $thumbName = $this->uploadMultiThumb($params['thumb1'][$key]);
+            //upload 
+            if (!empty($params['filenames'])) {
+                foreach ($params['filenames'] as $key => $value) {
+                    // $thumbName        = Str::random(10) . '.' . $params['filenames'][$key]->clientExtension();
+                    $thumbName = $this->uploadMultiThumb($params['filenames'][$key]);
                     $newThumbCur['image'][] = $thumbName;
-                    $newThumbCur['alt'][] = $params['alt'][$key];
+                    $newThumbCur['alt'][] = $params['altNewImg'][$key];
                 }
                 $params['thumb'] = $newThumbCur;
             } else {
@@ -261,15 +281,20 @@ class ProductModel extends AdminModel
                 // }
                 $params['thumb'] = $newThumbCur;
             }
+
             $params['thumb'] = json_encode($params['thumb']);
-            unset($params['thumb1']);
-            unset($params['thumbCur']);
+            unset($params['filenames']);
+            unset($params['images_uploaded']);
             unset($params['alt']);
-            unset($params['altCur']);
+            unset($params['altNewImg']);
+            unset($params['images_uploaded_origin']);
+            unset($params['attr_value']);
+
             $price = explode(',', $params['price']);
             $params['price'] = implode('', $price);
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d H:i:s');
+
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
         }
 
@@ -289,9 +314,10 @@ class ProductModel extends AdminModel
             self::where('id', $params['id'])->delete();
         }
     }
+
     public function getPriceProductAttribute()
     {
-        return number_format($this->price, 0, '.', ',');
+        return number_format(((float) $this->price), 0, '.', ',');
     }
 
     public function getNameCategoryAttribute()

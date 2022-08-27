@@ -38,13 +38,13 @@ class ProductRequest extends FormRequest
 
         return [
             'name'        => $condName,
-            // 'price'       => "bail|required",
+            'price'       => "bail|required",
             'sale_off'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
             // 'description' => 'bail|required|min:5',
             'ordering'        => 'bail|numeric|min:0|max:100|regex:/^\d+(\.\d{1,2})?$/',
             'special'      => 'bail|in:0,1',
             'status'      => 'bail|in:active,inactive',
-            'thumb1'       =>   new CheckThumb($thumb1)
+            // 'thumb1'       =>   new CheckThumb($thumb1)
         ];
     }
 
