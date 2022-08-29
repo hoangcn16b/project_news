@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductModel as MainModel;
 use App\Models\ProductModel;
 use App\Http\Requests\ProductRequest as MainRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends AdminController
 {
@@ -43,6 +44,30 @@ class ProductController extends AdminController
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $item = null;
+        // $this->model->table('products');
+        $itemId = $this->model->createItemDraft();
+
+        return view($this->pathViewController .  'create', [
+            'itemId'        => $itemId
+        ]);
+    }
+
+    public function form(Request $request)
+    {
+        $item = null;
+        if ($request->id !== null) {
+            $params["id"] = $request->id;
+            $item = $this->model->getItem($params, ['task' => 'get-item']);
+        }
+
+        return view($this->pathViewController .  'form', [
+            'item'        => $item
+        ]);
+    }
+
     public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {
@@ -58,6 +83,28 @@ class ProductController extends AdminController
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
+    }
+
+    public function addAttribute(Request $request)
+    {
+        $resultVal = null;
+        $resultName = null;
+        $id = $request->id;
+        $dataAttrName = json_decode(stripslashes($request->jsonName));
+        $dataAttrVal = json_decode(stripslashes($request->jsonValue));
+        // $dataAttrName = array_filter($dataAttrName);
+        // $dataAttrVal = array_filter($dataAttrVal);
+        // foreach ($dataAttrVal as $key => $value) {
+        //     $resultVal[] = explode('|', $value);
+        // }
+
+        return view($this->pathViewController .  'variants', [
+            'id'                  => $id,
+            'dataAttrName'        => $dataAttrName,
+            'dataAttrVal'         => $dataAttrVal,
+            // 'resultName'          => $resultName,
+            // 'resultVal'             => $resultVal
+        ]);
     }
 
     public function category(Request $request)

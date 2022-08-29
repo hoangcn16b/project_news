@@ -224,120 +224,152 @@ $(document).ready(function () {
     //     });
     // });
     // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-    
 
-    
-//sortable
-$("#sortable").sortable();
-$('#btn-add-image').on('click', function () {
-    let imageItem = `
+
+
+    //sortable
+    $("#sortable").sortable();
+    $('#btn-add-image').on('click', function () {
+        let imageItem = `
         <div class="mb-3 d-flex p-2 bg-warning">
             <input class="form-control col-md-3 col-sm-3 col-xs-12" type="file" name="thumb1[]" id="formFile">
             <input class=" col-md-3 col-sm-3 col-xs-12" type="text" name="alt[]">
             <button type="button" class="btn btn-danger btn-delete-image">X</button>
         </div>
         `;
-    $('.image-wrapper').append(imageItem);
+        $('.image-wrapper').append(imageItem);
 
-    $("#sortable").sortable();
-});
-$(document).on('click', '.btn-delete-image', function (e) {
-    e.preventDefault();
-    $(this).parent().remove();
-});
+        $("#sortable").sortable();
+    });
+    $(document).on('click', '.btn-delete-image', function (e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
 
-//currency
-$("input[data-type='currency']").on({
-    keyup: function () {
-        formatCurrency($(this));
-    },
-    blur: function () {
-        formatCurrency($(this), "blur");
+    //currency
+    $("input[data-type='currency']").on({
+        keyup: function () {
+            formatCurrency($(this));
+        },
+        blur: function () {
+            formatCurrency($(this), "blur");
+        }
+    });
+    function formatNumber(n) {
+        // format number 1000000 to 1,234,567
+        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
-});
-function formatNumber(n) {
-    // format number 1000000 to 1,234,567
-    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
-function formatCurrency(input, blur) {
-    // appends $ to value, validates decimal side
-    // and puts cursor back in right position.
+    function formatCurrency(input, blur) {
+        // appends $ to value, validates decimal side
+        // and puts cursor back in right position.
 
-    // get input value
-    var input_val = input.val();
+        // get input value
+        var input_val = input.val();
 
-    // don't validate empty input
-    if (input_val === "") { return; }
+        // don't validate empty input
+        if (input_val === "") { return; }
 
-    // original length
-    var original_len = input_val.length;
+        // original length
+        var original_len = input_val.length;
 
-    // initial caret position 
-    var caret_pos = input.prop("selectionStart");
+        // initial caret position 
+        var caret_pos = input.prop("selectionStart");
 
-    // no decimal entered
-    // add commas to number
-    // remove all non-digits
-    input_val = formatNumber(input_val);
-    input_val = "" + input_val;
+        // no decimal entered
+        // add commas to number
+        // remove all non-digits
+        input_val = formatNumber(input_val);
+        input_val = "" + input_val;
 
-    // final formatting
-    if (blur === "blur") {
-        input_val += "";
+        // final formatting
+        if (blur === "blur") {
+            input_val += "";
+        }
+
+        // send updated string to input
+        input.val(input_val);
+
+        // put caret back in the right position
+        var updated_len = input_val.length;
+        caret_pos = updated_len - original_len + caret_pos;
+        input[0].setSelectionRange(caret_pos, caret_pos);
     }
 
-    // send updated string to input
-    input.val(input_val);
+    $(".btn-add-image").click(function () {
+        // console.log('clicked btn-add-image')
+        $('#file_upload').trigger('click');
+    });
 
-    // put caret back in the right position
-    var updated_len = input_val.length;
-    caret_pos = updated_len - original_len + caret_pos;
-    input[0].setSelectionRange(caret_pos, caret_pos);
-}
+    // event delegation
+    $('.list-input-hidden-upload').on('change', '#file_upload', function (event) {
+        let today = new Date();
+        let time = today.getTime();
+        let image = event.target.files[0];
+        let name = $("input[name='name']").val();
+        let alt = name.replace(/\s/g, '+');
+        let file_name = event.target.files[0].name;
+        // console.log(alt);
+        let box_image = $('<div class="box-image"></div>');
+        box_image.append('<img src="' + URL.createObjectURL(image) + '" class="picture-box" width="150" height="180">');
+        box_image.append('<input type="text" name="altNewImg[]" value="' + alt + '" id="alt-{{ $key }}" class="images_alt">');
+        box_image.append('<div class="wrap-btn-delete"><button class="btn btn-danger btn-delete-image" type="button" data-id=' + time + '><i class="fldemo glyphicon glyphicon-remove"></i> Remove</button></div>');
+        $(".list-images").append(box_image);
+        $(this).removeAttr('id');
+        $(this).attr('id', time);
+        let input_type_file = '<input type="file" name="filenames[]" id="file_upload" class="myfrm form-control hidden">';
+        $('.list-input-hidden-upload').append(input_type_file);
+    });
 
-$(".btn-add-image").click(function () {
-    // console.log('clicked btn-add-image')
-    $('#file_upload').trigger('click');
-});
+    $(".list-images").on('click', '.btn-delete-image', function () {
+        let id = $(this).data('id');
+        $('#' + id).remove();
+        $(this).parents('.box-image').remove();
+    });
 
-// event delegation
-$('.list-input-hidden-upload').on('change', '#file_upload', function (event) {
-    let today = new Date();
-    let time = today.getTime();
-    let image = event.target.files[0];
-    let name = $("input[name='name']").val();
-    let alt = name.replace(/\s/g, '+');
-    let file_name = event.target.files[0].name;
-    // console.log(alt);
-    let box_image = $('<div class="box-image"></div>');
-    box_image.append('<img src="' + URL.createObjectURL(image) + '" class="picture-box" width="150" height="180">');
-    box_image.append('<input type="text" name="altNewImg[]" value="' + alt + '" id="alt-{{ $key }}" class="images_alt">');
-    box_image.append('<div class="wrap-btn-delete"><button class="btn btn-danger btn-delete-image" type="button" data-id=' + time + '><i class="fldemo glyphicon glyphicon-remove"></i> Remove</button></div>');
-    $(".list-images").append(box_image);
-    $(this).removeAttr('id');
-    $(this).attr('id', time);
-    let input_type_file = '<input type="file" name="filenames[]" id="file_upload" class="myfrm form-control hidden">';
-    $('.list-input-hidden-upload').append(input_type_file);
-});
 
-$(".list-images").on('click', '.btn-delete-image', function () {
-    let id = $(this).data('id');
-    $('#' + id).remove();
-    $(this).parents('.box-image').remove();
-});
-
-$('.select2-attr').change(function () {
-    let selectValue = $(this).val();
-    let selectedOpts = $(this).find('option:selected').text();
-    // console.log(selectedOpts);
-    if (this.value != 'select') {
-        $("#append-attr").append(selectedOpts + ' <input class="tagify-attr my-tagify" name="attr_value[' + selectValue + ']" type="text"><br>');
+    $('.add-attr').on('click', function () {
+        let addNewAttr = `
+            <div class="form-group">
+                <label for="new_attribute"
+                    class="control-label col-md-3 col-sm-3 col-xs-6">Name/Value</label>
+                <input name="attribute_name[]" type="text" value="" style="width:200px" class="btn btn-default">
+                <input name="attribute_value[]" type="text" value="" class="my-tagify btn btn-default"
+                    style="width:200px">
+                <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
+            </div>
+        `;
+        $('.add-all-attr').append(addNewAttr);
         let myTagify = document.querySelectorAll('.my-tagify');
-        myTagify.forEach(ele => {
-            new Tagify(ele);
+        new Tagify(myTagify[myTagify.length - 1])
+
+    });
+    $(document).on('click', '.btn-del-attr', function (e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
+
+    $(document).on('click', '.save-attr', function (e) {
+        e.preventDefault();
+        $('.add-variant').remove();
+        let url = $(this).data('url-add-attr');
+        let id = $("input[name=id]").val();
+        let attribute_name = $("input[name='attribute_name[]']").map(function () { return $(this).val(); }).get();
+        let attribute_value = $("input[name='attribute_value[]']").map(function () { return $(this).val(); }).get();
+        let jsonName = JSON.stringify(attribute_name);
+        let jsonValue = JSON.stringify(attribute_value);
+        // let qryString = $("#this-form-add-attr").serialize();
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { jsonName: jsonName, jsonValue: jsonValue, id: id },
+            dataType: 'array',
+            success: function (response) {
+                $('.add-all-variant').append(response);
+            },
+            error: function (response) {
+                // alert("Nhập đẩy đủ các trường");
+            }
         });
-    } else {
-        $("#tagify-attr").remove();
-    }
-});
+    });
+
 });

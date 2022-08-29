@@ -30,7 +30,7 @@ class ProductModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->with('productCategory')->select('id', 'name', 'price', 'sale_off', 'status', 'description', 'content', 'thumb', 'ordering', 'product_category_id')->where('id', '>', 0);
+            $query = $this->with('productCategory')->select('id', 'name', 'price', 'sale_off', 'status', 'description', 'content', 'thumb', 'ordering', 'product_category_id')->where('draft', '=', 0);
 
             if ($params['filter']['status'] !== "all") {
                 $query->where('status', '=', $params['filter']['status']);
@@ -313,6 +313,16 @@ class ProductModel extends AdminModel
             $this->deleteThumb($item['thumb']);
             self::where('id', $params['id'])->delete();
         }
+    }
+
+    public function createItemDraft()
+    {
+        $this->table = 'products';
+        $item = $this->create([
+            'draft' => '1'
+        ]);
+        $this->where('id', $item->id)->update(['draft' => '1']);
+        return $item->id;
     }
 
     public function getPriceProductAttribute()

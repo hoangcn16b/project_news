@@ -6,25 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductModel;
 use App\Models\ProductAttributeModel;
 $itemsCategory = ProductModel::listCategory(null, ['task' => 'get-category'], false, false);
-$productAttr = ProductAttributeModel::productAttr($item ?? '') ?? [];
-$listAttr = [];
-$attrSelectedId = null;
-$attrSelectedName = null;
-$tagifyCurrent = '';
-// if (!empty($productAttr)) {
-//     $listAttr['select'] = 'Select Attribute';
-//     foreach ($productAttr as $key => $value) {
-//         $listAttr[$value['attribute']['id']] = $value['attribute']['name'];
-//         if ($value['product_id'] == $item['id']) {
-//             $attrSelectedId = $value['attribute']['id'];
-//             $attrSelectedName = $value['attribute']['name'];
-//         }
-//     }
-// }
-// if (!empty($attrSelectedId)) {
-//     $tagifyCurrent .= $attrSelectedName . ' <input class="tagify-attr my-tagify" name="attr_value['.$attrSelectedId.']" type="text"><br>';
-// }
-// dd($productAttr);
+
 $configTagsInput = ['class' => 'some_class_name my-tagify', 'width' => '100', 'height' => 40];
 $formInputAttr = config('zvn.template.form_input');
 $select2 = config('zvn.template.form_select2');
@@ -179,7 +161,7 @@ $elements = [
                                 <input type="file" name="filenames[]" id="file_upload" class="myfrm form-control hidden">
                             </div>
                             <div class="input-group-btn col-md-3 col-sm-3 col-xs-12'">
-                                <button class="btn btn-success btn-add-image" type="button"><i
+                                <button class="btn btn-primary btn-add-image" type="button"><i
                                         class="fldemo glyphicon glyphicon-plus"></i> Add image</button>
                             </div>
                         </div>
