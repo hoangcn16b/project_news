@@ -3,16 +3,17 @@
 // echo '<pre>';
 // print_r($resultVal);
 // echo '</pre>';
-echo '<pre>';
-print_r($resultName);
-echo '</pre>';
 
 @endphp
-
-<div class="form-group add-variant">
-    <label for="variant" class="control-label col-md-3 col-sm-3 col-xs-6">1</label>
-    <input class="btn btn-default" type="text" value="variant color x size" style="width:200px" readonly
-        data-id="{{ $id }}">
-    <input type="text" name="variant[]" id="" class="btn btn-default" style="width:200px" placeholder="price"
-        data-id="{{ $id }}">
+<div class="form-group attr-variant" style="margin-top: 25px">
+    {{ Form::label('add_attribute', 'Variant / Price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+    <input class="btn btn-default" type="text" value="variant color x size" style="width:150px" readonly data-id="">
+    <input type="text" name="price" id="" class="btn btn-default" style="width:100px" data-id="">
 </div>
+<div class="form-group attr-variant" style="margin-top: 25px">
+    {{ Form::label('add_attribute', 'Variant/Price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+    <input class="btn btn-default" type="text" value="variant color x size" style="width:150px" readonly
+        data-id="">
+    <input type="text" name="price" id="" class="btn btn-default" style="width:100px" data-id="">
+</div>
+

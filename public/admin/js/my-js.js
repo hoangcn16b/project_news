@@ -326,13 +326,12 @@ $(document).ready(function () {
         $(this).parents('.box-image').remove();
     });
 
-
     $('.add-attr').on('click', function () {
         let addNewAttr = `
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 50px">
                 <label for="new_attribute"
                     class="control-label col-md-3 col-sm-3 col-xs-6">Name/Value</label>
-                <input name="attribute_name[]" type="text" value="" style="width:200px" class="btn btn-default">
+                <input name="attribute_name[]" type="text" value="" style="width:100px" class="btn btn-default">
                 <input name="attribute_value[]" type="text" value="" class="my-tagify btn btn-default"
                     style="width:200px">
                 <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
@@ -357,12 +356,15 @@ $(document).ready(function () {
         let attribute_value = $("input[name='attribute_value[]']").map(function () { return $(this).val(); }).get();
         let jsonName = JSON.stringify(attribute_name);
         let jsonValue = JSON.stringify(attribute_value);
-        // let qryString = $("#this-form-add-attr").serialize();
+
+        let urlAction = $('#this-form-add-attr').attr('action');
+        let qryString = $("#this-form-add-attr").serialize();
+        url = urlAction + '?' + qryString;
+        $('.attr-variant').remove();
+        // console.log(urlAction + '?' + qryString);
         $.ajax({
             type: "get",
             url: url,
-            data: { jsonName: jsonName, jsonValue: jsonValue, id: id },
-            dataType: 'array',
             success: function (response) {
                 $('.add-all-variant').append(response);
             },

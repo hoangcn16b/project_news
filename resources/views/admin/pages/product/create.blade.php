@@ -73,7 +73,7 @@ $elements = [
     @include ('admin.templates.error')
 
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="x_panel">
                 @include('admin.templates.x_title', ['title' => 'Form'])
                 <div class="x_content">
@@ -101,47 +101,11 @@ $elements = [
                         <div class="list-images col-md-offset-3 col-md-6 col-xs-12">
                         </div>
                     </div>
-
-                    <div>
-                        {{-- <form action="{{ route('product/addAttribute') }}" class="this-form-add-attr"
-                            id="this-form-add-attr" method="GET">
-                            @csrf --}}
-                        <div class="x_title" style="margin-top: 50px">
-                            <h2>Add product attribute</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content add-all-attr" style="margin-top: 50px">
-                            <div class="form-group">
-                                {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-6']) }}
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <button class="btn btn-info add-attr" type="button">+Add attribute</button>
-                                    <button class="btn btn-success save-attr" type="button"
-                                        data-url-add-attr="{{ route('product/addAttribute') }}">Save Attribute</button>
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <label for="new_attribute"
-                                    class="control-label col-md-3 col-sm-3 col-xs-6">Name/Value</label>
-                                <input name="attribute_name[]" type="text" value="color" class="btn btn-default"
-                                    style="width:200px">
-                                <input name="attribute_value[]" type="text" value="red"
-                                    class="my-tagify btn btn-default" style="width:200px">
-                                <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
-                            </div>
-                        </div>
-                        <div class="x_content add-all-variant" style="margin-top: 50px">
-                            <div class="form-group">
-                                {{ Form::label('variant', 'Variants', ['class' => 'control-label col-md-3 col-sm-3 col-xs-6']) }}
-                            </div>
-                        </div>
-                        <input name="id" type="hidden" value="{{ $itemId }}">
-                        {{-- </form> --}}
-                    </div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <div class="ln_solid"></div>
                             {!! $inputHiddenThumb !!}
+                            <input name="id" type="hidden" value="{{ $itemId }}">
                             <input class="btn btn-success" type="submit" value="Save">
                         </div>
                     </div>
@@ -149,5 +113,48 @@ $elements = [
                 </div>
             </div>
         </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                @include('admin.templates.x_title', ['title' => 'Add attribute'])
+                <div class="x_content">
+                    <form action="{{ route('product/addAttribute') }}" class="this-form-add-attr" id="this-form-add-attr"
+                        method="GET">
+                        <div class="x_content add-all-attr">
+                            <div class="form-group">
+                                {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <button class="btn btn-info add-attr" type="button">+Add attribute</button>
+                                    <button class="btn btn-success save-attr" type="submit"
+                                        data-url-add-attr="{{ route('product/addAttribute') }}">Save Attribute</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 50px">
+                                {{ Form::label('add_attribute', 'Name/Value', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                <input name="attribute_name[]" type="text" value="color" class="btn btn-default"
+                                    style="width:100px">
+                                <input name="attribute_value[]" type="text" value="red"
+                                    class="my-tagify btn btn-default" style="width:200px">
+                                <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
+                            </div>
+                        </div>
+                        <div class="x_content add-all-variant" style="margin-top: 50px">
+                            {{-- <div class="form-group">
+                                {{ Form::label('variant', 'Variants', ['class' => 'control-label col-md-3 col-sm-3 col-xs-6']) }}
+                                {{ Form::label('price', 'price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-6']) }}
+                            </div> --}}
+                            <div class="form-group attr-variant" style="margin-top: 50px">
+                                {{ Form::label('add_attribute', 'Variant/Price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                <input class="btn btn-default" type="text" value="variant color x size"
+                                    style="width:150px" readonly data-id="">
+                                <input type="text" name="price" id="" class="btn btn-default"
+                                    style="width:100px" data-id="">
+                            </div>
+                        </div>
+                        <input name="id" type="hidden" value="{{ $itemId }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 @endsection

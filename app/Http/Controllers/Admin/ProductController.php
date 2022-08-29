@@ -87,23 +87,51 @@ class ProductController extends AdminController
 
     public function addAttribute(Request $request)
     {
+        $listIdAttr = null;
+        $listIdAttrVariant = null;
         $resultVal = null;
-        $resultName = null;
-        $id = $request->id;
-        $dataAttrName = json_decode(stripslashes($request->jsonName));
-        $dataAttrVal = json_decode(stripslashes($request->jsonValue));
-        // $dataAttrName = array_filter($dataAttrName);
-        // $dataAttrVal = array_filter($dataAttrVal);
-        // foreach ($dataAttrVal as $key => $value) {
-        //     $resultVal[] = explode('|', $value);
-        // }
+        $resultVariant = null;
+        $productId = $request->id;
+        $attrName = $request->attribute_name;
+        $attrValue = $request->attribute_value;
+        // $dataAttrName = json_decode(stripslashes($request->jsonName));
+        // $dataAttrVal = json_decode(stripslashes($request->jsonValue));
+        echo '<pre>';
+        print_r($attrValue);
+        echo '</pre>';
+        foreach ($attrValue as $key => $value) {
+            $resultVal = str_replace('{"value":"', '', $value);
+            $resultVal = str_replace('"}', '', $resultVal);
+            $resultVariant[$key] = explode(',', trim($resultVal, '[]'));
+        }
 
+        foreach ($attrName as $key => $value) {
+            DB::insert("insert into attributes (name, product_id) values ('$value','$productId')");
+            $listIdAttr[] = DB::getPdo()->lastInsertId();
+        }
+
+        $sortResultVairant = null;
+        foreach ($listIdAttr as $key1 => $value1) {
+            $sortResultVairant[$value1] = $resultVariant[$key1];
+        }
+        echo '<pre>';
+        print_r($sortResultVairant);
+        echo '</pre>';
+        foreach ($sortResultVairant as $key2 => $variants) {
+            if ($variants != '') {
+                foreach ($variants as $varis => $variant) {
+                    DB::insert("insert into attribute_values (name, attribute_id, product_id) values ('$variant','$key2','$productId')");
+                    $listIdAttrVariant[] = DB::getPdo()->lastInsertId();
+                }
+            }
+        }
+
+        echo '<pre>';
+        print_r($listIdAttrVariant);
+        echo '</pre>';
         return view($this->pathViewController .  'variants', [
-            'id'                  => $id,
-            'dataAttrName'        => $dataAttrName,
-            'dataAttrVal'         => $dataAttrVal,
-            // 'resultName'          => $resultName,
-            // 'resultVal'             => $resultVal
+            'productId'                  => $productId,
+            'listIdAttr'                 => $listIdAttr
         ]);
     }
 
