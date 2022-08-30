@@ -196,7 +196,12 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('change-status-{status}/{id}',       ['as' => $controllerName . '/status',      'uses' => $controller . 'status']);
         Route::get('change-type-{type}/{id}',           ['as' => $controllerName . '/type',        'uses' => $controller . 'type']);
         Route::get('change-category-{category}/{id}',           ['as' => $controllerName . '/category',        'uses' => $controller . 'category']);
+        Route::get('create-attribute/{id?}/{attributes?}',           ['as' => $controllerName . '/createAttribute',        'uses' => $controller . 'createAttribute']);
         Route::get('add-attribute/{id?}/{attribute_name?}/{attribute_value?}',           ['as' => $controllerName . '/addAttribute',        'uses' => $controller . 'addAttribute']);
+
+        Route::get('update-attribute-name/{id?}/{attribute_name?}',                       ['as' => $controllerName . '/updateAttributeName',      'uses' => $controller . 'updateAttributeName'])->where('id', '[0-9]+');
+        Route::get('update-attribute-value/{id?}/{attribute_value?}',                       ['as' => $controllerName . '/updateAttributeValue',      'uses' => $controller . 'updateAttributeValue'])->where('id', '[0-9]+');
+        Route::get('delete-attribute/{id?}',                       ['as' => $controllerName . '/deleteAttribute',      'uses' => $controller . 'deleteAttribute'])->where('id', '[0-9]+');
     });
 
     // ============================== SLIDER ==============================

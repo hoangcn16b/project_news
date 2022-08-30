@@ -7,9 +7,6 @@ use App\Models\ProductModel;
 use App\Models\ProductAttributeModel;
 $itemsCategory = ProductModel::listCategory(null, ['task' => 'get-category'], false, false);
 
-echo '<pre>';
-print_r ($itemId);
-echo '</pre>';
 $configTagsInput = ['class' => 'some_class_name my-tagify', 'width' => '100', 'height' => 40];
 $formInputAttr = config('zvn.template.form_input');
 $select2 = config('zvn.template.form_select2');
@@ -66,6 +63,33 @@ $elements = [
         'element' => Form::select('special', $itemsSpecial, '0', $formInputAttr),
     ],
 ];
+
+$getListAttr = DB::select('select id, name, product_id, value_taginput from attributes');
+// dd($getListAttr);
+$xhtmlListAttr = '';
+if (!empty($getListAttr)) {
+    foreach ($getListAttr as $key => $value) {
+        $valTagInput = trim($value->value_taginput, '"');
+        $xhtmlListAttr .=
+            '
+        <div class="form-group child-attr" style="margin-top: 50px">
+            ' .
+            Form::label('add_attribute', 'Name/Value', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) .
+            '
+            <input name="attribute_names[]" type="text" value="'.@$value->name.'" class="btn btn-default attr-name"
+                style="width:100px" data-url-update-name="'.route('product/updateAttributeName').'">
+            <input name="attribute_values[]" type="text" class="my-tagify btn btn-default attr-value" style="width:200px"  data-url-update-value="'.route('product/updateAttributeValue').'"  value = ' .
+            @$valTagInput .
+            ' >
+            <input class="input-id-hidden" data-id="'.$value->id.'" type="hidden" name="attribute_ids[]" value="'.$value->id.'">
+
+            <button class="btn btn-danger btn-del-attr" type="button" data-url-delete="'.route('product/deleteAttribute').'"> Delete</button>
+        </div>
+
+        ';
+    }
+}
+// dd($xhtmlListAttr);
 @endphp
 
 @section('content')
@@ -123,19 +147,23 @@ $elements = [
                             <div class="form-group">
                                 {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <button class="btn btn-info add-attr" type="button">+Add attribute</button>
+                                    <button class="btn btn-info add-attr" type="button"
+                                        data-url-attr="{{ route('product/createAttribute') }}">+Add attribute</button>
                                     <button class="btn btn-success save-attr" type="submit"
                                         data-url-add-attr="{{ route('product/addAttribute') }}">Save Attribute</button>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-top: 50px">
+                            <div class="add-new-attr">
+                                {!! $xhtmlListAttr !!}
+                            </div>
+                            {{-- <div class="form-group" style="margin-top: 50px">
                                 {{ Form::label('add_attribute', 'Name/Value', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
                                 <input name="attribute_name[]" type="text" value="color" class="btn btn-default"
                                     style="width:100px">
                                 <input name="attribute_value[]" type="text" value="red"
                                     class="my-tagify btn btn-default" style="width:200px">
                                 <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="x_content add-all-variant" style="margin-top: 50px">
                             {{-- <div class="form-group">

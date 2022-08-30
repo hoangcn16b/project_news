@@ -12,9 +12,7 @@ class AttributeModel extends AdminModel
     public function __construct()
     {
         $this->table               = 'attributes';
-        $this->folderUpload        = 'attribute';
-        $this->fieldSearchAccepted = ['id', 'name', 'description', 'link'];
-        $this->crudNotAccepted     = ['_token', 'thumb_current'];
+        $this->guarded = [];
     }
 
     public function listItems($params = null, $options = null)
@@ -132,5 +130,15 @@ class AttributeModel extends AdminModel
             $this->deleteThumb($item['thumb']);
             self::where('id', $params['id'])->delete();
         }
+    }
+
+    public function deleteAttribute($params = null, $options = null)
+    {
+        AttributeModel::find($params['id'])->delete();
+    }
+
+    public function updateAttrName($params = null, $options = null)
+    {
+        AttributeModel::find($params['id'])->update(['name' => $params['attribute_name']]);
     }
 }

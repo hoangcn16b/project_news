@@ -326,25 +326,101 @@ $(document).ready(function () {
         $(this).parents('.box-image').remove();
     });
 
-    $('.add-attr').on('click', function () {
-        let addNewAttr = `
-            <div class="form-group" style="margin-top: 50px">
-                <label for="new_attribute"
-                    class="control-label col-md-3 col-sm-3 col-xs-6">Name/Value</label>
-                <input name="attribute_name[]" type="text" value="" style="width:100px" class="btn btn-default">
-                <input name="attribute_value[]" type="text" value="" class="my-tagify btn btn-default"
-                    style="width:200px">
-                <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
-            </div>
-        `;
-        $('.add-all-attr').append(addNewAttr);
-        let myTagify = document.querySelectorAll('.my-tagify');
-        new Tagify(myTagify[myTagify.length - 1])
+    $(document).on('click', '.add-attr', function () {
+        // $('.add-variant').remove();
+        // let addNewAttr = `
+        //     <div class="form-group" style="margin-top: 50px">
+        //         <label for="new_attribute"
+        //             class="control-label col-md-3 col-sm-3 col-xs-6">Name/Value</label>
+        //         <input name="attribute_name[]" type="text" value="" style="width:100px" class="btn btn-default">
+        //         <input name="attribute_value[]" type="text" value="" class="my-tagify btn btn-default"
+        //             style="width:200px">
+        //         <button class="btn btn-danger btn-del-attr" type="button"> Delete</button>
+        //     </div>
+        // `;
+        // $('.add-all-attr').append(addNewAttr);
 
+        let url = $(this).data('url-attr');
+        let id = $("input[name=id]").val();
+        let qryString = $("#this-form-add-attr").serialize();
+        url = url + '?' + qryString;
+        let attributeName = $("input[name='attribute_names[]']").map(function () { return $(this).val(); }).get();
+        let attributeValue = $("input[name='attribute_values[]']").map(function () { return $(this).val(); }).get();
+        let attributeIds = $("input[name='attribute_ids[]']").map(function () { return $(this).val(); }).get();
+        let jsonName = JSON.stringify(attributeName);
+        let jsonValue = JSON.stringify(attributeValue);
+        let jsonId = JSON.stringify(attributeIds);
+        // console.log(jsonValue);
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { jsonName: jsonName, jsonValue: jsonValue, jsonId: jsonId, id: id },
+            success: function (response) {
+                $('.child-attr').remove();
+                $('.add-new-attr').append(response);
+                // let myTagify = document.querySelectorAll('.my-tagify');
+                // new Tagify(myTagify[myTagify.length - 1])
+            },
+            error: function (response) {
+                // alert("Nhập đẩy đủ các trường");
+            }
+        });
+
+    });
+
+    $(document).on('change', '.attr-name', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let url = $(this).data('url-update-name');
+        let id = $(this).siblings(".input-id-hidden").data('id');
+        let attributeName = $(this).val();
+        url = url + '?id=' + id + '&attribute_name=' + attributeName;
+        $.ajax({
+            type: "get",
+            url: url,
+            success: function (response) {
+                console.log(response);
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
+    $(document).on('change', '.attr-value', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let url = $(this).data('url-update-name');
+        let id = $(this).siblings(".input-id-hidden").data('id');
+        let attributeValue = $(this).val();
+        url = url + '?id=' + id + '&attribute_value=' + attributeValue;
+        $.ajax({
+            type: "get",
+            url: url,
+            success: function (response) {
+                console.log(response);
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
     });
     $(document).on('click', '.btn-del-attr', function (e) {
         e.preventDefault();
         $(this).parent().remove();
+        let url = $(this).data('url-delete');
+        let id = $(this).siblings(".input-id-hidden").data('id');
+        url = url + '?id=' + id;
+        // console.log(url);
+        $.ajax({
+            type: "get",
+            url: url,
+            // data: { id: id },
+            success: function (response) {
+                console.log(response);
+            }
+        });
     });
 
     $(document).on('click', '.save-attr', function (e) {
