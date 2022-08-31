@@ -12,14 +12,15 @@ class AttributeValueModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'attribute_values';
-        $this->guarded = [];
+        $this->table                = 'attribute_values';
+        $this->guarded              = [];
     }
+
 
     public function deleteAttrValue($params = null, $options = null)
     {
         $attributeId = $params['id'];
-        $result = self::select()->where('attribute_id', $attributeId)->delete();
+        self::where('id', $attributeId)->delete();
     }
 
     public function listVariant($id = null, $options = null)
@@ -63,7 +64,7 @@ class AttributeValueModel extends AdminModel
             }
             $result = array_diff($arr, $dbArr);
 
-             // xoá và tạo mới các biến thể
+            // xoá và tạo mới các biến thể
             DB::table('product_attributes')->where('product_id', $id)->delete();
             foreach ($arr as $key => $value) {
                 DB::table('product_attributes')->insert([

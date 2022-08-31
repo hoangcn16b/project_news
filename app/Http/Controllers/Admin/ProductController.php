@@ -91,50 +91,14 @@ class ProductController extends AdminController
 
     public function createAttribute(Request $request)
     {
-        $listIdAttr = null;
-        $listIdAttrVariant = null;
-        $resultVal = null;
-        $resultVariant = null;
         $productId = $request->id;
-        $dataAttrId = json_decode(($request->jsonId));
-        $dataAttrName = json_decode(($request->jsonName));
-        $dataAttrVal = json_decode(($request->jsonValue));
-        $resultVariant = null;
-        // foreach ($dataAttrVal as $key => $value) {
-        //     $resultVal = str_replace('{"value":"', '', $value);
-        //     $resultVal = str_replace('"}', '', $resultVal);
-        //     $resultVariant[$dataAttrId[$key]] = explode(',', trim($resultVal, '[]'));
-        // }
-        //update colmun in attributes
-        // if (!empty($dataAttrId)) {
-        //     foreach ($dataAttrId as $key => $id) {
-        //         DB::table('attributes')
-        //             ->where('id', $id)
-        //             ->update(['product_id' => $productId, 'name' => $dataAttrName[$key], 'value_taginput' => $dataAttrVal[$key]]);
-        //     }
-        // }
         // //add new draft column
         DB::insert("insert into attributes (product_id, name, value_taginput) values ($productId,'','')");
         $newId = DB::getPdo()->lastInsertId();
-        $dataAttrId[] = $newId;
-        $dataAttrName[] = '';
-        $dataAttrVal[] = '';
         $resultVariant[$newId] = '';
-        //add variant to attribute values
-        // foreach ($resultVariant as $key2 => $variants) {
-        //     if (!empty($variants)) {
-        //         foreach ($variants as $varis => $variant) {
-        //             DB::insert("insert into attribute_values (name, attribute_id, product_id) values ('$variant','$key2','$productId')");
-        //             // $listIdAttrVariant[] = DB::getPdo()->lastInsertId();
-        //         }
-        //     }
-        // }
         return view($this->pathViewController .  'attribute', [
-            'dataAttrName' => $dataAttrName,
-            'dataAttrVal' => $dataAttrVal,
-            'dataAttrId' => $dataAttrId,
             'productId' => $productId,
-            // 'newId' => $newId
+            'newId' => $newId
         ]);
     }
 
@@ -189,13 +153,22 @@ class ProductController extends AdminController
             'listIdAttr'                 => $listIdAttr
         ]);
     }
-
+     
+    public function deleteAttributeValue(Request $request)
+    {
+        $params = $request->all();
+        AttributeValueModel::deleteAttrValue($params);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
     public function deleteAttribute(Request $request)
     {
         $params = $request->all();
+        echo '<pre>';
+        print_r ($params);
+        echo '</pre>';
         AttributeModel::deleteAttribute($params);
-        AttributeValueModel::deleteAttrValue($params);
-        // $result = DB::table('attribute_values')->where('attribute_id', $params['id'])->delete();
         return response()->json([
             'status' => 'success'
         ]);
