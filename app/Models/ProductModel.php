@@ -325,6 +325,7 @@ class ProductModel extends AdminModel
         return $item->id;
     }
 
+
     public function getPriceProductAttribute()
     {
         return number_format(((float) $this->price), 0, '.', ',');

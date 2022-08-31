@@ -10,6 +10,8 @@ use App\Models\AttributeModel;
 use App\Models\AttributeValueModel;
 use App\Http\Requests\ProductRequest as MainRequest;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
+use App\Models\ProductAttributeModel;
 
 class ProductController extends AdminController
 {
@@ -98,19 +100,19 @@ class ProductController extends AdminController
         $dataAttrName = json_decode(($request->jsonName));
         $dataAttrVal = json_decode(($request->jsonValue));
         $resultVariant = null;
-        foreach ($dataAttrVal as $key => $value) {
-            $resultVal = str_replace('{"value":"', '', $value);
-            $resultVal = str_replace('"}', '', $resultVal);
-            $resultVariant[$dataAttrId[$key]] = explode(',', trim($resultVal, '[]'));
-        }
+        // foreach ($dataAttrVal as $key => $value) {
+        //     $resultVal = str_replace('{"value":"', '', $value);
+        //     $resultVal = str_replace('"}', '', $resultVal);
+        //     $resultVariant[$dataAttrId[$key]] = explode(',', trim($resultVal, '[]'));
+        // }
         //update colmun in attributes
-        if (!empty($dataAttrId)) {
-            foreach ($dataAttrId as $key => $id) {
-                DB::table('attributes')
-                    ->where('id', $id)
-                    ->update(['product_id' => $productId, 'name' => $dataAttrName[$key], 'value_taginput' => $dataAttrVal[$key]]);
-            }
-        }
+        // if (!empty($dataAttrId)) {
+        //     foreach ($dataAttrId as $key => $id) {
+        //         DB::table('attributes')
+        //             ->where('id', $id)
+        //             ->update(['product_id' => $productId, 'name' => $dataAttrName[$key], 'value_taginput' => $dataAttrVal[$key]]);
+        //     }
+        // }
         // //add new draft column
         DB::insert("insert into attributes (product_id, name, value_taginput) values ($productId,'','')");
         $newId = DB::getPdo()->lastInsertId();
@@ -207,18 +209,64 @@ class ProductController extends AdminController
             'status' => 'success'
         ]);
     }
-    
+
     public function updateAttributeValue(Request $request)
     {
         $params = $request->all();
-        echo '<pre>';
-        print_r($params);
-        echo '</pre>';
+        $attributeId = $request->id;
+        $productId = $request->productId;
+        $result = null;
+        $resultVariant = null;
+        // $attrValue = $request->jsonValue;
+        $dataAttrVal = json_decode(($request->jsonValue));
+        $resultVal = str_replace('{"value":"', '', $dataAttrVal);
+        $resultVal = str_replace('"}', '', $resultVal);
+        $resultVariant = explode(',', trim($resultVal, '[]'));
+        //add to attributes 
+        DB::table('attributes')->where('id', $attributeId)
+            ->update(['value_taginput' => $dataAttrVal]);
+
+        $resultAllVar = DB::table('attribute_values')->select('id', 'name', 'product_id', 'attribute_id')->where('attribute_id', $attributeId)->where('product_id', $productId)->get();
+        //delete all record exists
+        DB::table('attribute_values')->where('attribute_id', $attributeId)->where('product_id', $productId)->delete();
+        //add new variants
+
+        if (!empty($resultVariant)) {
+            foreach ($resultVariant as $key => $variant) {
+                DB::table('attribute_values')->insert([
+                    'name' => $variant,
+                    'product_id' => $productId,
+                    'attribute_id' => $attributeId
+                ]);
+            }
+        }
         // AttributeModel::updateAttrValue($params);
         return response()->json([
             'status' => 'success'
         ]);
     }
+
+    public function refreshVariant(Request $request)
+    {
+        $params = $request->all();
+        $attributeVal = new AttributeValueModel();
+        $attributeVal->listVariant($params['id'], ['task' => 'ajax-list-variant']);
+        $listVar = ProductAttributeModel::listVariant($params['id']);
+        return view($this->pathViewController .  'variants', [
+            'listVar'                  => $listVar,
+            'productId'                 => $params['id']
+        ]);
+    }
+
+    public function changePrice(Request $request)
+    {
+        $params = $request->all();
+        ProductAttributeModel::changePrice($params);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     public function category(Request $request)
     {
         $params["currentCategory"]    = $request->category;

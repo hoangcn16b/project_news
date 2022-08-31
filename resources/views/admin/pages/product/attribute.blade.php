@@ -13,7 +13,7 @@ if (!empty($dataAttrId)) {
             '
             <input name="attribute_names[]" type="text" value="'.$dataAttrName[$key].'" class="btn btn-default attr-name"
                 style="width:100px" data-url-update-name="'.route('product/updateAttributeName').'">
-            <input name="attribute_values[]" type="text" class="my-tagify btn btn-default attr-value" style="width:200px"  data-url-update-value="'.route('product/updateAttributeValue').'"
+            <input name="attribute_values[]" type="text" class="my-tagify btn btn-default attr-value"   data-url-update-value="'.route('product/updateAttributeValue').'" 
             value =' .
             $dataAttrVal[$key] .
             ' >

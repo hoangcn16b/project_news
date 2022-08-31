@@ -339,7 +339,8 @@ $(document).ready(function () {
         //     </div>
         // `;
         // $('.add-all-attr').append(addNewAttr);
-
+        let ele = $(this);
+        $('.attr-variant').remove();
         let url = $(this).data('url-attr');
         let id = $("input[name=id]").val();
         let qryString = $("#this-form-add-attr").serialize();
@@ -360,6 +361,10 @@ $(document).ready(function () {
                 $('.add-new-attr').append(response);
                 // let myTagify = document.querySelectorAll('.my-tagify');
                 // new Tagify(myTagify[myTagify.length - 1])
+                ele.notify("Thêm mới thuộc tính thành công", {
+                    position: "top center",
+                    className: "success",
+                });
             },
             error: function (response) {
                 // alert("Nhập đẩy đủ các trường");
@@ -379,7 +384,7 @@ $(document).ready(function () {
             type: "get",
             url: url,
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 ele.notify("Cập nhật thành công", {
                     position: "top center",
                     className: "success",
@@ -390,16 +395,21 @@ $(document).ready(function () {
     $(document).on('change', '.attr-value', function (e) {
         e.preventDefault();
         let ele = $(this);
-        let url = $(this).data('url-update-name');
+        $('.attr-variant').remove();
+        let url = $(this).data('url-update-value');
         let id = $(this).siblings(".input-id-hidden").data('id');
+        let productId = $("input[name=id]").val();
         let attributeValue = $(this).val();
-        url = url + '?id=' + id + '&attribute_value=' + attributeValue;
+        // url = url + '?id=' + id;
+        let jsonValue = JSON.stringify(attributeValue);
         $.ajax({
             type: "get",
             url: url,
+            data: { id: id, jsonValue: jsonValue, productId: productId },
+            dataType: 'json',
             success: function (response) {
                 console.log(response);
-                ele.notify("Cập nhật thành công", {
+                ele.parent().notify("Thay đổi thành công, Hãy cập nhật lại giá", {
                     position: "top center",
                     className: "success",
                 });
@@ -409,6 +419,7 @@ $(document).ready(function () {
     $(document).on('click', '.btn-del-attr', function (e) {
         e.preventDefault();
         $(this).parent().remove();
+        $('.attr-variant').remove();
         let url = $(this).data('url-delete');
         let id = $(this).siblings(".input-id-hidden").data('id');
         url = url + '?id=' + id;
@@ -418,36 +429,75 @@ $(document).ready(function () {
             url: url,
             // data: { id: id },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
             }
         });
     });
 
-    $(document).on('click', '.save-attr', function (e) {
-        e.preventDefault();
-        $('.add-variant').remove();
-        let url = $(this).data('url-add-attr');
-        let id = $("input[name=id]").val();
-        let attribute_name = $("input[name='attribute_name[]']").map(function () { return $(this).val(); }).get();
-        let attribute_value = $("input[name='attribute_value[]']").map(function () { return $(this).val(); }).get();
-        let jsonName = JSON.stringify(attribute_name);
-        let jsonValue = JSON.stringify(attribute_value);
+    // $(document).on('click', '.save-attr', function (e) {
+    //     e.preventDefault();
+    //     $('.add-variant').remove();
+    //     let url = $(this).data('url-add-attr');
+    //     let id = $("input[name=id]").val();
+    //     let attribute_name = $("input[name='attribute_name[]']").map(function () { return $(this).val(); }).get();
+    //     let attribute_value = $("input[name='attribute_value[]']").map(function () { return $(this).val(); }).get();
+    //     let jsonName = JSON.stringify(attribute_name);
+    //     let jsonValue = JSON.stringify(attribute_value);
 
-        let urlAction = $('#this-form-add-attr').attr('action');
-        let qryString = $("#this-form-add-attr").serialize();
-        url = urlAction + '?' + qryString;
+    //     let urlAction = $('#this-form-add-attr').attr('action');
+    //     let qryString = $("#this-form-add-attr").serialize();
+    //     url = urlAction + '?' + qryString;
+    //     $('.attr-variant').remove();
+    //     // console.log(urlAction + '?' + qryString);
+    //     $.ajax({
+    //         type: "get",
+    //         url: url,
+    //         success: function (response) {
+    //             $('.add-all-variant').append(response);
+    //         },
+    //         error: function (response) {
+    //             // alert("Nhập đẩy đủ các trường");
+    //         }
+    //     });
+    // });
+    $(document).on('click', '.make-variant', function (e) {
+        e.preventDefault();
         $('.attr-variant').remove();
-        // console.log(urlAction + '?' + qryString);
+        let ele = $(this);
+        let url = $(this).data('url-make-variant');
+        let productId = $("input[name=id]").val();
+        url = url + '?id=' + productId;
+        console.log(url);
         $.ajax({
             type: "get",
             url: url,
             success: function (response) {
                 $('.add-all-variant').append(response);
-            },
-            error: function (response) {
-                // alert("Nhập đẩy đủ các trường");
+                ele.notify("Đã làm mới biến thể, hãy cập nhật lại giá", {
+                    position: "top center",
+                    className: "success",
+                });
             }
         });
-    });
+    })
 
+    $(document).on('change', '.price-variant', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        price = $(this).val();
+        url = $(this).data('url-update-price');
+        let idVariant = $(this).siblings("input[name=id_combination]").val();
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { idVariant: idVariant, price: price },
+
+            success: function (response) {
+                ele.notify("Cập nhật thành công", {
+                    position: "right center",
+                    className: "success",
+                });
+            }
+        });
+    })
 });

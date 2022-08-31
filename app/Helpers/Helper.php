@@ -30,7 +30,7 @@ class Helper
 
     public static function  showCategory($categories, $categoryIdCurrent, &$xhtml)
     {
-        
+
         foreach ($categories as $category) {
             // $categoryIdCurrent = $idCurrent;
 
@@ -48,5 +48,31 @@ class Helper
             }
             $xhtml .= '</li>';
         }
+    }
+
+    public static function combinationVariants($arrays = null, $i = 0)
+    {
+        if (!isset($arrays[$i])) {
+            return array();
+        }
+        if ($i == count($arrays) - 1) {
+            return $arrays[$i];
+        }
+
+        // get combinations from subsequent arrays
+        $tmp = self::combinationVariants($arrays, $i + 1);
+
+        $result = array();
+
+        // concat each array from tmp with each element from $arrays[$i]
+        foreach ($arrays[$i] as $v) {
+            foreach ($tmp as $t) {
+                $result[] = is_array($t) ?
+                    array_merge(array($v), $t) :
+                    array($v, $t);
+            }
+        }
+
+        return $result;
     }
 }
