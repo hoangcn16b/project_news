@@ -56,6 +56,14 @@ class AttributeValueModel extends AdminModel
             $arr[trim($saveId, ',')] = trim($saveName, ' - ');
         }
         if ($options['task'] == 'ajax-list-variant') {
+            $resultDbById = DB::table('product_attributes')->select('attribute_value_id', 'name')->get()->toArray();
+            $dbArr = null;
+            foreach ($resultDbById as $key => $value) {
+                $dbArr[$value->attribute_value_id] = $value->name;
+            }
+            $result = array_diff($arr, $dbArr);
+
+             // xoá và tạo mới các biến thể
             DB::table('product_attributes')->where('product_id', $id)->delete();
             foreach ($arr as $key => $value) {
                 DB::table('product_attributes')->insert([
@@ -103,6 +111,4 @@ class AttributeValueModel extends AdminModel
         }
         return $arr;
     }
-
-    
 }
