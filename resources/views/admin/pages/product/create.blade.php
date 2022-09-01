@@ -145,8 +145,7 @@ $listAttr = $attrModel->lisAttribute($itemId);
             <div class="x_panel">
                 @include('admin.templates.x_title', ['title' => 'Add attribute'])
                 <div class="x_content">
-                    <form action="" class="this-form-add-attr"
-                        id="this-form-add-attr" method="GET">
+                    <form action="" class="this-form-add-attr" id="this-form-add-attr" method="GET">
                         <div class="x_content add-all-attr">
                             <div class="form-group">
                                 {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
@@ -166,34 +165,39 @@ $listAttr = $attrModel->lisAttribute($itemId);
 
                                         <input name="attribute_names[]" type="text" value="{{ $attribute['name'] }}"
                                             class="btn btn-default attr-name" style="margin-botton:10px"
-                                            data-url-update-name="'.route('product/updateAttributeName').'">
+                                            data-url-update-name="{{ route('product/updateAttributeName') }}"
+                                            data-id-update-name="{{ $attribute['id'] }}">
 
                                         <button class="btn btn-danger btn-del-attr-all" type="button"
-                                            data-url-delete-attr=" {{ route('product/deleteAttribute') }}"
+                                            data-url-delete-attr="{{ route('product/deleteAttribute') }}"
                                             data-id-delete-attr="{{ $attribute['id'] }}"> Delete
                                             Attribute</button>
-                                        <button class="btn btn-primary btn-del-attr" type="button"
-                                            data-url-add-attr="'{{ route('product/addAttributeValue') }}"
-                                            data-id-add-attr="{{ $attribute['id'] }}"> New Value</button>
 
-                                        @if ($attribute['attribute_value'])
-                                            <label for="name"
-                                                class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
-                                        @endif
-                                        <div class="input-group input-group-sm mb-3" style="margin-top: 10px">
-                                            @foreach ($attribute['attribute_value'] as $attributeVal)
-                                                <div class="one-attr-val">
-                                                    <input name="attribute_values[]"
-                                                        style="margin-botton:10px;margin-top:10px" type="text"
-                                                        class="btn btn-default attr-value" data-url-update-value=""
-                                                        data-id-change="{{ $attributeVal['id'] }}"
-                                                        value="{{ $attributeVal['name'] }}">
-                                                    <button class="btn btn-warning btn-del-attr-val" type="button"
-                                                        data-url-delete-val="{{ route('product/deleteAttributeValue') }}"
-                                                        data-id-delete-val="{{ $attributeVal['id'] }}"> Delete
-                                                        Value</button>
-                                                </div>
-                                            @endforeach
+                                        <label for="name"
+                                            class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
+
+                                        <div class="input-group input-group-sm mb-3 child-attr-val"
+                                            style="margin-top: 10px">
+                                            <button class="btn btn-primary btn-add-attr-val" type="button"
+                                                data-url-add-attr-val="{{ route('product/addAttributeValue') }}"> New
+                                                Value</button>
+                                            @if ($attribute['attribute_value'])
+                                                @foreach ($attribute['attribute_value'] as $attributeVal)
+                                                    <div class="one-attr-val">
+                                                        <input name="attribute_values[]"
+                                                            style="margin-botton:10px;margin-top:10px" type="text"
+                                                            class="btn btn-default attr-value"
+                                                            data-url-update-value="{{ route('product/updateAttributeValue') }}"
+                                                            value="{{ $attributeVal['name'] }}">
+                                                        <button class="btn btn-warning btn-del-attr-val" type="button"
+                                                            data-url-delete-val="{{ route('product/deleteAttributeValue') }}">
+                                                            Delete Value</button>
+                                                        <input type="hidden" name="id-attr-val"
+                                                            value="{{ $attributeVal['id'] }}">
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                            <input type="hidden" name="id-attr" value="{{ $attribute['id'] }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -231,3 +235,11 @@ $listAttr = $attrModel->lisAttribute($itemId);
     </div>
     </div>
 @endsection
+
+
+<input name="attribute_values[]" style="margin-botton:10px;margin-top:10px" type="text"
+    class="btn btn-default attr-value"
+    data-url-update-value="http://lar-exam.xyz/admin123/product/update-attribute-value" value="">
+
+<input name="attribute_values[]" style="margin-botton:10px;margin-top:10px" type="text"
+    class="btn btn-default attr-value" data-url-update-value="" value="">

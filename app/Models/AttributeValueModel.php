@@ -16,7 +16,6 @@ class AttributeValueModel extends AdminModel
         $this->guarded              = [];
     }
 
-
     public function deleteAttrValue($params = null, $options = null)
     {
         $attributeId = $params['id'];
@@ -111,5 +110,18 @@ class AttributeValueModel extends AdminModel
             $arr[trim($saveId, ',')] = trim($saveName, ' - ');
         }
         return $arr;
+    }
+
+    public function draftAttributeValue($params = null)
+    {
+        $result = null;
+        DB::table('attribute_values')->insert(['name' => '', 'product_id' => $params['product_id'], 'attribute_id' => $params['id']]);
+        $newId = DB::getPdo()->lastInsertId();
+        return $newId;
+    }
+
+    public function updateAttrValue($params = null)
+    {
+        self::find($params['attributeId'])->update(['name' => $params['attributeValue']]);
     }
 }

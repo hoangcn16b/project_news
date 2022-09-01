@@ -142,7 +142,7 @@ class AttributeModel extends AdminModel
 
     public function updateAttrName($params = null, $options = null)
     {
-        AttributeModel::find($params['id'])->update(['name' => $params['attribute_name']]);
+        self::find($params['attributeId'])->update(['name' => $params['attributeName']]);
     }
 
     public function attributeValue()

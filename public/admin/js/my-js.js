@@ -196,37 +196,6 @@ $(document).ready(function () {
 
     $('.select-select2').select2();
 
-    // Dropzone.options.dropzone =
-    // {
-    //     maxFilesize: 10,
-    //     renameFile: function (file) {
-    //         var dt = new Date();
-    //         var time = dt.getTime();
-    //         return time + file.name;
-    //     },
-    //     acceptedFiles: ".jpeg,.jpg,.png,.gif",
-    //     addRemoveLinks: true,
-    //     timeout: 60000,
-    //     success: function (file, response) {
-    //         console.log(response);
-    //     },
-    //     error: function (file, response) {
-    //         return false;
-    //     }
-    // };
-
-    // $(function () {
-    //     var mediaDropzone;
-    //     mediaDropzone = new Dropzone("#dropzone");
-    //     return mediaDropzone.on("success", function (file, responseText) {
-    //         var imageUrl;
-    //         imageUrl = responseText.file_name.url;
-    //     });
-    // });
-    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-
-
-
     //sortable
     $("#sortable").sortable();
     $('#btn-add-image').on('click', function () {
@@ -349,7 +318,8 @@ $(document).ready(function () {
     $(document).on('click', '.btn-del-attr-val', function (e) {
         e.preventDefault();
         let url = $(this).data('url-delete-val');
-        let attrId = $(this).data('id-delete-val');
+        // let attrId = $(this).data('id-delete-val');
+        let attrId = $(this).siblings("input[name=id-attr-val]").val();
         let productId = $("input[name=id]").val();
         url = url + '?product_id=' + productId + '&id=' + attrId;
         $(this).parent('.one-attr-val').remove();
@@ -372,11 +342,68 @@ $(document).ready(function () {
             type: "get",
             url: url,
             success: function (response) {
-                console.log(response);
             }
         });
-    })
+    });
 
+    $(document).on('click', '.btn-add-attr-val', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let url = ele.data('url-add-attr-val');
+        // let attrId = $(this).data('id-add-attr-val');
+        let attrId = $(this).siblings("input[name=id-attr]").val();
+        let productId = $("input[name=id]").val();
+        url = url + '?product_id=' + productId + '&id=' + attrId;
+        $.ajax({
+            type: "get",
+            url: url,
+            success: function (response) {
+                console.log(response);
+                ele.parent('.child-attr-val').append(response);
+            }
+        });
+    });
+
+    $(document).on('change', '.attr-name', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let attrName = ele.val();
+        let url = ele.data('url-update-name');
+        let productId = $("input[name=id]").val();
+        let attrId = ele.data('id-update-name');
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { productId: productId, attributeName: attrName, attributeId: attrId },
+            success: function (response) {
+                console.log(response);
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
+
+    $(document).on('change', '.attr-value', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let attrValue = ele.val();
+        let url = ele.data('url-update-value');
+        let productId = $("input[name=id]").val();
+        let attrId = $(this).siblings("input[name=id-attr-val]").val();
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { productId: productId, attributeValue: attrValue, attributeId: attrId },
+            success: function (response) {
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
 
 
     //-------------------------------------------------------------------------------------

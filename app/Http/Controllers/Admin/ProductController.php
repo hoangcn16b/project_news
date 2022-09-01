@@ -153,7 +153,7 @@ class ProductController extends AdminController
             'listIdAttr'                 => $listIdAttr
         ]);
     }
-     
+
     public function deleteAttributeValue(Request $request)
     {
         $params = $request->all();
@@ -165,12 +165,22 @@ class ProductController extends AdminController
     public function deleteAttribute(Request $request)
     {
         $params = $request->all();
-        echo '<pre>';
-        print_r ($params);
-        echo '</pre>';
         AttributeModel::deleteAttribute($params);
         return response()->json([
             'status' => 'success'
+        ]);
+    }
+
+    public function addAttributeValue(Request $request)
+    {
+        $params = $request->all();
+        $productId = $request->id;
+        // //add new draft column in tbl attribute_values
+        $newId = AttributeValueModel::draftAttributeValue($params);
+        $resultVariant[] = '';
+        return view($this->pathViewController .  'attribute-value', [
+            'productId' => $productId,
+            'newId' => $newId
         ]);
     }
 
@@ -186,34 +196,7 @@ class ProductController extends AdminController
     public function updateAttributeValue(Request $request)
     {
         $params = $request->all();
-        $attributeId = $request->id;
-        $productId = $request->productId;
-        $result = null;
-        $resultVariant = null;
-        // $attrValue = $request->jsonValue;
-        $dataAttrVal = json_decode(($request->jsonValue));
-        $resultVal = str_replace('{"value":"', '', $dataAttrVal);
-        $resultVal = str_replace('"}', '', $resultVal);
-        $resultVariant = explode(',', trim($resultVal, '[]'));
-        //add to attributes 
-        DB::table('attributes')->where('id', $attributeId)
-            ->update(['value_taginput' => $dataAttrVal]);
-
-        $resultAllVar = DB::table('attribute_values')->select('id', 'name', 'product_id', 'attribute_id')->where('attribute_id', $attributeId)->where('product_id', $productId)->get();
-        //delete all record exists
-        DB::table('attribute_values')->where('attribute_id', $attributeId)->where('product_id', $productId)->delete();
-        //add new variants
-
-        if (!empty($resultVariant)) {
-            foreach ($resultVariant as $key => $variant) {
-                DB::table('attribute_values')->insert([
-                    'name' => $variant,
-                    'product_id' => $productId,
-                    'attribute_id' => $attributeId
-                ]);
-            }
-        }
-        // AttributeModel::updateAttrValue($params);
+        AttributeValueModel::updateAttrValue($params);
         return response()->json([
             'status' => 'success'
         ]);
