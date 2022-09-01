@@ -66,34 +66,11 @@ $elements = [
     ],
 ];
 
-$getListAttr = DB::select('select id, name, product_id, value_taginput from attributes');
-// dd($getListAttr);
-$xhtmlListAttr = '';
-if (!empty($getListAttr)) {
-    foreach ($getListAttr as $key => $value) {
-        $valTagInput = trim($value->value_taginput, '"');
-        $xhtmlListAttr .=
-            '
-        <div class="form-group child-attr" style="margin-top: 50px">
-            ' .
-            Form::label('add_attribute', 'Name/Value', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) .
-            '
-            <button class="btn btn-danger btn-del-attr" type="button" data-url-delete="'.route('product/deleteAttribute').'"> Delete</button>
-            <input name="attribute_names[]" type="text" value="'.@$value->name.'" class="btn btn-default attr-name"
-                style="width:100px" data-url-update-name="'.route('product/updateAttributeName').'">
-                
-            <input name="attribute_values[]" type="text" class="my-tagify btn btn-default attr-value"   data-url-update-value="'.route('product/updateAttributeValue').'"  value = ' .
-            @$valTagInput .
-            ' >
-            <input class="input-id-hidden" data-id="'.$value->id.'" type="hidden" name="attribute_ids[]" value="'.$value->id.'">
-        </div>
-
-        ';
-    }
-}
 $listVar = ProductAttributeModel::listVariant($itemId);
 $attrModel = new AttributeModel();
+$listAttr = null;
 $listAttr = $attrModel->lisAttribute($itemId);
+
 @endphp
 
 @section('content')
@@ -122,7 +99,7 @@ $listAttr = $attrModel->lisAttribute($itemId);
                                 <input type="file" name="filenames[]" id="file_upload" class="myfrm form-control hidden">
                             </div>
                             <div class="input-group-btn col-md-3 col-sm-3 col-xs-12'">
-                                <button class="btn btn-primary btn-add-attr" type="button"><i
+                                <button class="btn btn-primary btn-add-image" type="button"><i
                                         class="fldemo glyphicon glyphicon-plus"></i> Add image</button>
                             </div>
                         </div>
@@ -145,101 +122,99 @@ $listAttr = $attrModel->lisAttribute($itemId);
             <div class="x_panel">
                 @include('admin.templates.x_title', ['title' => 'Add attribute'])
                 <div class="x_content">
-                    <form action="" class="this-form-add-attr" id="this-form-add-attr" method="GET">
-                        <div class="x_content add-all-attr">
-                            <div class="form-group">
-                                {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <button class="btn btn-info add-attr" type="button"
-                                        data-url-attr="{{ route('product/createAttribute') }}">+Add attribute</button>
-                                    {{-- <button class="btn btn-success make-variant" type="button"
-                                        data-url-make-variant="{{ route('product/refreshVariant') }}">Refresh
-                                        Variant</button> --}}
-                                </div>
+                    <div class="x_content add-all-attr">
+                        <div class="form-group">
+                            {{ Form::label('add_attribute', 'Add attribute', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <button class="btn btn-info add-attr" type="button"
+                                    data-url-attr="{{ route('product/createAttribute') }}">+Add attribute</button>
+                                <button class="btn btn-success refresh-variant" type="button"
+                                    data-url-refresh-variant="{{ route('product/refreshVariant') }}">Refresh
+                                    Variant</button>
                             </div>
-                            <div class="add-new-attr">
-                                {{-- {!! $xhtmlListAttr !!} --}}
-                                @foreach ($listAttr as $attribute)
-                                    <div class="form-group child-attr" style="margin-top: 50px">
-                                        <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
-
-                                        <input name="attribute_names[]" type="text" value="{{ $attribute['name'] }}"
-                                            class="btn btn-default attr-name" style="margin-botton:10px"
-                                            data-url-update-name="{{ route('product/updateAttributeName') }}"
-                                            data-id-update-name="{{ $attribute['id'] }}">
-
-                                        <button class="btn btn-danger btn-del-attr-all" type="button"
-                                            data-url-delete-attr="{{ route('product/deleteAttribute') }}"
-                                            data-id-delete-attr="{{ $attribute['id'] }}"> Delete
-                                            Attribute</button>
-
-                                        <label for="name"
-                                            class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
-
-                                        <div class="input-group input-group-sm mb-3 child-attr-val"
-                                            style="margin-top: 10px">
-                                            <button class="btn btn-primary btn-add-attr-val" type="button"
-                                                data-url-add-attr-val="{{ route('product/addAttributeValue') }}"> New
-                                                Value</button>
-                                            @if ($attribute['attribute_value'])
-                                                @foreach ($attribute['attribute_value'] as $attributeVal)
-                                                    <div class="one-attr-val">
-                                                        <input name="attribute_values[]"
-                                                            style="margin-botton:10px;margin-top:10px" type="text"
-                                                            class="btn btn-default attr-value"
-                                                            data-url-update-value="{{ route('product/updateAttributeValue') }}"
-                                                            value="{{ $attributeVal['name'] }}">
-                                                        <button class="btn btn-warning btn-del-attr-val" type="button"
-                                                            data-url-delete-val="{{ route('product/deleteAttributeValue') }}">
-                                                            Delete Value</button>
-                                                        <input type="hidden" name="id-attr-val"
-                                                            value="{{ $attributeVal['id'] }}">
-                                                    </div>
-                                                @endforeach
-                                            @endif
-                                            <input type="hidden" name="id-attr" value="{{ $attribute['id'] }}">
-                                        </div>
-                                    </div>
-                                @endforeach
-
-                            </div>
-
                         </div>
-                </div>
-                <div class="x_content add-all-variant" style="margin-top: 50px">
-                    {{-- @php
-                                $i = 1;
-                            @endphp
-                            @if ($listVar)
-                                @foreach ($listVar as $key => $variant)
-                                    <div class="form-group attr-variant" style="margin-top: 25px">
-                                        {{ Form::label('add_attribute', 'Variant / Price ' . $i++, ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                        <div class="add-new-attr">
+                            {{-- {!! $xhtmlListAttr !!} --}}
+                            @foreach ($listAttr as $attribute)
+                                <div class="form-group child-attr" style="margin-top: 50px">
+                                    <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+
+                                    <input name="attribute_names[]" type="text" value="{{ $attribute['name'] }}"
+                                        class="btn btn-default attr-name" style="margin-botton:10px"
+                                        data-url-update-name="{{ route('product/updateAttributeName') }}"
+                                        data-id-update-name="{{ $attribute['id'] }}">
+
+                                    <button class="btn btn-danger btn-del-attr-all" type="button"
+                                        data-url-delete-attr="{{ route('product/deleteAttribute') }}"
+                                        data-id-delete-attr="{{ $attribute['id'] }}"> Delete
+                                        Attribute</button>
+
+                                    <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
+
+                                    <div class="input-group input-group-sm mb-3 child-attr-val" style="margin-top: 10px">
+                                        <button class="btn btn-primary btn-add-attr-val" type="button"
+                                            data-url-add-attr-val="{{ route('product/addAttributeValue') }}"> New
+                                            Value</button>
+                                        @if ($attribute['attribute_value'])
+                                            @foreach ($attribute['attribute_value'] as $attributeVal)
+                                                <div class="one-attr-val">
+                                                    <input name="attribute_values[]"
+                                                        style="margin-botton:10px;margin-top:10px" type="text"
+                                                        class="btn btn-default attr-value"
+                                                        data-url-update-value="{{ route('product/updateAttributeValue') }}"
+                                                        value="{{ $attributeVal['name'] }}">
+                                                    <button class="btn btn-warning btn-del-attr-val" type="button"
+                                                        data-url-delete-val="{{ route('product/deleteAttributeValue') }}">
+                                                        Delete Value</button>
+                                                    <input type="hidden" name="id-attr-val"
+                                                        value="{{ $attributeVal['id'] }}">
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        <input type="hidden" name="id-attr" value="{{ $attribute['id'] }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="x_content add-all-variant" style="margin-top: 50px">
+                        <div class="form-group attr-variant" style="margin-top: 25px;margin-bottom:20px">
+                            <div class="every-attr">
+                                {{ Form::label('add_attribute', 'List Variants', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                {{ Form::label('add_attribute', 'Variant Name', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                {{ Form::label('add_attribute', 'Price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12', 'style' => 'text-align:center']) }}
+                                {{ Form::label('add_attribute', 'Amount', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($listVariant as $variant)
+                                    <div class="form-group attr-variant" style="margin-top: 25px;margin-bottom:20px">
+                                        {{ Form::label('add_attribute', $i++, ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
                                         <input class="btn btn-default" type="text" value="{{ $variant['name'] }}"
-                                            readonly data-id="">
+                                            readonly>
                                         <input type="text" name="price" class="btn btn-default price-variant"
                                             style="width:100px" id="currency-field" pattern="[0-9][0-9,]*[0-9]"
                                             data-type="currency" data-url-update-price="{{ route('product/changePrice') }}"
-                                            value="{{ $variant['price'] }}">
+                                            value="{{ number_format(((float) $variant['price']), 0, '.', ',') }}">
+
+                                        <input type="text" name="amount" class="btn btn-default amount-variant"
+                                            style="width:100px" id="currency-field" pattern="[0-9][0-9,]*[0-9]"
+                                            data-type="currency"
+                                            data-url-update-amount="{{ route('product/changeAmount') }}"
+                                            value="{{ $variant['amount'] }}">
                                         <input type="hidden" name="id_combination"
                                             value="{{ $variant['attribute_value_id'] }}">
-
                                     </div>
                                 @endforeach
-                            @endif --}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <input name="id" type="hidden" value="{{ $itemId }}">
-                </form>
             </div>
         </div>
     </div>
     </div>
     </div>
 @endsection
-
-
-<input name="attribute_values[]" style="margin-botton:10px;margin-top:10px" type="text"
-    class="btn btn-default attr-value"
-    data-url-update-value="http://lar-exam.xyz/admin123/product/update-attribute-value" value="">
-
-<input name="attribute_values[]" style="margin-botton:10px;margin-top:10px" type="text"
-    class="btn btn-default attr-value" data-url-update-value="" value="">

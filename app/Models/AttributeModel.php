@@ -159,7 +159,7 @@ class AttributeModel extends AdminModel
         //     ->select('attributes.id', 'attributes.name', 'attribute_values.id as attr_val_id', 'attribute_values.name as attr_val_name', 'attribute_values.attribute_id', 'attribute_values.product_id')->where('attribute_values.product_id', $id)
         //     ->get();
 
-        $result = self::with('attributeValue')->select('id', 'name', 'product_id')->get()->toArray();
+        $result = self::with('attributeValue')->select('id', 'name', 'product_id')->where('product_id', $id)->get()->toArray();
         // dd($result);
         return $result;
     }

@@ -298,6 +298,7 @@ $(document).ready(function () {
     //----------------------------------------------------------------------------------------------------------------
     $(document).on('click', '.add-attr', function (e) {
         e.preventDefault();
+        $('.every-attr').remove();
         let ele = $(this);
         let url = $(this).data('url-attr');
         let productId = $("input[name=id]").val();
@@ -317,6 +318,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-del-attr-val', function (e) {
         e.preventDefault();
+        $('.every-attr').remove();
         let url = $(this).data('url-delete-val');
         // let attrId = $(this).data('id-delete-val');
         let attrId = $(this).siblings("input[name=id-attr-val]").val();
@@ -333,6 +335,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-del-attr-all', function (e) {
         e.preventDefault();
+        $('.every-attr').remove();
         let url = $(this).data('url-delete-attr');
         let attrId = $(this).data('id-delete-attr');
         let productId = $("input[name=id]").val();
@@ -348,6 +351,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-add-attr-val', function (e) {
         e.preventDefault();
+        $('.every-attr').remove();
         let ele = $(this);
         let url = ele.data('url-add-attr-val');
         // let attrId = $(this).data('id-add-attr-val');
@@ -387,6 +391,7 @@ $(document).ready(function () {
 
     $(document).on('change', '.attr-value', function (e) {
         e.preventDefault();
+        $('.every-attr').remove();
         let ele = $(this);
         let attrValue = ele.val();
         let url = ele.data('url-update-value');
@@ -405,6 +410,65 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '.refresh-variant', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        $('.every-attr').remove();
+        let productId = $("input[name=id]").val();
+        let url = ele.data('url-refresh-variant');
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { productId: productId },
+            success: function (response) {
+                $('.add-all-variant').append(response);
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
+
+    $(document).on('change', '.price-variant', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let productId = $("input[name=id]").val();
+        let price = ele.val();
+        let attributeValueId = ele.siblings("input[name=id_combination]").val();
+        let url = ele.data('url-update-price');
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { attributeValueId: attributeValueId, price: price },
+            success: function (response) {
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
+
+    $(document).on('change', '.amount-variant', function (e) {
+        e.preventDefault();
+        let ele = $(this);
+        let productId = $("input[name=id]").val();
+        let amount = ele.val();
+        let attributeValueId = ele.siblings("input[name=id_combination]").val();
+        let url = ele.data('url-update-amount');
+        $.ajax({
+            type: "get",
+            url: url,
+            data: { attributeValueId: attributeValueId, amount: amount },
+            success: function (response) {
+                ele.notify("Cập nhật thành công", {
+                    position: "top center",
+                    className: "success",
+                });
+            }
+        });
+    });
 
     //-------------------------------------------------------------------------------------
 

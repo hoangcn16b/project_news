@@ -232,8 +232,12 @@ class ProductModel extends AdminModel
             $price = explode(',', $params['price']);
             $params['price'] = implode('', $price);
 
+            $params['draft'] = 0;
+
             // $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
+            $newId = DB::getPdo()->lastInsertId();
+            $this->where('id', $newId)->update(['draft' => '1']);
         }
 
         if ($options['task'] == 'edit-item') {
@@ -294,6 +298,7 @@ class ProductModel extends AdminModel
             $params['price'] = implode('', $price);
             $params['updated_by']   = "hailan";
             $params['updated_at']      = date('Y-m-d H:i:s');
+            $params['draft'] = 0;
 
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
         }

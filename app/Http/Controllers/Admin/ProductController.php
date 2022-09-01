@@ -52,10 +52,12 @@ class ProductController extends AdminController
     {
         $item = null;
 
-        // $itemId = $this->model->createItemDraft();
-        $itemId = 192;
+        $itemId = $this->model->createItemDraft();
+        // $itemId = 217;
+        $listVariant = ProductAttributeModel::listVariant($itemId);
         return view($this->pathViewController .  'create', [
-            'itemId'        => $itemId
+            'itemId'        => $itemId,
+            'listVariant'   => $listVariant
         ]);
     }
 
@@ -66,9 +68,12 @@ class ProductController extends AdminController
             $params["id"] = $request->id;
             $item = $this->model->getItem($params, ['task' => 'get-item']);
         }
-
+        $itemId = $params["id"];
+        $listVariant = ProductAttributeModel::listVariant($itemId);
         return view($this->pathViewController .  'form', [
-            'item'        => $item
+            'item'        => $item,
+            'itemId'        => $itemId,
+            'listVariant'   => $listVariant
         ]);
     }
 
@@ -205,19 +210,23 @@ class ProductController extends AdminController
     public function refreshVariant(Request $request)
     {
         $params = $request->all();
-        $attributeVal = new AttributeValueModel();
-        $attributeVal->listVariant($params['id'], ['task' => 'ajax-list-variant']);
-        $listVar = ProductAttributeModel::listVariant($params['id']);
-        return view($this->pathViewController .  'variants', [
-            'listVar'                  => $listVar,
-            'productId'                 => $params['id']
-        ]);
+        $listVariant = ProductAttributeModel::listVariant($params['productId']);
+        return view($this->pathViewController .  'variants', ['listVariant' => $listVariant]);
     }
 
     public function changePrice(Request $request)
     {
         $params = $request->all();
         ProductAttributeModel::changePrice($params);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function changeAmount(Request $request)
+    {
+        $params = $request->all();
+        ProductAttributeModel::changeAmount($params);
         return response()->json([
             'status' => 'success'
         ]);

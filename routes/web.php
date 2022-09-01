@@ -207,6 +207,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('delete-attribute-value/{id?}',                       ['as' => $controllerName . '/deleteAttributeValue',      'uses' => $controller . 'deleteAttributeValue'])->where('id', '[0-9]+');
         Route::get('refresh-combination-variant/{id?}',                       ['as' => $controllerName . '/refreshVariant',      'uses' => $controller . 'refreshVariant'])->where('id', '[0-9]+');
         Route::get('change-price-variant/{id?}',                       ['as' => $controllerName . '/changePrice',      'uses' => $controller . 'changePrice'])->where('id', '[0-9]+');
+        Route::get('change-amount-variant/{id?}',                       ['as' => $controllerName . '/changeAmount',      'uses' => $controller . 'changeAmount'])->where('id', '[0-9]+');
     });
     
     // ============================== SLIDER ==============================
