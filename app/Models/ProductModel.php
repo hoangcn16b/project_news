@@ -317,6 +317,9 @@ class ProductModel extends AdminModel
             $item   = $this->getItem($params, ['task' => 'get-thumb']);
             $this->deleteThumb($item['thumb']);
             self::where('id', $params['id'])->delete();
+            DB::table('product_attributes')->where('product_id',$params['id'])->delete();
+            DB::table('attributes')->where('product_id',$params['id'])->delete();
+            DB::table('attribute_values')->where('product_id',$params['id'])->delete();
         }
     }
 

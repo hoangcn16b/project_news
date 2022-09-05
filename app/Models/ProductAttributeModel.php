@@ -38,12 +38,12 @@ class ProductAttributeModel extends AdminModel
     }
     public function listVariant($id = null)
     {
-        $result = null;
-        $result = self::select('attribute_value_id', 'name')->where('product_id', $id)->get()->toArray();
+        $resultcombindOld = null;
+        $resultcombindOld = self::select('attribute_value_id', 'name')->where('product_id', $id)->get()->toArray();
 
         // combind to same DB
         $arrCombindOld = null;
-        foreach ($result as $key => $value) {
+        foreach ($resultcombindOld as $key => $value) {
             $arrCombindOld[$value['attribute_value_id']] = $value['name'];
         }
         $resultVar = null;
@@ -75,7 +75,8 @@ class ProductAttributeModel extends AdminModel
 
                 if (is_array($value)) {
                     foreach ($value as $key1 => $value1) {
-                        $saveName .= ' - ' . $value1;
+                        // $saveName .= ' - ' . $value1;
+                        $saveName .= ($value1 == null || $value1 == '') ? ' - ?' : ' - ' . $value1;
                         $saveId .= $totalId[$key][$key1] . ',';
                     }
                 }

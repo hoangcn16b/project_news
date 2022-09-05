@@ -215,6 +215,6 @@ $listAttr = $attrModel->lisAttribute($itemId);
             </div>
         </div>
     </div>
-    </div>
-    </div>
+
 @endsection
+

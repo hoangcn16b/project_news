@@ -19,6 +19,7 @@
 <script src="{{ asset('admin/js/notify.min.js') }}"></script>
 <script src="{{ asset('admin/js/custom.min.js') }}"></script>
 <script src="{{ asset('admin/js/my-js.js') }}"></script>
+<script src="{{ asset('admin/js/product/my-js.js') }}" rel="stylesheet" ></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>

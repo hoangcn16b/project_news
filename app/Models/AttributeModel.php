@@ -153,14 +153,11 @@ class AttributeModel extends AdminModel
     public function lisAttribute($id = null)
     {
         $result = null;
-
         // $result = DB::table('attributes')
         //     ->leftJoin('attribute_values', 'attributes.id', '=', 'attribute_values.attribute_id')
         //     ->select('attributes.id', 'attributes.name', 'attribute_values.id as attr_val_id', 'attribute_values.name as attr_val_name', 'attribute_values.attribute_id', 'attribute_values.product_id')->where('attribute_values.product_id', $id)
         //     ->get();
-
         $result = self::with('attributeValue')->select('id', 'name', 'product_id')->where('product_id', $id)->get()->toArray();
-        // dd($result);
         return $result;
     }
 }

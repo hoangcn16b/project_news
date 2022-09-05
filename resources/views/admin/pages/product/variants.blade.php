@@ -1,14 +1,16 @@
+@php
+$i = 1;
+$labelClass = 'control-label col-md-3 col-sm-3 col-xs-12';
+
+@endphp
 <div class="every-attr">
-    @php
-        $i = 1;
-    @endphp
-    {{ Form::label('add_attribute', 'List Variants', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
-    {{ Form::label('add_attribute', 'Variant Name', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
-    {{ Form::label('add_attribute', 'Price', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12', 'style' => 'text-align:center']) }}
-    {{ Form::label('add_attribute', 'Amount', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+    {{ Form::label('add_attribute_odd', 'List Variants', ['class' => $labelClass]) }}
+    {{ Form::label('add_attribute_name', 'Variant Name', ['class' => $labelClass]) }}
+    {{ Form::label('add_attribute_price', 'Price', ['class' => $labelClass, 'style' => 'text-align:center']) }}
+    {{ Form::label('add_attribute_amount', 'Amount', ['class' => $labelClass]) }}
     @foreach ($listVariant as $variant)
         <div class="form-group attr-variant" style="margin-top: 25px;margin-bottom:20px">
-            {{ Form::label('add_attribute', $i++, ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) }}
+            {{ Form::label('add_attribute', $i++, ['class' => $labelClass]) }}
             <input class="btn btn-default" type="text" value="{{ $variant['name'] }}" readonly>
 
             <input type="text" name="price" class="btn btn-default price-variant" style="width:100px"

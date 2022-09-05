@@ -9,7 +9,6 @@
         data-url-delete-attr="{{ route('product/deleteAttribute') }}" data-id-delete-attr="{{ $newId }}">
         Delete Attribute</button>
 
-
     <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
     <div class="input-group input-group-sm mb-3 child-attr-val" style="margin-top: 10px">
         <button class="btn btn-primary btn-add-attr-val" type="button"
@@ -18,11 +17,4 @@
             Value</button>
         <input type="hidden" name="id-attr" value="{{ $newId }}">
     </div>
-    {{-- <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
-    <div class="input-group input-group-sm mb-3" style="margin-top: 10px">
-        <input name="attribute_values[]" style="margin-botton:10px;margin-top:10px" type="text"
-            class="btn btn-default attr-value" data-url-update-value="" data-id="">
-        <button class="btn btn-warning btn-del-attr" type="button"
-            data-url-delete="'.route('product/deleteAttribute').'"> Delete Value</button>
-    </div> --}}
 </div>
