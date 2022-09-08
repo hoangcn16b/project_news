@@ -12,7 +12,7 @@ class ProductModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'products as p';
+        $this->table               = 'products';
         $this->folderUpload        = 'product';
         $this->fieldSearchAccepted = ['name', 'content'];
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
@@ -343,5 +343,9 @@ class ProductModel extends AdminModel
     {
         // $depth = $this->depth <= 1 ? 0 : $this->depth - 1;
         return str_repeat('-----/ ', $this->depth - 1) . $this->name;
+    }
+
+    public function attributes2() {
+        return $this->hasMany(AttributeModel::class, 'product_id', 'id');
     }
 }

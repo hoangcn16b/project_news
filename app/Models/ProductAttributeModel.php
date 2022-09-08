@@ -40,29 +40,58 @@ class ProductAttributeModel extends AdminModel
     {
         $resultcombindOld = null;
         $resultcombindOld = self::select('attribute_value_id', 'name')->where('product_id', $id)->get()->toArray();
+        // [
+        //     ['attribute_value_id' => 12, 'name' => 'ád'],
+        //     ['attribute_value_id' => 12, 'name' => 'ád'],
+        //     ['attribute_value_id' => 12, 'name' => 'ád'],
+        //     ['attribute_value_id' => 12, 'name' => 'ád'],
+        // ]
 
         // combind to same DB
         $arrCombindOld = null;
         foreach ($resultcombindOld as $key => $value) {
             $arrCombindOld[$value['attribute_value_id']] = $value['name'];
         }
+
         $resultVar = null;
         $variants = null;
         $variantsId = null;
         $arrCombindNew = null;
-        $resultListAttrId = DB::select("SELECT DISTINCT attribute_id FROM attribute_values WHERE product_id = $id");
-        foreach ($resultListAttrId as $key => $value) {
-            $resultVar[] = DB::table('attribute_values')->select('id', 'name')->where('product_id', $id)->where('attribute_id', $value->attribute_id)->get()->toArray();
-        }
-        // //combind to array
-        if ($resultVar) {
-            foreach ($resultVar as $key => $value) {
-                foreach ($value as $key1 => $value1) {
-                    $variants[$key][] = $value1->name;
-                    $variantsId[$key][] = $value1->id;
-                }
+        // $resultListAttrId = DB::select("SELECT DISTINCT attribute_id FROM attribute_values WHERE product_id = $id");
+        // $test1 = AttributeModel::select('id')->where('product_id', $id)->get()->pluck('id')->toArray();
+        $attributes = ProductModel::with(['attributes2', 'attributes2.attributeValue'])->find($id)->attributes2;
+        // dd($attributes);
+        $i = 0;
+        
+        foreach ($attributes as $attribute) {
+            foreach ($attribute->attributeValue as $value) {
+                $variants[$i][] = $value->name;
+                $variantsId[$i][] = $value->id;
             }
+            $i++;
         }
+
+        // $test2 = AttributeValueModel::select('id', 'name', 'attribute_id')->where('product_id', $id)->whereIn('attribute_id', $test1)->get()->groupBy('attribute_id');
+
+        // dd($test2);
+        // foreach ($resultListAttrId as $key => $value) {
+        //     $resultVar[] = DB::table('attribute_values')->select('id', 'name')->where('product_id', $id)->where('attribute_id', $value->attribute_id)->get()->toArray();
+        // }
+        // //combind to array
+
+        
+
+        // if ($test2) {
+        //     $i = 0;
+        //     foreach ($test2 as $key => $value) {
+        //         foreach ($value as $key1 => $value1) {
+        //             $variants[$i][] = $value1->name;
+        //             $variantsId[$i][] = $value1->id;
+        //         }
+        //         $i++;
+        //     }
+        // }
+        // dd($variants, $variantsId);
         $totalVar = [];
         $totalId = [];
         $totalVar = Helper::combinationVariants($variants, 0);

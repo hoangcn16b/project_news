@@ -129,7 +129,7 @@ $listAttr = $attrModel->lisAttribute($itemId);
                                 <button class="btn btn-info add-attr" type="button"
                                     data-url-attr="{{ route('product/createAttribute') }}">+Add attribute</button>
                                 <button class="btn btn-success refresh-variant" type="button"
-                                    data-url-refresh-variant="{{ route('product/refreshVariant') }}">Refresh
+                                    data-url-refresh-variant="{{ route('product/refreshVariant') }}">Refresh List
                                     Variant</button>
                             </div>
                         </div>

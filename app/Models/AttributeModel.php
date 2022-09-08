@@ -160,4 +160,5 @@ class AttributeModel extends AdminModel
         $result = self::with('attributeValue')->select('id', 'name', 'product_id')->where('product_id', $id)->get()->toArray();
         return $result;
     }
+
 }
