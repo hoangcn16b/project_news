@@ -239,6 +239,6 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['permission.ad
 
 Route::get('notification');
 
-// require_once 'frontend.php';
+// require_once 'shop.php';
 
 // bai-viet/suc-khoe-3.php
