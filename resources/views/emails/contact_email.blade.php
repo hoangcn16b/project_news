@@ -5,6 +5,6 @@
 <p>Tên: {{ $infoContact['name'] }}</p>
 <p>E-Mail: {{ $infoContact['email'] }}</p>
 <p>Điện thoại: {{ $infoContact['phone'] }}</p>
-<p>Gửi vào lúc: {{ $infoContact['created'] }}</p>
+<p>Gửi vào lúc: {{ $infoContact['created_at'] }}</p>
 <p>Nội dung: <br>
     {{ $infoContact['content'] }}</p>

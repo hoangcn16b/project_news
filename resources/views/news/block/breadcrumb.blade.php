@@ -3,7 +3,7 @@ use App\Models\CategoryModel as CategoryModel;
 use App\Helpers\URL;
 $ancestors = CategoryModel::withDepth()
     ->having('depth', '>', 0)
-    ->ancestorsOf($item['id']);
+    ->ancestorsOf($item['id'] ?? '');
 @endphp
 
 <div class="home">
@@ -19,7 +19,9 @@ $ancestors = CategoryModel::withDepth()
                             <ul class="d-flex flex-row align-items-start justify-content-start">
                                 <li><a href="{{ route('home') }}">Trang chủ</a></li>
                                 @foreach ($ancestors as $ancestor)
-                                    <li> <a href="{{ URL::linkCategory($ancestor->id, $ancestor->name) }}">{{ $ancestor->name }}</a></li>
+                                    <li> <a
+                                            href="{{ URL::linkCategory($ancestor->id, $ancestor->name) }}">{{ $ancestor->name }}</a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>

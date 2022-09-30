@@ -1,17 +1,22 @@
 <div class="posts">
     <div class="col-lg-12">
         @if (session('zvn_notify'))
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="alert alert-info alert-dismissible fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <strong>{{ session('zvn_notify') }}</strong>
+                        <strong>{{ session('zvn_notify') }} 123</strong>
                     </div>
                 </div>
+            </div> --}}
+            <div class="alert alert-success">
+                <h4><i class="fa fa-success"></i>Chúng tôi đã nhận được thông tin liên hệ. Hãy kiểm tra mail thường xuyên
+                    để nhận được thông báo của chúng tôi sớm nhất!</h4>
             </div>
         @endif
         <div class="row">
+
             <div class="col-lg-7">
 
                 <div class="h600 overflow-hidden" id="map-canvas">
