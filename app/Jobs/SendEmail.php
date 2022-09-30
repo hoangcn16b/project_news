@@ -23,19 +23,23 @@ class SendEmail implements ShouldQueue
 
     public function handle()
     {
+        // Mail::send($this->mail);
+
         $arrMail = ['hoangalt0098@gmail.com', 'hoangalt0198@gmail.com', 'hoangcn16b@gmail.com'];
         if (!empty($arrMail)) {
             foreach ($arrMail as $key => $value) {
                 $this->mail['email_to'] = $value;
-
-                Mail::later(5, 'emails.contact_email', ['infoContact' => $this->mail], function ($message) {
-                    $message->to($this->mail['email_to']);
-                    $message->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
+                // Mail::later(5, 'emails.contact_email', ['infoContact' => $this->mail], function ($message) {
+                //     $message->to($this->mail['email_to'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
+                // });
+                Mail::send('emails.contact_email', ['infoContact' => $this->mail], function ($message) {
+                    $message->to($this->mail['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
                 });
+                
             }
         }
-        // Mail::later(5, 'emails.contact_email', ['infoContact' => $this->mail], function ($message) {
-        //     $message->to($this->mail['email_to'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
+        // Mail::send('emails.contact_email', ['infoContact' => $this->mail], function ($message) {
+        //     $message->to($this->mail['email'])->subject('Thông báo từ Website News69 - Đã nhận được thông tin liên hệ của bạn!');
         // });
     }
 }

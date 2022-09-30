@@ -8,7 +8,9 @@ use App\Http\Requests\News\ContactRequest as MainRequest;
 use App\Models\ContactModel;
 use App\Helpers\Feed;
 use App\Jobs\SendEmail;
+use Illuminate\Support\Carbon;
 
+// use Carbon\Carbon;
 class ContactController extends Controller
 {
     private $pathViewController = 'news.pages.contact.';  // slider
@@ -39,11 +41,10 @@ class ContactController extends Controller
             $this->params['subject'] = 'Thông báo từ Website News69!';
             $this->params['view'] = 'emails.contact_email';
 
-            // $sendMail = new SendEmail($this->params);
-            // dispatch($sendMail);
+            $sendMail = new SendEmail($this->params);
+            dispatch($sendMail)->delay(now()->addSeconds(20));
 
             return redirect()->route($this->controllerName . '/index')->with("zvn_notify", $notify);
         }
     }
-
 }
