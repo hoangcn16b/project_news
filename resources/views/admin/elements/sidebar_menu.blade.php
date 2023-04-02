@@ -27,8 +27,8 @@
             <li><a href="{{ route('setting') }}"><i class="fa fa-gear"></i> Setting Website</a></li>
             <li><a href="{{ route('productCategory') }}"><i class="fa fa-building"></i> Product Category </a></li>
             <li><a href="{{ route('product') }}"><i class="fa fa-product-hunt"></i> Products </a></li>
-            <li><a href="{{ route('attribute') }}"><i class="fa fa-align-center"></i> Attributes </a></li>
-            <li><a href="{{ route('productAttribute') }}"><i class="fa fa-tag"></i> Product Attributes </a></li>
+            {{-- <li><a href="{{ route('attribute') }}"><i class="fa fa-align-center"></i> Attributes </a></li> --}}
+            {{-- <li><a href="{{ route('productAttribute') }}"><i class="fa fa-tag"></i> Product Attributes </a></li> --}}
             <li><a href="{{ route('password') }}"><i class="fa fa-key"></i> Change Password</a></li>
 
             {{-- <li><a href="{{ route('democategory') }}"><i class=""></i> Demo Category </a></li> --}}
